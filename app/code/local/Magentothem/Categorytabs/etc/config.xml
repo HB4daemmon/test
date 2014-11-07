@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Magentothem_Categorytabs>
+            <version>0.1.0</version>
+        </Magentothem_Categorytabs>
+    </modules>
+    <frontend>
+        <routers>
+            <categorytabs>
+                <use>standard</use>
+                <args>
+                    <module>Magentothem_Categorytabs</module>
+                    <frontName>categorytabs</frontName>
+                </args>
+            </categorytabs>
+        </routers>
+        <layout>
+            <updates>
+                <categorytabs>
+                    <file>categorytabs.xml</file>
+                </categorytabs>
+            </updates>
+        </layout>
+    </frontend>
+	<adminhtml>
+			<menu>
+				<magentothem translate="title" module="categorytabs">
+					<title>Magentothem</title>
+					<sort_order>71</sort_order>               
+					<children>
+						<categorytabs translate="title" module="categorytabs">
+							<title>Category Tabs </title>
+							<sort_order>35</sort_order>
+							<children>
+								<configuration>
+									<title>Configuration</title>
+									<sort_order>1</sort_order>
+									<action>adminhtml/system_config/edit/section/categorytabs</action>
+								</configuration>
+							</children>
+						</categorytabs>
+					</children>
+				</magentothem>
+			</menu>
+			<acl>
+				<resources>
+					<all>
+						<title>Allow Everything</title>
+					</all>
+					<admin>
+						<children>
+							<system>
+								<children>
+									<config>
+										<children>
+											<categorytabs>
+												<title>Category Tabs </title>
+											</categorytabs>
+										</children>
+									</config>
+								</children>
+							</system>
+						</children>
+					</admin>
+				</resources>
+			</acl>
+			<layout>
+				<updates>
+					<categorytabs>
+						<file>categorytabs.xml</file>
+					</categorytabs>
+				</updates>
+			</layout>
+		</adminhtml> 
+      
+    <global>
+      
+        <blocks>
+            <categorytabs>
+                <class>Magentothem_Categorytabs_Block_Categorytabs_Widget</class>
+            </categorytabs>
+        </blocks>
+        <helpers>
+            <categorytabs>
+                <class>Magentothem_Categorytabs_Helper</class>
+            </categorytabs>
+        </helpers>
+    </global>
+	<default>
+		<categorytabs>
+			<categorytabs_config>
+				<enabled>1</enabled>
+				<title>BEST OFFERS</title>
+				<auto>0</auto>
+				<speed>3000</speed>
+				<interval>600</interval>
+				<show_price>1</show_price>
+				<addtocart>1</addtocart>
+				<addtowishlist>1</addtowishlist>
+				<addtocompare>1</addtocompare>
+                <itemqty>1</itemqty>
+				<review>1</review>
+				<description>0</description>
+				<maxlength></maxlength>
+				<qty>8</qty>
+				<items_show>4</items_show>
+			</categorytabs_config>
+		</categorytabs>
+	</default>
+</config>

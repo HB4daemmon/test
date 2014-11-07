@@ -1,0 +1,215 @@
+	<?php
+        $_old_body_bg = $this->getConfig("bg_color");
+        $_body_background = 'ffffff';
+        if ( $_COOKIE['body_background_cookie'] ) {
+            $_body_background = $_COOKIE['body_background_cookie'];
+        }
+
+        $_old_main_color = $this->getConfig("main_color");
+        $_main_color = '446CB3';
+        if ( $_COOKIE['main_color_cookie'] ) {
+            $_link_color = $_COOKIE['main_color_cookie'];
+        }
+		
+        $_old_link_color = $this->getConfig("link_color");
+        $_link_color = 'E6415F';
+        if ( $_COOKIE['link_color_cookie'] ) {
+            $_link_color = $_COOKIE['link_color_cookie'];
+        }
+
+    ?>
+    <div class="ma-demo-wrap">
+		<h2 class="ma-demo-title">Theme Options</h2>
+		<div class="ma-demo-option">
+			<div class="cl-wrapper">
+				<div class="cl-container">
+					<div class="cl-table">
+						<div class="cl-tr cl-tr-style">
+							<div class="cl-td-l cl-td-layout1"><a href="<?php echo $this->getUrl().'?___store=en' ?>" title="green_red" ><span><span></span></span><?php echo $this->__('Green / Red') ?></a></div>
+							<div class="cl-td-r cl-td-layout2"><a href="<?php echo $this->getUrl().'?___store=fr' ?>" title="brown_red"><span><span></span></span><?php echo $this->__('Brown / Red') ?></a></div>
+						</div>
+						<div class="cl-tr cl-tr-style">
+							<div class="cl-td-r cl-td-layout3"><a href="<?php echo $this->getUrl().'?___store=ge' ?>" title="orange_green"><span><span></span></span><?php echo $this->__('Orange / Green') ?></a></div>
+							<div class="cl-td-r cl-td-layout4"><a href="<?php echo $this->getUrl().'?___store=rs' ?>" title="red_light_green"><span><span></span></span><?php echo $this->__('Red / LightGreen') ?></a></div>
+						</div>
+						<div class="cl-tr cl-tr-style">
+							<div class="cl-td-r cl-td-layout5"><a href="<?php echo $this->getUrl().'?___store=br' ?>" title="teal_warter_melon"><span><span></span></span><?php echo $this->__('Teal / WarterMelon') ?></a></div>
+							<div class="cl-td-r cl-td-layout6"><a href="<?php echo $this->getUrl().'?___store=sp' ?>" title="twitter_red"><span><span></span></span><?php echo $this->__('Twitter / Red') ?></a></div>
+						</div>
+						
+						
+					</div>
+                </div>		
+			</div>
+		</div>
+		<div class="control inactive"><a href="javascript:void(0)"></a></div>
+		<script type="text/javascript">
+			$jq(document).ready( function(){
+				$jq('.control').click(function(){
+					if($jq(this).hasClass('inactive')) {
+						$jq(this).removeClass('inactive');
+						$jq(this).addClass('active');
+						$jq('.ma-demo-wrap').animate({left:'0'}, 500);
+					} else {
+						$jq(this).addClass('inactive');
+						$jq('.ma-demo-wrap').animate({left:'-300px'}, 500);
+					}
+				});
+			});
+		</script>
+	</div>
+<script type="text/javascript">
+//<![CDATA[    
+    $jq('#bodyBackgroundColor,#mainColor, #linkColor').each(function() {
+        var $jqel = $jq(this);
+        /* set time */
+        var date = new Date();
+        date.setTime(date.getTime() + (1440 * 60 * 1000));
+    
+        $jqel.ColorPicker({
+            color: '#0000ff',
+            onChange: function (hsb, hex, rgb) {
+    
+                $jqel.find('div').css('backgroundColor', '#' + hex);
+                switch ($jqel.attr("id")) {			
+					
+                  case 'bodyBackgroundColor' :
+                    $jq("body").css('backgroundColor', '#' + hex);
+                    // set cookie
+                    $jq.cookie('body_background_cookie', hex , { expires: date });
+                    break;
+				// main color
+				  case 'mainColor' :
+					$jq('<style type="text/css">.ma-newproductslider-container .actions, .products-grid .actions, .ma-brand-slider-contain .flex-direction-nav a:hover, .ma-footer-static-container, .ma-nav-mobile-container, .ma-nav-container, .content-sample-block .block1 img, .productpage-sample-block .block2 img  { background-color:#'+hex+'}</style>').appendTo('head');
+					
+										$jq('<style type="text/css">.product-view button.btn-cart:hover span { background-color:#'+hex+' !important}</style>').appendTo('head');
+
+					
+					$jq('<style type="text/css">a:hover, .products-grid .product-name a:hover, .product-name a:hover { color:#'+hex+'}</style>').appendTo('head');
+					
+				  // set cookie
+				  $jq.cookie('main_color_cookie', hex , { expires: date });
+				  break;	
+				
+                  case 'linkColor' :
+                    //$jq("body a").css('color', '#' + hex);
+					$jq('<style type="text/css"> button.button span, .main button.btn-checkout:hover span, .header .form-search button.button:hover span, .ma-newproductslider-container .item-inner:hover .actions, .products-grid .item:hover .actions, .ma-brand-slider-contain .flex-direction-nav a, .ma-brand-slider-contain .flex-direction-nav .flex-next, .ma-new-vertscroller-wrap .jcarousel-next-vertical:hover, .ma-new-vertscroller-wrap .jcarousel-prev-vertical:hover, .add-to-cart input.qty-decrease:hover, .add-to-cart input.qty-increase:hover, .product-prev:hover, .product-next:hover, .ma-thumbnail-container .flex-direction-nav a:hover, .footer-freeshipping .shipping-icon, .wine_menu li.active a, .fish_menu li.active a, .wine_menu li.over a, .fish_menu li.over a, .wine_menu a:hover, .fish_menu a:hover, #back-top, .content-sample-block .block2 img, .productpage-sample-block .block1 img { background-color:#'+hex+'}</style>').appendTo('head');
+					
+					$jq('<style type="text/css"> button.btn-cart:hover span, .product-view button.btn-cart span, .ui-slider .ui-slider-range { background-color:#'+hex+' !important}</style>').appendTo('head');
+					
+					$jq('<style type="text/css"> a, .breadcrumbs li strong, .pager .pages a:hover, .pager .pages .current, .header .welcome-msg a, .header .currency-language .language-switcher a:hover, .header .links li a:hover, .top-cart-contain .price, .block .block-title strong .word2, .block-right-static .block-title strong, .block-subscribe-right .block-title strong, .block-account .block-content li a:hover, .block-account .block-content li.current, .block-layered-nav li:hover, .block-layered-nav li a:hover, .ma-featured-product-title h2 .word2, .ma-newproductslider-title h2 .word2, .products-list .product-name a:hover, .product-view .product-shop .availability span, .price-box .price, .regular-price, .regular-price .price, .block .regular-price, .block .regular-price .price, .special-price .price-label, .special-price .price, .add-to-cart .qty, .product-collateral h2 .word2, .product-view .product-shop .product-sku span, .product-view .product-shop .product-brand span, .product-view .product-shop .add-to-links a:hover, .email-friend a:hover, .ma-footer-static .fcol1 li:hover, .ma-footer-static .fcol1 li a:hover, .mobilemenu li.active a, .mobilemenu a:hover, #ticker a { color:#'+hex+'}</style>').appendTo('head');
+					
+					$jq('<style type="text/css"> .mobilemenu ul a:hover, .mobilemenu ul li.active a, .mobilemenu ul ul a:hover, .mobilemenu ul ul li.active a, .mobilemenu ul li.active ul a:hover, .mobilemenu ul ul ul a:hover, .mobilemenu ul ul ul li.active a, .mobilemenu ul ul li.active ul a:hover, .mobilemenu ul ul ul ul a:hover, .mobilemenu ul ul ul ul li.active a, .mobilemenu ul ul ul li.active ul a:hover, .wine_menu ul li a:hover, .wine_menu ul ul li a:hover, .fish_menu ul li a:hover { color:#'+hex+' !important}</style>').appendTo('head');
+					$jq('<style type="text/css">.ma-newproductslider-container .item-inner:hover, .ma-newproductslider-container .item-inner:hover, .product-tabs a:hover, .product-tabs li.active a, .product-tabs li.active a:hover, .wine_menu .container, .fish_menu ul, .fish_menu div, .fish_menu ul ul, .fish_menu ul div { border-color:#'+hex+'}</style>').appendTo('head');
+					
+                    // set cookie
+                    $jq.cookie('link_color_cookie', hex , { expires: date });
+                    break;			
+				
+                }
+            }
+        });
+    });
+    /* set time */
+    var date = new Date();
+    date.setTime(date.getTime() + (1440 * 60 * 1000));
+	
+	<?php
+		// set default background image
+		$_old_bd_img = '';
+		$_bd_img = '';
+		if ( $_COOKIE['body_image_cookie'] ) {
+			$_bd_img = $_COOKIE['body_image_cookie'];
+		}
+	?>
+		
+	$jq(document).ready(function(){
+		
+		//load selected font
+		$jq("#select-fontselector option").filter(function() {
+			//may want to use $.trim in here
+			return $jq(this).text() == $jq.cookie('font_cookie'); 
+		}).attr('selected', true);
+		//change font
+		$jq(function(){
+			fontSelect=$jq("#select-fontselector");
+			fontUpdate=function(){
+				curFont=$jq("#select-fontselector").val();
+				$jq(".page-title h1, .page-title h2, .block .block-title strong, .block-right-static .block-title h3, .block-subscribe-right .block-title h3, .ma-mostviewed-product-title h2, .ma-upsellslider-container .product-name, .ma-newproductslider-container .product-name, .products-grid .product-name, .ma-featured-product-title h2, .ma-newproductslider-title h2, .products-list .product-name, .product-collateral h2, .product-view .product-shop .product-name h1, .product-view .box-up-sell h2, .footer-freeshipping h3, .footer-subscribe .form-subscribe-header h4, .ma-footer-static .footer-static-title h3, .product-tabs a, .wine_menu a, .fish_menu a, .wine_menu ul li a ").css({ fontFamily: curFont });
+				
+			}
+			fontSelect.change(function(){
+				fontUpdate();
+			}).keyup(function(){
+				fontUpdate();
+			}).keydown(function(){
+				fontUpdate();
+			});
+			
+			$jq("#select-fontselector").trigger("change");
+		})
+		
+		$jq('#select-fontselector').change(function() {
+			$jq.cookie('font_cookie', $jq(this).val(), { expires: date });
+		});
+		$jq(".page-title h1, .page-title h2, .block .block-title strong, .block-right-static .block-title h3, .block-subscribe-right .block-title h3, .ma-mostviewed-product-title h2, .ma-upsellslider-container .product-name, .ma-newproductslider-container .product-name, .products-grid .product-name, .ma-featured-product-title h2, .ma-newproductslider-title h2, .products-list .product-name, .product-collateral h2, .product-view .product-shop .product-name h1, .product-view .box-up-sell h2, .footer-freeshipping h3, .footer-subscribe .form-subscribe-header h4, .ma-footer-static .footer-static-title h3, .product-tabs a, .wine_menu a, .fish_menu a, .wine_menu ul li a").css({ fontFamily: $jq.cookie('font_cookie') }); 
+		
+		
+		//set cookie
+		$jq("body").css('backgroundColor', '#<?php echo $_body_background ?>');
+		$jq("body").css('background-image', $jq.cookie('body_image_cookie'));
+		$jq("body").css('background-repeat','repeat');
+		
+		// main color
+
+		$jq('<style type="text/css">.ma-newproductslider-container .actions, .products-grid .actions, .ma-brand-slider-contain .flex-direction-nav a:hover, .ma-footer-static-container, .ma-nav-mobile-container, .ma-nav-container, .content-sample-block .block1 img, .productpage-sample-block .block2 img  { background-color:#'+$jq.cookie('main_color_cookie')+'}</style>').appendTo('head');
+		
+							$jq('<style type="text/css">.product-view button.btn-cart:hover span { background-color:#'+$jq.cookie('main_color_cookie')+' !important}</style>').appendTo('head');
+
+		
+		$jq('<style type="text/css">a:hover, .products-grid .product-name a:hover, .product-name a:hover { color:#'+$jq.cookie('main_color_cookie')+'}</style>').appendTo('head');
+					
+		
+		//link color
+		$jq('<style type="text/css">button.button span, .main button.btn-checkout:hover span, .header .form-search button.button:hover span, .ma-newproductslider-container .item-inner:hover .actions, .products-grid .item:hover .actions, .ma-brand-slider-contain .flex-direction-nav a, .ma-brand-slider-contain .flex-direction-nav .flex-next, .ma-new-vertscroller-wrap .jcarousel-next-vertical:hover, .ma-new-vertscroller-wrap .jcarousel-prev-vertical:hover, .add-to-cart input.qty-decrease:hover, .add-to-cart input.qty-increase:hover, .product-prev:hover, .product-next:hover, .ma-thumbnail-container .flex-direction-nav a:hover, .footer-freeshipping .shipping-icon, .wine_menu li.active a, .fish_menu li.active a, .wine_menu li.over a, .fish_menu li.over a, .wine_menu a:hover, .fish_menu a:hover, #back-top, .content-sample-block .block2 img, .productpage-sample-block .block1 img  { background-color:#'+$jq.cookie('link_color_cookie')+'}</style>').appendTo('head');
+		$jq('<style type="text/css"> button.btn-cart:hover span, .product-view button.btn-cart span, .ui-slider .ui-slider-range { background-color:#'+$jq.cookie('link_color_cookie')+' !important}</style>').appendTo('head');
+		
+		$jq('<style type="text/css">a, .breadcrumbs li strong, .pager .pages a:hover, .pager .pages .current, .header .welcome-msg a, .header .currency-language .language-switcher a:hover, .header .links li a:hover, .top-cart-contain .price, .block .block-title strong .word2, .block-right-static .block-title strong, .block-subscribe-right .block-title strong, .block-account .block-content li a:hover, .block-account .block-content li.current, .block-layered-nav li:hover, .block-layered-nav li a:hover, .ma-featured-product-title h2 .word2, .ma-newproductslider-title h2 .word2, .products-list .product-name a:hover, .product-view .product-shop .availability span, .price-box .price, .regular-price, .regular-price .price, .block .regular-price, .block .regular-price .price, .special-price .price-label, .special-price .price, .add-to-cart .qty, .product-collateral h2 .word2, .product-view .product-shop .product-sku span, .product-view .product-shop .product-brand span, .product-view .product-shop .add-to-links a:hover, .email-friend a:hover, .ma-footer-static .fcol1 li:hover, .ma-footer-static .fcol1 li a:hover, .mobilemenu li.active a, .mobilemenu a:hover, #ticker a  { color:#'+$jq.cookie('link_color_cookie')+'}</style>').appendTo('head');
+		$jq('<style type="text/css">.mobilemenu ul a:hover, .mobilemenu ul li.active a, .mobilemenu ul ul a:hover, .mobilemenu ul ul li.active a, .mobilemenu ul li.active ul a:hover, .mobilemenu ul ul ul a:hover, .mobilemenu ul ul ul li.active a, .mobilemenu ul ul li.active ul a:hover, .mobilemenu ul ul ul ul a:hover, .mobilemenu ul ul ul ul li.active a, .mobilemenu ul ul ul li.active ul a:hover, .wine_menu ul li a:hover, .wine_menu ul ul li a:hover, .fish_menu ul li a:hover { color:#'+$jq.cookie('link_color_cookie')+' !important}</style>').appendTo('head');
+		
+		$jq('<style type="text/css"> .ma-newproductslider-container .item-inner:hover, .ma-newproductslider-container .item-inner:hover, .product-tabs a:hover, .product-tabs li.active a, .product-tabs li.active a:hover, .wine_menu .container, .fish_menu ul, .fish_menu div, .fish_menu ul ul, .fish_menu ul div { border-color:#'+$jq.cookie('link_color_cookie')+'}</style>').appendTo('head');
+		
+		//set background image
+		$jq('.cl-pattern div').click(function(){
+			$jq("body").css('background-image', 'url(<?php echo $this->getSkinUrl('magentothem/colortool/images/pattern/'); ?>'+this.id+'.png)');
+			$jq("body").css('background-repeat','repeat');
+			$jq.cookie('body_image_cookie', 'url(<?php echo $this->getSkinUrl('magentothem/colortool/images/pattern/'); ?>'+this.id+'.png)', { expires: date });
+		});
+	
+		//set cookie for theme color
+		var cl = $jq(".cl-row-themeskin");
+		cl.find("a").each(function() {
+			$jq(this).click(function(){
+				$jq.cookie('style_color', $jq(this).attr('title') , { expires: date });
+				location.reload();
+			});
+		});
+	});
+		
+	
+    //reset button
+    $jq('.cl-reset').click(function(){
+		
+		$jq.cookie('font_cookie','');
+		$jq.cookie('main_color_cookie','');
+		$jq.cookie('link_color_cookie','');
+		
+        $jq.cookie('body_image_cookie','');	
+		$jq("body").css('background-image', 'url(<?php echo $this->getSkinUrl('magentothem/colortool/images/pattern/').$_old_bd_img; ?>)');
+		
+        $jq.cookie('body_background_cookie','');
+        $jq("body").css('backgroundColor', '#<?php echo $_old_body_bg ?>');
+		location.reload();
+    });
+//]]>
+</script>

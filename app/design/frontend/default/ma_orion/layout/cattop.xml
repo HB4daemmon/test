@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addCss" ifconfig="cattop/top_config/enabled"><stylesheet>magentothem/cattop/css/style.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<!--<block type="cattop/cattop" name="catlist" before="-" template="magentothem/cattop/cattop.phtml" />-->
+		</reference>
+	</default>
+</layout> 

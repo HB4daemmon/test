@@ -1,0 +1,23 @@
+<div class="cattop">
+    <h2 class="cattop-title"><?php echo $this->getTopCfg('title')?></h2>
+
+    <?php
+    $stores = Mage::app()->getStores();
+    $i = 0;
+    $numcolumn = $this->getTopCfg('number_columns');
+    foreach ($stores as $store) {
+        if($i++%$numcolumn == 0) echo '<ul class="catgrid">';
+        echo '<li class="cat_level_top"><div class="cattop-item">
+				<a href="' . $store->getHomeUrl(). '">'
+            .'<!-- <img class ="image" src="'.$this->getImage($store).'" alt="'.$store->getName().'" /> -->'
+            .'<!-- <img class ="imagehover" src="'.$this->getImageHover($store).'" alt="'.$store->getName().'" /> -->
+					<span>'.$store->getName().'</span>
+		                </a>
+
+				</div>
+				 </li>';
+
+        if($i%$numcolumn == 0 || $i==$numcolumn) echo '</ul>';
+    }
+    ?>
+</div>

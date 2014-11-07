@@ -1,0 +1,23 @@
+
+	.catgrid ul li {
+		border-bottom: 1px solid #CCCCCC;
+		padding: 10px 0;
+	}
+
+	.catgrid ul li a {
+		color: #000;
+		padding-left: 10px;
+		text-decoration:none;
+	}
+	.catgrid ul li a:hover {
+		padding-left: 10px;
+		text-decoration:underline;
+	}
+	
+.cattop .cat_level_top {
+	width: 20%;
+	display: inline-block;
+	padding: 0 10px;
+}
+
+.cattop .cat_level_top span { width: 50%;}

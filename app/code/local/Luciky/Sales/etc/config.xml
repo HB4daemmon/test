@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Sales
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Luciky_Sales>
+            <version>0.1.0</version>
+        </Luciky_Sales>
+    </modules>
+    <global>
+        <models>
+            <sales>
+                <rewrite>
+                    <quote_item>Luciky_Sales_Model_Quote_Item</quote_item>
+                    <quote_storegroup>Luciky_Sales_Model_Quote_Storegroup</quote_storegroup>
+                    <order_storegroup>Luciky_Sales_Model_Order_Storegroup</order_storegroup>
+                    <quote>Luciky_Sales_Model_Quote</quote>
+                   <order>Luciky_Sales_Model_Order</order>
+                   <observer>Luciky_Sales_Model_Observer</observer>
+                </rewrite>
+            </sales>
+            <sales_entity>
+                 <entities>
+                    <quote_storegroup>
+                        <table>sales_quote_storegroup</table>
+                    </quote_storegroup>
+                    <order_storegroup>
+                        <table>sales_order_storegroup</table>
+                    </order_storegroup>
+                </entities>
+                <rewrite>
+                    <quote_storegroup>Luciky_Sales_Model_Entity_Quote_Storegroup</quote_storegroup>
+                    <order_storegroup>Luciky_Sales_Model_Entity_Order_Storegroup</order_storegroup>
+                </rewrite>
+            </sales_entity>
+            <sales_resource>
+                <entities>
+                    <quote_storegroup>
+                        <table>sales_flat_quote_storegroup</table>
+                    </quote_storegroup>
+                    <order_storegroup>
+                        <table>sales_flat_order_storegroup</table>
+                    </order_storegroup>
+                </entities>
+                <rewrite>
+                    <quote_storegroup>Luciky_Sales_Model_Resource_Quote_Storegroup</quote_storegroup>
+                    <order_storegroup>Luciky_Sales_Model_Resource_Order_Storegroup</order_storegroup>
+                    <quote_storegroup_collection>Luciky_Sales_Model_Resource_Quote_Storegroup_Collection</quote_storegroup_collection>                  
+                	<order_storegroup_collection>Luciky_Sales_Model_Resource_Order_Storegroup_Collection</order_storegroup_collection>
+                </rewrite>
+            </sales_resource>
+        </models>
+        <resources>
+            <lucikysales_setup>
+                <setup>
+                    <module>Luciky_Sales</module>
+                    <class>Luciky_Sales_Model_Resource_Setup</class>
+                </setup>
+            </lucikysales_setup>
+        </resources>
+        <events>
+            <save_quote_item_finishd>
+                <observers>
+                    <sales_quote_item_save_to_storegroup>
+                        <class>sales/observer</class>
+                        <method>CheckoutAddAfter</method>
+                    </sales_quote_item_save_to_storegroup>
+                </observers>
+            </save_quote_item_finishd>
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <order_saved_to_orders>
+                        <class>sales/observer</class>
+                        <method>SaveOrdertoOrders</method>
+                     </order_saved_to_orders>   
+                </observers>
+            </checkout_type_onepage_save_order_after>
+            <checkout_item_delete_after>
+            	<observers>
+            		<sales_quote_item_delete>
+            			<class>sales/observer</class>
+            			<method>CheckoutDelAfter</method>
+            		</sales_quote_item_delete>
+            	</observers>
+            </checkout_item_delete_after>
+        </events>
+
+    </global>
+    <frontend>
+    <routers>
+        <sales>
+            <use>standard</use>
+            <args>
+                <module>Luciky_Sales</module>
+                <frontName>sales</frontName>
+            </args>
+        </sales>
+    </routers>
+</frontend>
+
+</config>

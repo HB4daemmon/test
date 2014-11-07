@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Luciky_Sales>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Luciky_Sales>
+         <Luciky_Checkout>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Luciky_Checkout>
+    </modules>
+</config> 

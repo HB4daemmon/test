@@ -1,0 +1,45 @@
+ul.products-grid{ list-style:none;}
+ul.tabs {
+	margin: 10px 0;
+	padding: 0;
+	list-style: none! important;
+	width: 100%;
+	overflow: hidden;
+}
+ul.tabs li {
+	float: left;
+	margin: 0;
+	cursor: pointer;
+	padding: 0px 21px ;
+	height: 25px;
+	line-height: 25px;
+	border-left: none;
+	font-weight: normal;
+	text-transform: capitalize;
+	list-style:none;
+	overflow: hidden;
+	position: relative;
+	border-right: 1px solid #ededed;
+}
+ul.tabs li:first-child { padding-left: 0}
+ul.tabs li:last-child { border-right: none;}
+ul.tabs li:hover {
+}	
+ul.tabs li.active{
+}
+.tab_container {
+	margin-top: 20px;
+	clear: both;
+	width: 100%;
+	background: #FFFFFF;
+}
+.tab_content {
+	padding: 20px;
+	font-size: 1.2em;
+	display: none;
+}
+#container {
+	width: 100%;
+	margin: 0 auto;	
+}
+.products-grid  li {border:none}

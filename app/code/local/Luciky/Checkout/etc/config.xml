@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<config>  
+    <modules>  
+       <Luciky_Checkout>  
+           <version>0.1.0</version>  
+        </Luciky_Checkout>  
+    </modules>  
+   <global> 
+        <blocks>  
+            <checkout>  
+               <rewrite>  
+                        <cart>Luciky_Checkout_Block_Cart</cart>  
+                        <cart_sidebar>Luciky_Checkout_Block_Cart_Sidebar</cart_sidebar>
+                        <onepage>Luciky_Checkout_Block_Onepage</onepage>
+                        <cart_item_renderer>Luciky_Checkout_Block_Cart_Item_Renderer</cart_item_renderer>
+                        <onepage_shippingtime>Luciky_Checkout_Block_Onepage_Shippingtime</onepage_shippingtime>
+                        <observer>Luciky_Checkout_Model_Observer</observer>
+               </rewrite>  
+            </checkout> 
+
+        </blocks> 
+        <models>
+            <checkout>
+              <rewrite>
+                        <cart>Luciky_Checkout_Model_Cart</cart>
+              </rewrite>
+            </checkout>
+        </models> 
+        <events>
+            <before_saving_orders>
+                <observers>
+                    <saving_storegroupid_to_item>
+                        <class>checkout/observer</class>
+                        <method>BeforeSavingOrders</method>
+                    </saving_storegroupid_to_item>
+                </observers>
+            </before_saving_orders>
+        </events>
+    </global> 
+    <frontend>
+
+    </frontend>
+</config>  

@@ -1,0 +1,57 @@
+<script type="text/javascript">
+    $jq(document).ready(function(){
+         var enable_module = $jq('#enable_module').val();
+         if(enable_module==0) return false;
+    })
+
+</script>
+<?php $_cartQty = $this->getSummaryCount() ?>
+<div id ="mini_cart_block">
+    <div class="block-cart mini_cart_ajax">
+            <div class="block-cart">
+                <?php $_cartQty = $this->getSummaryCount() ?>
+                <div class="top-cart-title">
+                    <a href="<?php echo $this->getUrl('checkout/cart')?>" ><span><span id="topCartCount" value="<?php if($_cartQty>0) {echo $_cartQty;} else { echo 0; } ?>"><?php echo $this->__('shopping cart') ?> <?php echo $this->__('(') ?><?php if($_cartQty>0) {echo $_cartQty;} else { echo 0; } ?><?php echo $this->__(')') ?> </span></span></a>
+                </div>
+                <div class="top-cart-content">
+                    <?php $items = Mage::getModel('checkout/cart')->getQuote()->getAllItems() ?>
+                    <?php $_items = $this->getRecentItems() ?>
+                    <?php if (count($items)): ?>
+                        <ol id="cart-sidebar" class="mini-products-list" style="max-height:300px; overflow: auto;">
+                            <?php
+                                $itemss=$this->getGroupItems($items);
+                                foreach ($itemss as $keys => $itemgroup) {
+                            ?>  
+                              <li class="store_info"> 
+                              <span class="store_name"> <?php echo $keys;?></span> 
+                              <span class="store_total"><?php echo $this->helper('checkout')->formatPrice($itemgroup['total_price']);unset($itemgroup['total_price']); ?></span>
+                        
+                              </li>
+
+                            <?php   foreach ($itemgroup as  $_item) {
+                                    echo $this->getItemHtml($_item);
+                                }
+                            }
+                            ?>
+
+                            <?php   //foreach ($items as $_item): ?>
+                                <?php // echo $this->getItemHtml($_item) ?>
+                            <?php  //endforeach; ?>
+                        </ol>
+                        <script type="text/javascript">decorateList('cart-sidebar', 'none-recursive')</script>
+                    <?php else: ?>
+                        <p class="empty"><?php echo $this->__('You have no items in your shopping cart.') ?></p>
+                    <?php endif ?>
+                    <div class="top-subtotal"><?php echo $this->__('Subtotal') ?>: <?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()) ?></div>
+                    <?php if ($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+                        <div class="actions">
+                            <?php echo $this->getChildHtml('extra_actions') ?>
+                            <button type="button" title="<?php echo $this->__('Checkout') ?>" class="button" onclick="setLocation('<?php echo $this->getUrl('checkout/cart')?>')"><span><span><?php echo $this->__('Checkout') ?></span></span></button>
+                        </div>
+                    <?php endif ?>
+                    <a class='pin' title="Pin Cart"></a>
+                </div>
+            </div>
+
+    </div>
+</div>

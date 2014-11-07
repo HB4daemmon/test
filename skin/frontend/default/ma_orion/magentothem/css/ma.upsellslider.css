@@ -1,0 +1,10 @@
+.ma-upsellslider-container { margin-bottom: 20px;}
+
+.ma-upsellslider-container .bx-wrapper { position: relative; }
+.ma-upsellslider-container .bx-wrapper .bx-controls a { top: -72px;}
+
+.ma-upsellslider-item { float: left; text-align: left;}
+
+.ma-upsellslider-item a.product-image { display: block; padding-bottom: 10px;}
+
+.ma-upsellslider-item .item-container .item-inner { padding: 10px;}

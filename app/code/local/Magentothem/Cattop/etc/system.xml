@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+		<magentothem translate="label" module="cattop">
+			<label>Magentothem</label>
+			<sort_order>205</sort_order>
+		</magentothem>
+	</tabs>
+	<sections>
+		<cattop translate="label" module="cattop">
+			<label>Cateogries Top</label>
+			<tab>magentothem</tab>
+			<sort_order>142</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<top_config translate="label">
+					<label>Cateogries Top Setting</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enabled translate="label comment">
+							<label>Enabled: </label>
+							<frontend_type>select</frontend_type>
+							<source_model>
+								adminhtml/system_config_source_yesno
+							</source_model>
+							<sort_order>0</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>							
+						</enabled>
+						<title translate="label">
+                            <label>Title: </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+ <!--                        <sort_name translate="label">
+                            <label>Sort Name Items: </label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>20</sort_order>
+                            <source_model>
+								cattop/system_config_sort
+							</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_name> -->
+                        <number_columns translate="label">
+                            <label>Number Column: </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </number_columns>  
+                        <width_thumbnail translate="label">
+                            <label>Width of Thumbnail: </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </width_thumbnail>						
+                        <height_thumbnail translate="label">
+                            <label>Height of Thumbnail: </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </height_thumbnail>
+<!--                         <background_color translate="label">
+                            <label>Background Color: </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Color code : #BDBDBD]]></comment>
+                        </background_color>  -->              
+					</fields>
+				</top_config>
+			</groups>
+		</cattop>
+	</sections>
+</config>
+
+

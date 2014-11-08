@@ -5,4 +5,47 @@
             <version>0.1.0</version>
         </kantwait_Tips>
     </modules>
+    <global>
+        <models>
+            <tips>
+                <class>kantwait_Tips_Model</class>
+            </tips>
+        </models>
+        <helpers>
+            <tips>
+                <class>kantwait_Tips_Helper</class>
+            </tips>
+        </helpers>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <tips_options>
+                                            <title>Tip Sections</title>
+                                        </tips_options>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+        <tips_options>
+            <tips_enable>
+                <ENABLED>1</ENABLED>
+            </tips_enable>
+            <tips_label>
+                <tips_options>1,2,5,10,20,50</tips_options>
+            </tips_label>
+        </tips_options>
+    </default>
 </config>

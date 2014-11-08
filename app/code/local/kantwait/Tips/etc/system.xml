@@ -1,0 +1,80 @@
+<config>
+    <tabs>
+        <tipsconfig translate="label" module="tips">
+            <label>Kantwait Config Options</label>
+            <sort_order>99999</sort_order>
+        </tipsconfig>
+    </tabs>
+    <sections>
+        <tips_options translate="label" module="tips">
+            <label>Tips Config</label>
+            <tab>tipsconfig</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <tips_label translate="label">
+                    <label>Define Tips Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <tips_options translate="label comment">
+                            <label>Enter Tips Options</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Please enter tips options and separate them with commas.]]>
+                            </comment>
+                        </tips_options>
+                    </fields>
+                </tips_label>
+                <tips_default translate="label">
+                    <label>Set The Default Tip</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <tips_default_column translate="label">
+                            <label>Set The Default Tip</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tips/TipDefault</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tips_default_column>
+                    </fields>
+                </tips_default>
+                <tips_enable translate="label">
+                    <label>Enable</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <ENABLED translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tips/TipYN</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ENABLED>
+                    </fields>
+                </tips_enable>
+            </groups>
+        </tips_options>
+    </sections>
+</config>

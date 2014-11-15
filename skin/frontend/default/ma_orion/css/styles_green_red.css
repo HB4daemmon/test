@@ -54,7 +54,8 @@ a:hover       { color: #ffa200; }
 :focus        { outline: none; }
 a:focus        { outline: none; }
 
-img { max-width: 100%; height: 70px;}
+img { max-width: 100%; height: auto;}
+div.header a.logo img{height:70px;}
 
 /* Headings */
 h1,h2,h3,

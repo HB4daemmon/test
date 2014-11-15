@@ -1064,7 +1064,7 @@ TipsMethod.prototype = {
 
         if (checkout.loadWaiting!=false) return;
         if (this.validate()) {
-            checkout.setLoadWaiting('Tips');
+            checkout.setLoadWaiting('tips');
             var request = new Ajax.Request(
                 this.saveUrl,
                 {

@@ -476,10 +476,10 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                 $this->getOnepage()->getQuote()->collectTotals();
                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 
-                $result['goto_section'] = 'shipping_time';
+                $result['goto_section'] = 'tips';
                 $result['update_section'] = array(
                     'name' => 'shipping-time',
-                    'html' => $this->_getTipsHtml()
+                    'html' => $this->_getShippingtimeHtml()
                 );
             }
             $this->getOnepage()->getQuote()->collectTotals()->save();

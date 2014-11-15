@@ -479,7 +479,6 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                     'html' => $this->_getShippingtimeHtml()
                 );
             }
-
             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
         }
 

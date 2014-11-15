@@ -56,7 +56,7 @@ class Luciky_Checkout_Block_Onepage extends Mage_Checkout_Block_Onepage_Abstract
     
    protected function _getStepCodes()
     {
-        return array('login', 'billing', 'shipping', 'shipping_method','shipping_time', 'payment', 'review');
+        return array('login', 'billing', 'shipping', 'shipping_method','tips','shipping_time', 'payment', 'review');
     }
 
     /**

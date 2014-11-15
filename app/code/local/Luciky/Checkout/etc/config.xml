@@ -14,7 +14,9 @@
                         <onepage>Luciky_Checkout_Block_Onepage</onepage>
                         <cart_item_renderer>Luciky_Checkout_Block_Cart_Item_Renderer</cart_item_renderer>
                         <onepage_shippingtime>Luciky_Checkout_Block_Onepage_Shippingtime</onepage_shippingtime>
+                        <onepage_tips>Luciky_Checkout_Block_Onepage_Tips</onepage_tips>
                         <observer>Luciky_Checkout_Model_Observer</observer>
+                        <type_onepage>Luciky_Checkout_Model_Checkout_Type_Onepage</type_onepage>
                </rewrite>  
             </checkout> 
 

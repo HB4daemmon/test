@@ -161,7 +161,22 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         Mage::getSingleton('core/translate_inline')->processResponseBody($output);
         return $output;
     }
-    
+
+    public  function _getTipsHtml()
+    {
+        $layout = $this->getLayout();
+        $update = $layout->getUpdate();
+        $update->load('checkout_onepage_tips');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        $output = $layout->getOutput();
+        Mage::getSingleton('core/translate_inline')->processResponseBody($output);
+        return $output;
+
+
+
+    }
+
     public  function _getShippingtimeHtml()
     {
     	$layout = $this->getLayout();
@@ -464,7 +479,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                 $result['goto_section'] = 'shipping_time';
                 $result['update_section'] = array(
                     'name' => 'shipping-time',
-                    'html' => $this->_getShippingtimeHtml()
+                    'html' => $this->_getTipsHtml()
                 );
             }
             $this->getOnepage()->getQuote()->collectTotals()->save();
@@ -495,6 +510,31 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
     
         
     
+    }
+
+    public function saveTipsAction(){
+
+        if ($this->_expireAjax()) {
+            return;
+        }
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost('tips', array());
+
+            $result = $this->getOnepage()->saveTips($data);
+
+            if (!isset($result['error'])) {
+                $result['goto_section'] = 'shipping_time';
+                $result['update_section'] = array(
+                    'name' => 'shipping-time',
+                    'html' => $this->_getShippingtimeHtml()
+                );
+            }
+
+            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+        }
+
+
+
     }
 
     /**

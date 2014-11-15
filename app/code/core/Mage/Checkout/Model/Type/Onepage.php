@@ -593,7 +593,7 @@ class Mage_Checkout_Model_Type_Onepage
 
         $this->getCheckout()
             ->setStepData('shipping_method', 'complete', true)
-            ->setStepData('payment', 'allow', true);
+            ->setStepData('tips', 'allow', true);
 
         return array();
     }
@@ -627,6 +627,23 @@ class Mage_Checkout_Model_Type_Onepage
     	
     	
     	return  array();
+    }
+
+    public function saveTips($data)
+    {
+        if (empty($data)) {
+            return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
+        }
+        $this->getQuote()->setTipsLike($data['like']);
+        $this->getQuote()->collectTotals();
+        $this->getQuote()->save();
+
+        $this->getCheckout()
+            ->setStepData('tips', 'allow', true)
+            ->setStepData('tips', 'complete', true)
+            ->setStepData('shipping_time', 'allow', true);
+
+        return array();
     }
 
     /**

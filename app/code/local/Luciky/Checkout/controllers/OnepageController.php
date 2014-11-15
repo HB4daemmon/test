@@ -444,17 +444,49 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                 $this->getOnepage()->getQuote()->collectTotals();
                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 
-                $result['goto_section'] = 'shipping_time';
+                $result['goto_section'] = 'tips';
                 $result['update_section'] = array(
-                    'name' => 'shipping-time',
-                    'html' => $this->_getPaymentMethodsHtml()
+                    'name' => 'tips',
+                    'html' => $this->_getTipsHtml()
+                );
+            }
+            if (!isset($result['error'])) {
+                $result['goto_section'] = 'tips';
+                $result['update_section'] = array(
+                    'name' => 'tips',
+                    'html' => $this->_getTipsHtml()
                 );
             }
             $this->getOnepage()->getQuote()->collectTotals()->save();
             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
         }
     }
-    
+
+    public function saveTipsAction(){
+
+        if ($this->_expireAjax()) {
+            return;
+        }
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost('tips', array());
+
+             $result = $this->getOnepage()->saveTips($data);
+
+            if (!isset($result['error'])) {
+                $result['goto_section'] = 'shipping_time';
+                $result['update_section'] = array(
+                    'name' => 'shipping-time',
+                    'html' => $this->_getShippingtimeHtml()
+                );
+            }
+
+            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+        }
+
+
+
+    }
+
     public function saveShippingtimeAction(){
     
      if ($this->_expireAjax()) {

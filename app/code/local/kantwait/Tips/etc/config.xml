@@ -6,16 +6,106 @@
         </kantwait_Tips>
     </modules>
     <global>
+        <events>
+            <sales_quote_save_before>
+                <observers>
+                    <save_before>
+                        <type>singleton</type>
+                        <class>kantwait_Tips_Model_Observer</class>
+                        <method>saveQuoteBefore</method>
+                    </save_before>
+                </observers>
+            </sales_quote_save_before>
+            <sales_quote_save_after>
+                <observers>
+                    <save_after>
+                        <type>singleton</type>
+                        <class>kantwait_Tips_Model_Observer</class>
+                        <method>saveQuoteAfter</method>
+                    </save_after>
+                </observers>
+            </sales_quote_save_after>
+            <sales_quote_load_after>
+                <observers>
+                    <load_after>
+                        <type>singleton</type>
+                        <class>kantwait_Tips_Model_Observer</class>
+                        <method>loadQuoteAfter</method>
+                    </load_after>
+                </observers>
+            </sales_quote_load_after>
+            <sales_model_service_quote_submit_after>
+                <observers>
+                    <sales_model_service_quote_submit_after>
+                        <type>singleton</type>
+                        <class>kantwait_Tips_Model_Observer</class>
+                        <method>saveOrderAfter</method>
+                    </sales_model_service_quote_submit_after>
+                </observers>
+            </sales_model_service_quote_submit_after>
+            <sales_order_load_after>
+                <observers>
+                    <sales_order_load_after>
+                        <type>singleton</type>
+                        <class>kantwait_Tips_Model_Observer</class>
+                        <method>loadOrderAfter</method>
+                    </sales_order_load_after>
+                </observers>
+            </sales_order_load_after>
+        </events>
         <models>
+            <sales>
+                <rewrite>
+                    <order>kantwait_Tips_Model_Sales_Order</order>
+                </rewrite>
+            </sales>
             <tips>
                 <class>kantwait_Tips_Model</class>
+                <resourceModel>tips_mysql4</resourceModel>
             </tips>
+            <tips_mysql4>
+                <class>kantwait_Tips_Model_Mysql4</class>
+                <entities>
+                    <custom_quote>
+                        <table>sales_quote_custom</table>
+                    </custom_quote>
+                    <custom_order>
+                        <table>sales_order_custom</table>
+                    </custom_order>
+                </entities>
+            </tips_mysql4>
         </models>
         <helpers>
             <tips>
                 <class>kantwait_Tips_Helper</class>
             </tips>
         </helpers>
+        <resources>
+            <tips_setup>
+                <setup>
+                    <module>kantwait_Tips</module>
+                    <class>kantwait_Tips_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tips_setup>
+            <tips_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </tips_write>
+            <tips_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </tips_read>
+        </resources>
+        <blocks>
+            <tips>
+                <class>kantwait_Tips_Block</class>
+            </tips>
+        </blocks>
     </global>
     <adminhtml>
         <acl>

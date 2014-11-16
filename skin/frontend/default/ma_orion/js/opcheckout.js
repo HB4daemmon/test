@@ -659,6 +659,7 @@ ShippingMethod.prototype = {
         if (transport && transport.responseText){
             try{
                 response = eval('(' + transport.responseText + ')');
+                console.log(response);
             }
             catch (e) {
                 response = {};
@@ -1085,7 +1086,9 @@ TipsMethod.prototype = {
     nextStep: function(transport){
         if (transport && transport.responseText){
             try{
+                console.log(transport.responseText);
                 response = eval('(' + transport.responseText + ')');
+                console.log(response);
             }
             catch (e) {
                 response = {};

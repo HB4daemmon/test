@@ -143,6 +143,10 @@ class Mage_Checkout_Block_Cart_Totals extends Mage_Checkout_Block_Cart_Abstract
     }
 
     public function getTips(){
+        return '$'.sprintf("%.2f", $this->getTipsValue()); ;
+    }
+
+    public function getTipsValue(){
         $tips = $this->getQuote()->getOther();
         if(!isset($tips)||$tips==0){
             $tips_num = $this->getQuote()->getSelect();
@@ -154,6 +158,7 @@ class Mage_Checkout_Block_Cart_Totals extends Mage_Checkout_Block_Cart_Abstract
                 $tips = $config[$tips_num];
             }
         }
-        return '$'.sprintf("%.2f", $tips); ;
+        return $tips;
     }
+
 }

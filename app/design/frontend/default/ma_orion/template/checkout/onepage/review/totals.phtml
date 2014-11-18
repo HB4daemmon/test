@@ -35,10 +35,10 @@
     <?php echo $this->renderTotals(null, $_colspan); ?>
     <tr>
         <td class="a-right" colspan="<?php echo $_colspan; ?>">
-            <small><?php echo $this->helper('sales')->__('Tips') ?></small>
+            <small><?php echo $this->helper('sales')->__('Tips') ;?></small>
         </td>
         <td class="a-right">
-            <small><?php echo $this->getTips() ?></small>
+            <small><?php echo $this->getTips();?></small>
         </td>
     </tr>
     <?php echo $this->renderTotals('footer', $_colspan); ?>

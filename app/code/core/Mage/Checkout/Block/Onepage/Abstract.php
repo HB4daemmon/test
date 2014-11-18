@@ -179,6 +179,29 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         return $select->getHtml();
     }
 
+    public function getTipsOption(){
+        $result = array();
+        $configstr = Mage::getStoreConfig('tips_options/tips_label');
+        $config = explode(',',trim($configstr['tips_options']));
+        $length = count($config);
+        for($i=0;$i<$length;$i++){
+            $option = array('value'=>$i, 'label'=>Mage::helper('tips')->__($config[$i]));
+            array_push($result,$option);
+        }
+        return $result;
+    }
+
+    public function getTipsHtmlSelect($type)
+    {
+        $select = $this->getLayout()->createBlock('core/html_select')
+            ->setName($type.'[select]')
+            ->setId($type.':select')
+            ->setTitle(Mage::helper('tips')->__('Tips'))
+            ->setValue(0)
+            ->setOptions($this->getTipsOption());
+        return $select->getHtml();
+    }
+
     public function getCountryOptions()
     {
         $options    = false;

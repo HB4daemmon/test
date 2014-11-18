@@ -8,14 +8,14 @@
                     <div class="field">
                         <label for="tips:select" class="required"><em>*</em><?php echo $this->__('Tips') ?></label>
                         <div class="input-box">
-                            <input type="text" name="tips[select]" value="<?php echo $this->htmlEscape($this->getQuote()->getSelect()) ?>" title="<?php echo $this->__('') ?>" class="input-text required-entry" id="tips:select" />
+                            <?php echo $this->getTipsHtmlSelect('tips') ?>
                         </div>
                     </div>
                 </li>
                 <li class="wide">
-                    <label for="tips:like" class=""><em>*</em><?php echo $this->__('Please enter other tips?') ?></label>
+                    <label for="tips:other" class=""><?php echo $this->__('Please enter other tips?') ?></label>
                     <div class="input-box">
-                        <input type='text' name='tips[like]'  class=" input-text" id="tips:like" value=''/>
+                        <input type='text' name='tips[other]'  class=" input-text" id="tips:other" value='<?php echo $this->getQuote()->getOther()?>'/>
                     </div>
                 </li>
             </ul>

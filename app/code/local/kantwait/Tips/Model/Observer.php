@@ -9,6 +9,10 @@ class kantwait_Tips_Model_Observer
 			$var = $post['tips']['select'];
 			$quote->setSelect($var);
 		}
+        if(isset($post['tips']['other'])){
+            $var = $post['tips']['other'];
+            $quote->setOther($var);
+        }
 	}
 	
 	public function saveQuoteAfter($evt)
@@ -26,6 +30,17 @@ class kantwait_Tips_Model_Observer
 				$model->save();
 			}
 		}
+        if($quote->getOther()){
+            $var = $quote->getOther();
+            if(!empty($var)){
+                $model = Mage::getModel('tips/custom_quote');
+                $model->deteleByQuote($quote->getId(),'other');
+                $model->setQuoteId($quote->getId());
+                $model->setKey('other');
+                $model->setValue($var);
+                $model->save();
+            }
+        }
 	}
 	
 	public function loadQuoteAfter($evt)
@@ -55,6 +70,18 @@ class kantwait_Tips_Model_Observer
 				$model->save();
 			}
 		}
+        if($quote->getOther()){
+            $var = $quote->getOther();
+            if(!empty($var)){
+                $model = Mage::getModel('tips/custom_order');
+                $model->deleteByOrder($order->getId(),'other');
+                $model->setOrderId($order->getId());
+                $model->setKey('other');
+                $model->setValue($var);
+                $order->setSelect($var);
+                $model->save();
+            }
+        }
 	}
 	
 	public function loadOrderAfter($evt)

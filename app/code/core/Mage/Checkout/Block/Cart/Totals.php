@@ -141,4 +141,19 @@ class Mage_Checkout_Block_Cart_Totals extends Mage_Checkout_Block_Cart_Abstract
         }
         return $this->_quote;
     }
+
+    public function getTips(){
+        $tips = $this->getQuote()->getOther();
+        if(!isset($tips)||$tips==0){
+            $tips_num = $this->getQuote()->getSelect();
+            if(!isset($tips_num)){
+                $tips = 0;
+            }else{
+                $configstr = Mage::getStoreConfig('tips_options/tips_label');
+                $config = explode(',',trim($configstr['tips_options']));
+                $tips = $config[$tips_num];
+            }
+        }
+        return '$'.sprintf("%.2f", $tips); ;
+    }
 }

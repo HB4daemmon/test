@@ -671,6 +671,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                 $this->getOnepage()->getCheckout()->setUpdateSection(null);
             }
         } catch (Exception $e) {
+            Mage::log($e);
             Mage::logException($e);
             Mage::helper('checkout')->sendPaymentFailedEmail($this->getOnepage()->getQuote(), $e->getMessage());
             $result['success']  = false;

@@ -2877,3 +2877,7 @@ ul.tabs li .tab8:hover, ul.tabs li.active .tab8 { background-position: left -54p
     .ma-brand-slider-contain .bx-wrapper .bx-viewport { height: 123px !important;}
     
 }
+
+#checkout-progress-wrapper{
+    margin-top:200px;
+}

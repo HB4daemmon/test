@@ -315,18 +315,20 @@ class Luciky_Checkout_Block_Cart_Sidebar extends Mage_Checkout_Block_Cart_Abstra
     */
 
     public function getStoreGroup($item){
-    return Mage::getModel('core/store')->load($item->getStoreId())->getGroup()->getName();
+        //Mage::log('Store_id'.$item->getStoreId());
+        return Mage::getModel('core/store')->load($item->getStoreId())->getGroup()->getName();
     }
 
     public function getGroupItems($items)
     {
         $res_items=array();
+
         foreach ($items as $key => $item) {
             $keys=$this->getStoreGroup($item);
             $res_items[$keys][]=$item;
            $res_items[$keys]['total_price']=$res_items[$keys]['total_price'] + $item->getRowTotal();
+           Mage::log('getGroupItems '.$keys);
         }
-
         return $res_items;
 
     }

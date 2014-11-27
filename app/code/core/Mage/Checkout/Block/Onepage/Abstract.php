@@ -212,6 +212,128 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         return $select->getHtml();
     }
 
+    public function getShippingtimeConfig($store,$method){
+        $configstr = Mage::getStoreConfig("shippingtime_options/shippingtime_".$store."_label");
+        $config_workday_str = $configstr["shippingtime_".$store."_workday_options"];
+        $config_workday = explode(',',trim($config_workday_str));
+        $config_weekend_str = $configstr["shippingtime_".$store."_weekend_options"];
+        $config_weekend = explode(',',trim($config_weekend_str));
+        if($method == 'workday'){
+            return $config_workday;
+        }else{
+            return $config_weekend;
+        }
+    }
+
+    public function getShippingtimeOption($store,$isWorkDay){
+        $result = array();
+
+        $config_workday = $this->getShippingtimeConfig($store,'workday');
+        $config_weekend = $this->getShippingtimeConfig($store,'weekend');
+        if($isWorkDay){
+            foreach($config_workday as $w){
+                $option = array('value'=>$w, 'label'=>Mage::helper('shippingtime')->__($w.":00 - ".($w+1).":00"));
+                array_push($result,$option);
+            }
+        }else{
+            foreach($config_weekend as $w){
+                $option = array('value'=>$w, 'label'=>Mage::helper('shippingtime')->__($w.":00 - ".($w+1).":00"));
+                array_push($result,$option);
+            }
+        }
+        return $result;
+    }
+
+    public function getShippingtimeHtmlSelect($store,$isWorkDay,$value){
+        $select = $this->getLayout()->createBlock('core/html_select')
+            ->setName('shippingtime_'.$store.'[select]')
+            ->setId('shippingtime_'.$store.':select')
+            ->setTitle(Mage::helper('shippingtime')->__('Shipping Time'))
+            ->setValue($value)
+            ->setOptions($this->getShippingtimeOption($store,$isWorkDay));
+        return $select->getHtml();
+    }
+
+    public function getShippingtimeDate($store){
+        $current_date = strtotime("+3 hours");
+        $numOfWeek = idate("w",$current_date);
+        $hour = idate("H",$current_date);
+        $config_workday = $this->getShippingtimeConfig($store,'workday');
+        $config_weekend = $this->getShippingtimeConfig($store,'weekend');
+        $result = array();
+        if($numOfWeek == 0 || $numOfWeek == 6){
+            if($hour<=$config_weekend[0]||array_search($hour,$config_weekend)){
+                //This day
+                for($i=0;$i<7;$i++){
+                    if($i == 0){
+                        $_date = strtotime("+3 hours");
+                    }elseif($i==1){
+                        $_date = strtotime("+3 hours +1 day");
+                    }else{
+                        $_date =  strtotime("+3 hours +".$i." days");
+                    }
+                    $_numOfWeek = idate("w",$_date);
+                    $_dateTemp = date('Y-m-d',$_date);
+                    $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
+                    array_push($result,$option);
+                }
+
+            }else{
+                //The next day
+                for($i=1;$i<8;$i++){
+                    if($i==1){
+                        $_date = strtotime("+3 hours +1 day");
+                    }else{
+                        $_date =  strtotime("+3 hours +".$i." days");
+                    }
+                    $_dateTemp = date('Y-m-d',$_date);
+                    $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
+                    array_push($result,$option);
+                }
+            }
+        }else{
+            if($hour<=$config_workday[0]||array_search($hour,$config_workday)){
+                //This day
+                for($i=0;$i<7;$i++){
+                    if($i == 0){
+                        $_date = strtotime("+3 hours");
+                    }elseif($i==1){
+                        $_date = strtotime("+3 hours +1 day");
+                    }else{
+                        $_date = strtotime("+3 hours +".$i." days");
+                    }
+                    $_numOfWeek = idate("w",$_date);
+                    $_dateTemp = date('Y-m-d',$_date);
+                    $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
+                    array_push($result,$option);
+                }
+
+            }else{
+                //The next day
+                for($i=1;$i<8;$i++){
+                    if($i==1){
+                        $_date = strtotime("+3 hours +1 day");
+                    }else{
+                        $_date =  strtotime("+3 hours +".$i." days");
+                    }
+                    $_dateTemp = date('Y-m-d',$_date);
+                    $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
+                    array_push($result,$option);
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function getShippingtimeHtmlDate($store){
+        $select = $this->getLayout()->createBlock('core/html_select')
+            ->setName('shippingtime_'.$store.'[date]')
+            ->setId('shippingtime_'.$store.':date')
+            ->setTitle(Mage::helper('shippingtime')->__('Shipping Date'))
+            ->setOptions($this->getShippingtimeDate($store));
+        return $select->getHtml();
+    }
+
     public function getCountryOptions()
     {
         $options    = false;

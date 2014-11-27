@@ -18,35 +18,25 @@
       <?php $store_groups = $this->getStoregroups();
      foreach ($store_groups as $key => $store_group){
      	$store_groupid=$store_group->getId();
+        $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
+
       ?>
       <li>
       <span><?php echo $store_group->getStoregroupName()?>:</span>
-      <span><?php echo $this->__('From')?></span>
-       <input id="shippingtime_start_<?php echo $store_groupid;?>" type="text" style="width:160px;" class=" input-text" value="<?php $store_group->getDeliverStarttime?>" name="shippingtime[<?php echo $store_groupid?>][deliver_starttime]" />
-       <img src="<?php echo  $this->getSkinUrl('images/calendar.gif');?>" id="shippingtime_start<?php echo $store_groupid?>_button" class="v-middle"  />
-        <script type="text/javascript">
-     Calendar.setup({
-    inputField: "shippingtime_start_<?php echo $store_groupid; ?>",
-    ifFormat: "%Y-%m-%e %H:%M:%S",
-    showsTime: true,
-    button: "shippingtime_start<?php echo $store_groupid?>_button",
-    align: "Bl",
-    singleClick : true ,
-    });
-    </script>
-       <span><?php echo $this->__('To')?></span>
-       <input type="text" id="shippingtime_end_<?php echo $store_groupid?>" value="<?php $store_group->getDeliverEndtime?>" style="width:160px;" class=" input-text" name="shippingtime[<?php echo $store_groupid?>][deliver_endtime]" />
-	<img src="<?php echo  $this->getSkinUrl('images/calendar.gif');?>" id="shippingtime_end<?php echo $store_groupid?>_button" class="v-middle"  />
-      <script type="text/javascript">
-     Calendar.setup({
-    inputField: "shippingtime_end_<?php echo $store_groupid; ?>",
-    ifFormat: "%Y-%m-%e %H:%M:%S",
-    showsTime: true,
-    button: "shippingtime_end<?php echo $store_groupid?>_button",
-    align: "Bl",
-    singleClick : true ,
-    });
-    </script>
+      <span><?php echo date('Y-m-d H:i:s')?></span>
+      <div class="field">
+          <label for="shippingtime_<?php echo $store_name?>:select" ><?php echo $this->__('Date') ?></label>
+          <div class="input-box">
+              <?php echo $this->getShippingtimeHtmlDate($store_name) ?>
+          </div>
+      </div>
+      <div class="field">
+          <label for="shippingtime_<?php echo $store_name?>:select" ><?php echo $this->__('Time Range') ?></label>
+          <div class="input-box">
+              <?php echo $this->getShippingtimeHtmlSelect($store_name,true,$store_group->getDeliverStarttime()) ?>
+          </div>
+      </div>
+
 
 </li>
 

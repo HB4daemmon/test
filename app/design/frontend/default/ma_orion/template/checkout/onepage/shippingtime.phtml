@@ -9,6 +9,21 @@
     <script type="text/javascript">
     //<![CDATA[
         var shippingTime = new Shippingtime('co-shippingtime-form', "<?php echo $this->getUrl('checkout/onepage/saveShippingtime') ?>");
+        function changeTimeRange(store)
+        {
+            var timeRange = document.getElementById("shippingtime_"+store+":time");
+            timeRange.length = 0;
+            var shippingDate = document.getElementById("shippingtime_"+store+":date").value;
+            var allRange = <?php echo $this->getShippingtimeOption();?>;
+            //console.log(range);
+            var range = allRange[store][shippingDate];
+            for (var r = 0; r < range.length; r++){
+                var options = document.createElement("option");
+                options.innerHTML = range[r]['label'];
+                options.value = range[r]['value'];
+                timeRange.appendChild(options);
+            }
+        }
     //]]>
     </script>
 
@@ -21,22 +36,20 @@
         $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
 
       ?>
-      <li>
+      <li style="width: 400px;display: inline-block;">
       <span><?php echo $store_group->getStoregroupName()?>:</span>
-      <span><?php echo date('Y-m-d H:i:s')?></span>
       <div class="field">
-          <label for="shippingtime_<?php echo $store_name?>:select" ><?php echo $this->__('Date') ?></label>
-          <div class="input-box">
+          <label for="shippingtime_<?php echo $store_name?>:date" ><?php echo $this->__('Date') ?></label>
+          <div class="input-box" >
               <?php echo $this->getShippingtimeHtmlDate($store_name) ?>
           </div>
       </div>
       <div class="field">
-          <label for="shippingtime_<?php echo $store_name?>:select" ><?php echo $this->__('Time Range') ?></label>
-          <div class="input-box">
-              <?php echo $this->getShippingtimeHtmlSelect($store_name,true,$store_group->getDeliverStarttime()) ?>
+          <label for="shippingtime_<?php echo $store_name?>:time" ><?php echo $this->__('Time Range') ?></label>
+          <div class="input-box" >
+              <?php echo $this->getShippingtimeHtmlTime($store_name) ?>
           </div>
       </div>
-
 
 </li>
 

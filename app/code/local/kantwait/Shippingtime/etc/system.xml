@@ -69,7 +69,7 @@
                                 <![CDATA[Press and hold down the CTRL key and left-click the range to multi select the time range.]]>
                             </comment>
                         </shippingtime_walmart_workday_options>
-                        <shippingtime__walmart_weekend_options translate="label comment">
+                        <shippingtime_walmart_weekend_options translate="label comment">
                             <label>Define Weekend Range</label>
                             <frontend_type>Multiselect</frontend_type>
                             <source_model>shippingtime/ShippingtimeRange</source_model>
@@ -80,7 +80,7 @@
                             <comment>
                                 <![CDATA[Press and hold down the CTRL key and left-click the range to multi select the time range.]]>
                             </comment>
-                        </shippingtime__walmart_weekend_options>
+                        </shippingtime_walmart_weekend_options>
                     </fields>
                 </shippingtime_walmart_label>
                 <shippingtime_enable_label translate="label">

@@ -103,7 +103,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 		
 		$quote_storegroups=Mage::getModel('sales/quote_storegroup')->getCollection();
 		$quote_storegroups->addFieldtoFilter('quote_id',$_quote->getId());
-		$pkeys=array('storegroup_id','storegroup_name','deliver_starttime','deliver_endtime');
+		$pkeys=array('storegroup_id','storegroup_name','date','range_time');
 		
 		
 		$_count=count($quote_storegroups);

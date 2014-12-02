@@ -494,8 +494,8 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
     }
     if ($this->getRequest()->isPost()) {
         //Mage::log($this->getRequest()->getpost());
-        $data = $this->getRequest()->getPost();
-		//Mage::log($data);
+        $data = $this->getRequest()->getPost('shippingtime',array());
+		Mage::log($data);
         $result = $this->getOnepage()->saveShippingtime($data);
   	
         if (!isset($result['error'])) {

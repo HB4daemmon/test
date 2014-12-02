@@ -604,23 +604,24 @@ class Mage_Checkout_Model_Type_Onepage
      */
     
     public function saveShippingtime($data){
-       // Mage::log('date!!!!!!');
-       // Mage::log($data);
-
     	if (empty($data)) {
     		return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid data.'));
     	}
     	
     	$store_group=Mage::getModel('sales/quote_storegroup');
     	foreach ($data as $key => $time){
-    		
+
      		$store_group_item = $store_group->load($key)
-     							->setData('deliver_starttime',$time['deliver_starttime'])
-     							->setData('deliver_endtime',$time['deliver_endtime']);
-    //	Mage::log(var_export($store_group_item,true));
-     		$store_group_item->save();
-    	
-    		
+     							->setData('date',$time['date'])
+     							->setData('time_range',$time['time']);
+            try {
+                $store_group->save();
+            } catch (Exception $e) {
+                Mage::log($e);
+                Mage::log('store_group cannot be inserted ');
+            }
+            Mage::log($store_group_item);
+            //Mage::log($store_group_item->save());
     	}
     	
     	$this->getCheckout()

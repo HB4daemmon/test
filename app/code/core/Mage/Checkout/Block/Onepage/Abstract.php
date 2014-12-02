@@ -261,9 +261,9 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         return $result;
     }
 
-    public function getShippingtimeHtmlTime($store){
+    public function getShippingtimeHtmlTime($store,$store_groupid){
         $select = $this->getLayout()->createBlock('core/html_select')
-            ->setName('shippingtime_'.$store.'[time]')
+            ->setName('shippingtime['.$store_groupid.'][time]')
             ->setId('shippingtime_'.$store.':time')
             ->setTitle(Mage::helper('shippingtime')->__('Shipping Time'))
             ->setOptions($this->getDefaultShippingtimeRange($store));
@@ -403,9 +403,9 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 
     }
 
-    public function getShippingtimeHtmlDate($store){
+    public function getShippingtimeHtmlDate($store,$store_groupid){
         $select = $this->getLayout()->createBlock('core/html_select')
-            ->setName('shippingtime_'.$store.'[date]')
+            ->setName('shippingtime['.$store_groupid.'][date]')
             ->setId('shippingtime_'.$store.':date')
             ->setTitle(Mage::helper('shippingtime')->__('Shipping Date'))
             ->setOptions($this->getShippingtimeDate($store,''))

@@ -42,13 +42,13 @@
       <div class="field">
           <label for="shippingtime_<?php echo $store_name?>:date" ><?php echo $this->__('Date') ?></label>
           <div class="input-box" >
-              <?php echo $this->getShippingtimeHtmlDate($store_name) ?>
+              <?php echo $this->getShippingtimeHtmlDate($store_name,$store_groupid) ?>
           </div>
       </div>
       <div class="field">
           <label for="shippingtime_<?php echo $store_name?>:time" ><?php echo $this->__('Time Range') ?></label>
           <div class="input-box" >
-              <?php echo $this->getShippingtimeHtmlTime($store_name) ?>
+              <?php echo $this->getShippingtimeHtmlTime($store_name,$store_groupid) ?>
           </div>
       </div>
 

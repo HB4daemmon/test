@@ -487,7 +487,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
     }
 
     public function saveShippingtimeAction(){
-    
+
      if ($this->_expireAjax()) {
         return;
     }
@@ -495,7 +495,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         $data = $this->getRequest()->getPost('shippingtime', array());
  
       //  $result = $this->getOnepage()->saveExcellence2($data);
- 
+
         if (!isset($result['error'])) {
             $result['goto_section'] = 'payment';
             $result['update_section'] = array(

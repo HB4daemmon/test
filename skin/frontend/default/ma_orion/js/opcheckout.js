@@ -727,6 +727,7 @@ Shippingtime.prototype={
 	                    parameters: Form.serialize(this.form)
 	                }
 	            );
+                //console.log(request);
 	        }
 	    },
 	    resetLoadWaiting: function(transport){

@@ -9,6 +9,7 @@
     <script type="text/javascript">
     //<![CDATA[
         var shippingTime = new Shippingtime('co-shippingtime-form', "<?php echo $this->getUrl('checkout/onepage/saveShippingtime') ?>");
+        var shippingtimeForm = new VarienForm('co-shippingtime-form');
         function changeTimeRange(store)
         {
             var timeRange = document.getElementById("shippingtime_"+store+":time");

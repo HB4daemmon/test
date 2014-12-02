@@ -493,8 +493,9 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         return;
     }
     if ($this->getRequest()->isPost()) {
-        $data = $this->getRequest()->getPost('shippingtime', array());
-		Mage::log(var_export($data,true));
+        //Mage::log($this->getRequest()->getpost());
+        $data = $this->getRequest()->getPost();
+		//Mage::log($data);
         $result = $this->getOnepage()->saveShippingtime($data);
   	
         if (!isset($result['error'])) {
@@ -519,7 +520,6 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         }
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost('tips', array());
-
             $result = $this->getOnepage()->saveTips($data);
 
             if (!isset($result['error'])) {

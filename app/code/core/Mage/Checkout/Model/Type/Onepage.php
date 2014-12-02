@@ -604,7 +604,9 @@ class Mage_Checkout_Model_Type_Onepage
      */
     
     public function saveShippingtime($data){
-    
+       // Mage::log('date!!!!!!');
+       // Mage::log($data);
+
     	if (empty($data)) {
     		return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid data.'));
     	}

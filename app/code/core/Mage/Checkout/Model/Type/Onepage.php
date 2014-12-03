@@ -620,8 +620,6 @@ class Mage_Checkout_Model_Type_Onepage
                 Mage::log($e);
                 Mage::log('store_group cannot be inserted ');
             }
-            Mage::log($store_group_item);
-            //Mage::log($store_group_item->save());
     	}
     	
     	$this->getCheckout()

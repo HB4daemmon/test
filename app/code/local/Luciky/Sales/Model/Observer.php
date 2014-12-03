@@ -103,13 +103,12 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 		
 		$quote_storegroups=Mage::getModel('sales/quote_storegroup')->getCollection();
 		$quote_storegroups->addFieldtoFilter('quote_id',$_quote->getId());
-		$pkeys=array('storegroup_id','storegroup_name','date','range_time');
+		$pkeys=array('storegroup_id','storegroup_name','time_range','date');
 		
 		
 		$_count=count($quote_storegroups);
-	
 		
-		foreach ($quote_storegroups as $key => $quote_storegroup){//创建子订单
+		foreach ($quote_storegroups as  $quote_storegroup){//创建子订单
 			$_convert=Mage::getModel('sales/convert_quote');
 			$order_items=Mage::getModel('sales/order_item')->getCollection();
 			$order_items->addFieldtoFilter('order_id',$_order->getData('entity_id'));
@@ -118,7 +117,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			$new_order->setBillingAddress($_convert->addressToOrderAddress($_quote->getBillingAddress()));
 			$new_order->setShippingAddress($_convert->addressToOrderAddress($_quote->getShippingAddress()));
 			$new_order->setPayment($_convert->paymentToOrderPayment($_quote->getPayment()));
-			foreach ($keys as $key => $value){
+			foreach ($keys as  $value){
 				$new_order->setData($value,$_order->getData($value));
 			}
 			$reservedOrderId = Mage::getSingleton('eav/config')->getEntityType('order')->fetchNewIncrementId($_order->getStoreId());
@@ -130,11 +129,15 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			$new_orderid=$new_order->getData('entity_id');
 		
 			$order_storegroup=Mage::getModel('sales/order_storegroup');
-			foreach ($pkeys as $key => $value){
+			foreach ($pkeys as  $value){
 				$order_storegroup->setData($value,$quote_storegroup->getData($value));
-				$order_storegroup->setData('order_id',$new_orderid);
 			}
-			$order_storegroup->save();
+            $order_storegroup->setData('order_id',$new_orderid);
+			try{
+                $order_storegroup->save();
+            }catch (Exception $e){
+                Mage::log($e);
+            }
 			$new_order->setData('sales_flat_storegroup_id',$order_storegroup->getId());
 			$new_order->setData('storegroup_id',$order_storegroup->getStoregroupId());
 			$new_order->save();

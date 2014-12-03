@@ -54,6 +54,7 @@ class Luciky_Sales_Model_Resource_Order_Storegroup_Collection extends Mage_Core_
      */
     protected function _construct()
     {
+        parent::_construct();
         $this->_init('sales/order_storegroup');
     }
 

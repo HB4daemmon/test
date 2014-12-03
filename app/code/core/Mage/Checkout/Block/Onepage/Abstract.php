@@ -189,7 +189,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         $config = explode(',',trim($configstr['tips_options']));
         $length = count($config);
         for($i=0;$i<$length;$i++){
-            $option = array('value'=>$i, 'label'=>Mage::helper('tips')->__($config[$i]));
+            $option = array('value'=>$config[$i], 'label'=>Mage::helper('tips')->__($config[$i]));
             array_push($result,$option);
         }
         return $result;

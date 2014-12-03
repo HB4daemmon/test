@@ -78,8 +78,8 @@ class kantwait_Tips_Model_Observer
 			$var = $quote->getSelect();
 			if(isset($var)){
 				$model = Mage::getModel('tips/custom_order');
-				$model->deleteByOrder($order->getId(),'select');
-				$model->setOrderId($order->getId());
+				$model->deleteByOrder($order->getId()+1,'select');
+				$model->setOrderId($order->getId()+1);
 				$model->setKey('select');
 				$model->setValue($var);
 				$order->setSelect($var);
@@ -88,7 +88,7 @@ class kantwait_Tips_Model_Observer
 		}else{
             $model = Mage::getModel('tips/custom_order');
             //$model->deteleByQuote($quote->getId(),'select');
-            $model->setOrderId($order->getId());
+            $model->setOrderId($order->getId()+1);
             $model->setKey('select');
             $model->setValue(0);
             $model->save();
@@ -99,8 +99,8 @@ class kantwait_Tips_Model_Observer
             $var = $quote->getOther();
             if(isset($var)){
                 $model = Mage::getModel('tips/custom_order');
-                $model->deleteByOrder($order->getId(),'other');
-                $model->setOrderId($order->getId());
+                $model->deleteByOrder($order->getId()+1,'other');
+                $model->setOrderId($order->getId()+1);
                 $model->setKey('other');
                 $model->setValue($var);
                 $order->setSelect($var);
@@ -109,7 +109,7 @@ class kantwait_Tips_Model_Observer
         }else{
             $model = Mage::getModel('tips/custom_order');
            // $model->deteleByQuote($quote->getId(),'other');
-            $model->setOrderId($order->getId());
+            $model->setOrderId($order->getId()+1);
             $model->setKey('other');
             $model->setValue('0');
             $model->save();

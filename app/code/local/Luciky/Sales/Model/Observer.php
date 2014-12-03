@@ -140,6 +140,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
             }
 			$new_order->setData('sales_flat_storegroup_id',$order_storegroup->getId());
 			$new_order->setData('storegroup_id',$order_storegroup->getStoregroupId());
+            //$new_order->setData('sales_order_custom_id',$order_storegroup->getId());
 			$new_order->save();
 			$store_group=Mage::getModel('core/store_group')->load($order_storegroup->getStoregroupId());
 			$storeids=$store_group->getStoreIds();

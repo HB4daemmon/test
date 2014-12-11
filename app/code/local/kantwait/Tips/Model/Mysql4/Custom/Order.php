@@ -1,5 +1,5 @@
 <?php
-class kantwait_Tips_Model_Mysql4_Custom_Order extends Mage_Core_Model_Mysql4_Abstract{
+class Kantwait_Tips_Model_Mysql4_Custom_Order extends Mage_Core_Model_Mysql4_Abstract{
 	public function _construct()
 	{
 		$this->_init('tips/custom_order', 'id');

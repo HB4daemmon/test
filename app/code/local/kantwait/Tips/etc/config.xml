@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <modules>
-        <kantwait_Tips>
+        <Kantwait_Tips>
             <version>0.1.0</version>
-        </kantwait_Tips>
+        </Kantwait_Tips>
     </modules>
     <global>
         <events>
@@ -11,7 +11,7 @@
                 <observers>
                     <save_before>
                         <type>singleton</type>
-                        <class>kantwait_Tips_Model_Observer</class>
+                        <class>Kantwait_Tips_Model_Observer</class>
                         <method>saveQuoteBefore</method>
                     </save_before>
                 </observers>
@@ -20,7 +20,7 @@
                 <observers>
                     <save_after>
                         <type>singleton</type>
-                        <class>kantwait_Tips_Model_Observer</class>
+                        <class>Kantwait_Tips_Model_Observer</class>
                         <method>saveQuoteAfter</method>
                     </save_after>
                 </observers>
@@ -29,7 +29,7 @@
                 <observers>
                     <load_after>
                         <type>singleton</type>
-                        <class>kantwait_Tips_Model_Observer</class>
+                        <class>Kantwait_Tips_Model_Observer</class>
                         <method>loadQuoteAfter</method>
                     </load_after>
                 </observers>
@@ -38,7 +38,7 @@
                 <observers>
                     <sales_model_service_quote_submit_after>
                         <type>singleton</type>
-                        <class>kantwait_Tips_Model_Observer</class>
+                        <class>Kantwait_Tips_Model_Observer</class>
                         <method>saveOrderAfter</method>
                     </sales_model_service_quote_submit_after>
                 </observers>
@@ -47,7 +47,7 @@
                 <observers>
                     <sales_order_load_after>
                         <type>singleton</type>
-                        <class>kantwait_Tips_Model_Observer</class>
+                        <class>Kantwait_Tips_Model_Observer</class>
                         <method>loadOrderAfter</method>
                     </sales_order_load_after>
                 </observers>
@@ -56,15 +56,15 @@
         <models>
             <sales>
                 <rewrite>
-                    <order>kantwait_Tips_Model_Sales_Order</order>
+                    <order>Kantwait_Tips_Model_Sales_Order</order>
                 </rewrite>
             </sales>
             <tips>
-                <class>kantwait_Tips_Model</class>
+                <class>Kantwait_Tips_Model</class>
                 <resourceModel>tips_mysql4</resourceModel>
             </tips>
             <tips_mysql4>
-                <class>kantwait_Tips_Model_Mysql4</class>
+                <class>Kantwait_Tips_Model_Mysql4</class>
                 <entities>
                     <custom_quote>
                         <table>sales_quote_custom</table>
@@ -77,14 +77,13 @@
         </models>
         <helpers>
             <tips>
-                <class>kantwait_Tips_Helper</class>
+                <class>Kantwait_Tips_Helper</class>
             </tips>
         </helpers>
         <resources>
             <tips_setup>
                 <setup>
-                    <module>kantwait_Tips</module>
-                    <class>kantwait_Tips_Model_Resource_Setup</class>
+                    <module>Kantwait_Tips</module>
                 </setup>
                 <connection>
                     <use>core_setup</use>
@@ -103,7 +102,7 @@
         </resources>
         <blocks>
             <tips>
-                <class>kantwait_Tips_Block</class>
+                <class>Kantwait_Tips_Block</class>
             </tips>
         </blocks>
     </global>

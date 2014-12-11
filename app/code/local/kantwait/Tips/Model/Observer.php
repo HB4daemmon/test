@@ -1,5 +1,5 @@
 <?php
-class kantwait_Tips_Model_Observer
+class Kantwait_Tips_Model_Observer
 {
 	public function saveQuoteBefore($evt)
 	{

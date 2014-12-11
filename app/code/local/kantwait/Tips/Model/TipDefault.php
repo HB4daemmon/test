@@ -1,5 +1,5 @@
 <?php
-    class kantwait_Tips_Model_TipDefault{
+    class Kantwait_Tips_Model_TipDefault{
         public function toOptionArray()
         {
             $result = array();

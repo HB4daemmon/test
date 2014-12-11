@@ -1,5 +1,5 @@
 <?php
-class kantwait_Shippingtime_Model_ShippingtimeRange{
+class Kantwait_Shippingtime_Model_ShippingtimeRange{
     public function toOptionArray()
     {
         $result=array();

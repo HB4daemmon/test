@@ -1,5 +1,5 @@
 <?php
-class kantwait_Shippingtime_Model_Sales_Order extends Mage_Sales_Model_Order{
+class Kantwait_Shippingtime_Model_Sales_Order extends Mage_Sales_Model_Order{
 	public function hasCustomFields(){
 		$var = $this->getSelect();
 		if($var && !empty($var)){

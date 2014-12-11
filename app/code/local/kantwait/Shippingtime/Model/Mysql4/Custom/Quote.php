@@ -1,5 +1,5 @@
 <?php
-class kantwait_Shippingtime_Model_Mysql4_Custom_Quote extends Mage_Core_Model_Mysql4_Abstract{
+class Kantwait_Shippingtime_Model_Mysql4_Custom_Quote extends Mage_Core_Model_Mysql4_Abstract{
 	public function _construct()
 	{
 		$this->_init('shippingtime/custom_quote', 'id');

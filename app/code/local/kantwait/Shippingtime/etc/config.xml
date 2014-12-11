@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <modules>
-        <kantwait_Shippingtime>
+        <Kantwait_Shippingtime>
             <version>0.1.0</version>
-        </kantwait_Shippingtime>
+        </Kantwait_Shippingtime>
     </modules>
     <global>
         <models>
             <shippingtime>
-                <class>kantwait_Shippingtime_Model</class>
+                <class>Kantwait_Shippingtime_Model</class>
             </shippingtime>
         </models>
         <helpers>
             <shippingtime>
-                <class>kantwait_Shippingtime_Helper</class>
+                <class>Kantwait_Shippingtime_Helper</class>
             </shippingtime>
         </helpers>
     </global>

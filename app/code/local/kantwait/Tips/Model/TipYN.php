@@ -1,5 +1,5 @@
 <?php
-    class kantwait_Tips_Model_TipYN{
+    class Kantwait_Tips_Model_TipYN{
         public function toOptionArray()
         {
             return array(

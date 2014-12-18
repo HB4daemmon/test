@@ -82,6 +82,10 @@ class Mage_Checkout_Block_Onepage_Success extends Mage_Core_Block_Template
         return $this->_getData('view_order_id');
     }
 
+    public function getAllOrderUrl()
+    {
+        return $this->_getData('all_order');
+    }
     /**
      * See if the order has state, visible on frontend
      *
@@ -131,6 +135,7 @@ class Mage_Checkout_Block_Onepage_Success extends Mage_Core_Block_Template
                     'can_print_order' => $isVisible,
                     'can_view_order'  => Mage::getSingleton('customer/session')->isLoggedIn() && $isVisible,
                     'order_id'  => $order->getIncrementId(),
+                    'all_order' => $this->getUrl('sales/order/history/'),
                 ));
             }
         }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Kantwait_Shippingtime>
+            <version>0.1.0</version>
+        </Kantwait_Shippingtime>
+    </modules>
+    <global>
+        <models>
+            <shippingtime>
+                <class>Kantwait_Shippingtime_Model</class>
+            </shippingtime>
+        </models>
+        <helpers>
+            <shippingtime>
+                <class>Kantwait_Shippingtime_Helper</class>
+            </shippingtime>
+        </helpers>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <shippingtime_options>
+                                            <title>Shippingtime Sections</title>
+                                        </shippingtime_options>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+
+    </default>
+</config>

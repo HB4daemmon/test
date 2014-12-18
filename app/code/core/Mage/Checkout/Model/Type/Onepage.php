@@ -593,7 +593,7 @@ class Mage_Checkout_Model_Type_Onepage
 
         $this->getCheckout()
             ->setStepData('shipping_method', 'complete', true)
-            ->setStepData('payment', 'allow', true);
+            ->setStepData('tips', 'allow', true);
 
         return array();
     }
@@ -604,21 +604,22 @@ class Mage_Checkout_Model_Type_Onepage
      */
     
     public function saveShippingtime($data){
-    
     	if (empty($data)) {
     		return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid data.'));
     	}
     	
     	$store_group=Mage::getModel('sales/quote_storegroup');
     	foreach ($data as $key => $time){
-    		
+
      		$store_group_item = $store_group->load($key)
-     							->setData('deliver_starttime',$time['deliver_starttime'])
-     							->setData('deliver_endtime',$time['deliver_endtime']);
-    //	Mage::log(var_export($store_group_item,true));
-     		$store_group_item->save();
-    	
-    		
+     							->setData('date',$time['date'])
+     							->setData('time_range',$time['time']);
+            try {
+                $store_group->save();
+            } catch (Exception $e) {
+                Mage::log($e);
+                Mage::log('store_group cannot be inserted ');
+            }
     	}
     	
     	$this->getCheckout()
@@ -627,6 +628,23 @@ class Mage_Checkout_Model_Type_Onepage
     	
     	
     	return  array();
+    }
+
+    public function saveTips($data)
+    {
+        if (empty($data)) {
+            return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
+        }
+        $this->getQuote()->setTipsLike($data['like']);
+        $this->getQuote()->collectTotals();
+        $this->getQuote()->save();
+
+        $this->getCheckout()
+            ->setStepData('tips', 'allow', true)
+            ->setStepData('tips', 'complete', true)
+            ->setStepData('shipping_time', 'allow', true);
+
+        return array();
     }
 
     /**

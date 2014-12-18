@@ -1,0 +1,108 @@
+<config>
+    <tabs>
+        <kantwaitconfig translate="label" module="shippingtime">
+            <label>Kantwait Config Options</label>
+            <sort_order>99999</sort_order>
+        </kantwaitconfig>
+    </tabs>
+    <sections>
+        <shippingtime_options translate="label" module="shippingtime">
+            <label>Shippingtime Config</label>
+            <tab>kantwaitconfig</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <shippingtime_fareast_label translate="label">
+                    <label>Define Fareast Shipping Time</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shippingtime_fareast_workday_options translate="label comment">
+                            <label>Define Workday Range</label>
+                            <frontend_type>Multiselect</frontend_type>
+                            <source_model>shippingtime/ShippingtimeRange</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Press and hold down the CTRL key and left-click the range to multi select the time range.]]>
+                            </comment>
+                        </shippingtime_fareast_workday_options>
+                        <shippingtime_fareast_weekend_options translate="label comment">
+                            <label>Define Weekend Range</label>
+                            <frontend_type>Multiselect</frontend_type>
+                            <source_model>shippingtime/ShippingtimeRange</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Press and hold down the CTRL key and left-click the range to multi select the time range.]]>
+                            </comment>
+                        </shippingtime_fareast_weekend_options>
+                    </fields>
+                </shippingtime_fareast_label>
+                <shippingtime_walmart_label translate="label">
+                    <label>Define Walmart Shipping Time</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shippingtime_walmart_workday_options translate="label comment">
+                            <label>Define Workday Range</label>
+                            <frontend_type>Multiselect</frontend_type>
+                            <source_model>shippingtime/ShippingtimeRange</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Press and hold down the CTRL key and left-click the range to multi select the time range.]]>
+                            </comment>
+                        </shippingtime_walmart_workday_options>
+                        <shippingtime_walmart_weekend_options translate="label comment">
+                            <label>Define Weekend Range</label>
+                            <frontend_type>Multiselect</frontend_type>
+                            <source_model>shippingtime/ShippingtimeRange</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Press and hold down the CTRL key and left-click the range to multi select the time range.]]>
+                            </comment>
+                        </shippingtime_walmart_weekend_options>
+                    </fields>
+                </shippingtime_walmart_label>
+                <shippingtime_enable_label translate="label">
+                    <label>Enable</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shippingtime_enable translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>shippingtime/ShippingtimeYN</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingtime_enable>
+                    </fields>
+                </shippingtime_enable_label>
+            </groups>
+        </shippingtime_options>
+    </sections>
+</config>

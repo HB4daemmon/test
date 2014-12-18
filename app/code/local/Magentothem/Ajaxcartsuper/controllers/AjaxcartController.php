@@ -36,8 +36,8 @@ class Magentothem_Ajaxcartsuper_AjaxcartController extends Mage_Checkout_CartCon
                     	$ajaxData['status'] = 0;
                         $ajaxData['message'] = $this->__('Unable to find Product ID');
                 }
-
-
+                //Mage::log(Mage::app()->getStore()->getName());
+               // Mage::log($product);
                 $cart->addProduct($product, $params);
                 if (!empty($related)) {
                     $cart->addProductsByIds(explode(',', $related));

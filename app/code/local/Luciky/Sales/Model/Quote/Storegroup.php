@@ -81,11 +81,11 @@ class Luciky_Sales_Model_Quote_Storegroup extends Mage_Core_Model_Abstract
     	return $items;
     }
     
-    public function setDeliverStarttime(){
+    public function setDate(){
     	
     }
     
-    public function setDeliverEndtime(){
+    public function setTimeRange(){
     	
     }
 

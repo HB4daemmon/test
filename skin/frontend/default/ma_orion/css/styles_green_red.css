@@ -55,6 +55,7 @@ a:hover       { color: #ffa200; }
 a:focus        { outline: none; }
 
 img { max-width: 100%; height: auto;}
+div.header a.logo img{height:70px;}
 
 /* Headings */
 h1,h2,h3,
@@ -604,7 +605,7 @@ p.welcome-msg { margin: 0; line-height: 25px; text-align: center; display: none;
 /* Header ================================================================================ */
 .header-container {}
 .header {  margin:0 auto;  position:relative; z-index:10; background: #fff;}
-.header .header-content { padding: 30px 0;}
+.header .header-content { padding: 10px 0;}
 .header a.logo { float:left; margin: 15px 0; text-decoration:none !important; }
 .header .logo strong { position:absolute; top:-999em; left:-999em; width:0; height:0; font-size:0; line-height:0; text-indent:-999em; overflow:hidden; }
 .header h1.logo { margin:0; }
@@ -2875,4 +2876,8 @@ ul.tabs li .tab8:hover, ul.tabs li.active .tab8 { background-position: left -54p
     .tab_slider_container .bx-wrapper .bx-viewport { height: 271px !important}
     .ma-brand-slider-contain .bx-wrapper .bx-viewport { height: 123px !important;}
     
+}
+
+#checkout-progress-wrapper{
+    margin-top:200px;
 }

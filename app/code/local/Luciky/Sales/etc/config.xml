@@ -110,16 +110,6 @@
         </events>
 
     </global>
-    <frontend>
-    <routers>
-        <sales>
-            <use>standard</use>
-            <args>
-                <module>Luciky_Sales</module>
-                <frontName>sales</frontName>
-            </args>
-        </sales>
-    </routers>
-</frontend>
+
 
 </config>

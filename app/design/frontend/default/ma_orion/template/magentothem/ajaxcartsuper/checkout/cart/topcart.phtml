@@ -14,12 +14,14 @@
                     <a href="<?php echo $this->getUrl('checkout/cart')?>" ><span><span id="topCartCount" value="<?php if($_cartQty>0) {echo $_cartQty;} else { echo 0; } ?>"><?php echo $this->__('shopping cart') ?> <?php echo $this->__('(') ?><?php if($_cartQty>0) {echo $_cartQty;} else { echo 0; } ?><?php echo $this->__(')') ?> </span></span></a>
                 </div>
                 <div class="top-cart-content">
-                    <?php $items = Mage::getModel('checkout/cart')->getQuote()->getAllItems() ?>
+                    <?php $items = Mage::getModel('checkout/cart')->getQuote()->getAllItems();?>
                     <?php $_items = $this->getRecentItems() ?>
                     <?php if (count($items)): ?>
                         <ol id="cart-sidebar" class="mini-products-list" style="max-height:300px; overflow: auto;">
                             <?php
+                                //Mage::log('oitem '.count($items));
                                 $itemss=$this->getGroupItems($items);
+                                //Mage::log('items '.count($itemss));
                                 foreach ($itemss as $keys => $itemgroup) {
                             ?>  
                               <li class="store_info"> 

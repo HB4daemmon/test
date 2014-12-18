@@ -1,14 +1,14 @@
 <config>
     <tabs>
-        <tipsconfig translate="label" module="tips">
+        <kantwaitconfig translate="label" module="tips">
             <label>Kantwait Config Options</label>
             <sort_order>99999</sort_order>
-        </tipsconfig>
+        </kantwaitconfig>
     </tabs>
     <sections>
         <tips_options translate="label" module="tips">
             <label>Tips Config</label>
-            <tab>tipsconfig</tab>
+            <tab>kantwaitconfig</tab>
             <frontend_type>text</frontend_type>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>

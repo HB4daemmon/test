@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Kantwait_Shippingtime>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Kantwait_Shippingtime>
+    </modules>
+</config>

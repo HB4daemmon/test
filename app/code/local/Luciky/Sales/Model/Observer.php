@@ -100,19 +100,29 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 		$_quote=$observer->getQuote();
 		$keys=array('state','status','shipping_description','quote_id','is_virtual','store_id','customer_id','customer_group_id','customer_gender','base_to_global_rate','base_to_order_rate','customer_is_guest','customer_note_notify','email_sent','store_currency_code',
 		'base_currency_code','customer_email','customer_firstname','customer_lastname','global_currency_code','order_currency_code','remote_ip','shipping_method','shipping_incl_tax','base_shipping_incl_tax');
-		
+
+        $item_keys=array( 'parent_item_id', 'quote_item_id', 'store_id', 'created_at', 'updated_at', 'product_id', 'product_type', 'product_options', 'weight',
+            'is_virtual', 'sku', 'name', 'description', 'applied_rule_ids', 'additional_data', 'free_shipping', 'is_qty_decimal', 'no_discount', 'qty_backordered', 'qty_canceled', 
+            'qty_invoiced', 'qty_ordered', 'qty_refunded', 'qty_shipped', 'base_cost', 'price', 'base_price', 'original_price', 'base_original_price', 'tax_percent', 'tax_amount', 
+            'base_tax_amount', 'tax_invoiced', 'base_tax_invoiced', 'discount_percent', 'discount_amount', 'base_discount_amount', 'discount_invoiced', 'base_discount_invoiced', 
+            'amount_refunded', 'base_amount_refunded', 'row_total', 'base_row_total', 'row_invoiced', 'base_row_invoiced', 'row_weight', 'base_tax_before_discount',
+            'tax_before_discount', 'ext_order_item_id', 'locked_do_invoice', 'locked_do_ship', 'price_incl_tax', 'base_price_incl_tax', 'row_total_incl_tax',
+            'base_row_total_incl_tax', 'hidden_tax_amount', 'base_hidden_tax_amount', 'hidden_tax_invoiced', 'base_hidden_tax_invoiced', 'hidden_tax_refunded', 
+            'base_hidden_tax_refunded', 'is_nominal', 'tax_canceled', 'hidden_tax_canceled', 'tax_refunded', 'base_tax_refunded', 'discount_refunded', 'base_discount_refunded',
+            'gift_message_id', 'gift_message_available', 'base_weee_tax_applied_amount', 'base_weee_tax_applied_row_amnt', 'weee_tax_applied_amount', 'weee_tax_applied_row_amount', 
+            'weee_tax_applied', 'weee_tax_disposition', 'weee_tax_row_disposition', 'base_weee_tax_disposition', 'base_weee_tax_row_disposition', 'sales_order_storegroup_id',
+            'real_order_id', 'substitute', 'customer_message');
+
 		$quote_storegroups=Mage::getModel('sales/quote_storegroup')->getCollection();
 		$quote_storegroups->addFieldtoFilter('quote_id',$_quote->getId());
 		$pkeys=array('storegroup_id','storegroup_name','time_range','date');
-		
-		
+
 		$_count=count($quote_storegroups);
-		
+
 		foreach ($quote_storegroups as  $quote_storegroup){//创建子订单
 			$_convert=Mage::getModel('sales/convert_quote');
-			$order_items=Mage::getModel('sales/order_item')->getCollection();
-			$order_items->addFieldtoFilter('order_id',$_order->getData('entity_id'));
-			
+            $order_items=Mage::getModel('sales/order_item')->getCollection();
+            $order_items->addFieldtoFilter('order_id',$_order->getData('entity_id'));
 			$new_order=Mage::getModel('sales/order');
 			$new_order->setBillingAddress($_convert->addressToOrderAddress($_quote->getBillingAddress()));
 			$new_order->setShippingAddress($_convert->addressToOrderAddress($_quote->getShippingAddress()));
@@ -198,6 +208,13 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 				$order_item->setData('sales_order_storegroup_id',$order_storegroup->getId());
 				$order_item->setData('real_order_id',$new_orderid);
 				$order_item->save();
+
+                $new_item = Mage::getModel('sales/order_item');
+                foreach($item_keys as $key){//create new order items
+                    $new_item->setData($key,$order_item->getData($key));
+                }
+                $new_item->setData('order_id',$new_orderid);
+                $new_item->save();
 			}
 				$orderData['base_shipping_tax_amount']=$_order->getData('base_shipping_tax_amount') / $_count;
 				$orderData['base_shipping_amount']=$_order->getData('base_shipping_amount') / $_count;				
@@ -220,14 +237,8 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			}
 			
 			$new_order->save();
-			
-			
-		
-		}
-		
-	
-		
 
+		}
 		
 	}
 	

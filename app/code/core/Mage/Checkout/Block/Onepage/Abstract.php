@@ -413,6 +413,29 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         return $select->getHtml();
     }
 
+    public function getShippingmethodConfig($store,$method){
+        $configstr = Mage::getStoreConfig("shippingmethod_options/shippingmethod_".$store."_label");
+        if($method == 'value'){
+            $config_value_str = $configstr["shippingmethod_".$store."_value"];
+            $config = explode(',',trim($config_value_str));
+        }elseif($method == 'name'){
+            $config_name_str = $configstr["shippingmethod_".$store."_name"];
+            $confige = explode(',',trim($config_name_str));
+        }
+        return $config;
+    }
+
+    public function getShippingmethodHtml($store){
+        $config_name=$this->getShippingmethodConfig($store,'name');
+        $config_value=$this->getShippingmethodConfig($store,'value');
+        return $config_name[0]." : $".$config_value[0];
+    }
+
+    public function getTotalShippingFeeHtml($store_groups){
+        foreach ($store_groups as $key => $store_group){
+        }
+    }
+
     public function getCountryOptions()
     {
         $options    = false;

@@ -31,10 +31,22 @@
     <script type="text/javascript">
     //<![CDATA[
         var shippingMethod = new ShippingMethod('co-shipping-method-form', "<?php echo $this->getUrl('checkout/onepage/saveShippingMethod') ?>");
+        var shippingMethodForm = new VarienForm('co-shipping-method-form');
     //]]>
     </script>
-    <div id="onepage-checkout-shipping-method-additional-load">
-        <?php echo $this->getChildHtml('additional') ?>
+    <div id="onepage-checkout-shipping-method">
+        <?php $store_groups = $this->getStoregroups();
+            foreach ($store_groups as $key => $store_group){
+                $store_groupid=$store_group->getId();
+                $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
+        ?>
+        <li style="width: 400px;display: inline-block;">
+            <span><?php echo $store_group->getStoregroupName()?>:</span>
+            <p><?php echo $this->getShippingmethodHtml($store_name) ?></p>
+        </li>
+
+        <?php }?>
+        <p><?php echo $this->getTotalShippingFeeHtml($store_groups) ?></p>
     </div>
     <div class="buttons-set" id="shipping-method-buttons-container">
         <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

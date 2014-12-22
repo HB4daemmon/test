@@ -29,35 +29,34 @@
     </script>
 
 
- <div id="datetimepicker" class="input-append date">
- <ul>
-      <?php $store_groups = $this->getStoregroups();
-     foreach ($store_groups as $key => $store_group){
-     	$store_groupid=$store_group->getId();
-        $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
+    <div id="datetimepicker" class="input-append date">
+     <ul>
+         <?php $store_groups = $this->getStoregroups();
+             foreach ($store_groups as $key => $store_group){
+                $store_groupid=$store_group->getId();
+                $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
 
-      ?>
-      <li style="width: 400px;display: inline-block;">
-      <span><?php echo $store_group->getStoregroupName()?>:</span>
-      <div class="field">
-          <label for="shippingtime_<?php echo $store_name?>:date" ><?php echo $this->__('Date') ?></label>
-          <div class="input-box" >
-              <?php echo $this->getShippingtimeHtmlDate($store_name,$store_groupid) ?>
-          </div>
-      </div>
-      <div class="field">
-          <label for="shippingtime_<?php echo $store_name?>:time" ><?php echo $this->__('Time Range') ?></label>
-          <div class="input-box" >
-              <?php echo $this->getShippingtimeHtmlTime($store_name,$store_groupid) ?>
-          </div>
-      </div>
+         ?>
+             <li style="width: 400px;display: inline-block;">
+                  <span><?php echo $store_group->getStoregroupName()?>:</span>
+                  <div class="field">
+                      <label for="shippingtime_<?php echo $store_name?>:date" ><?php echo $this->__('Date') ?></label>
+                      <div class="input-box" >
+                          <?php echo $this->getShippingtimeHtmlDate($store_name,$store_groupid) ?>
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label for="shippingtime_<?php echo $store_name?>:time" ><?php echo $this->__('Time Range') ?></label>
+                      <div class="input-box" >
+                          <?php echo $this->getShippingtimeHtmlTime($store_name,$store_groupid) ?>
+                      </div>
+                  </div>
+              </li>
 
-</li>
+          <?php }?>
 
-      <?php }?>
-      
-  </ul>
-    </div>
+     </ul>
+   </div>
 
     <div class="buttons-set" id="shippingtime-buttons-container">
         <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

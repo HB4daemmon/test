@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Kantwait_Shippingmethod>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Kantwait_Shippingmethod>
+    </modules>
+</config>

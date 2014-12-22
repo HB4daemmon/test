@@ -581,7 +581,7 @@ class Mage_Checkout_Model_Type_Onepage
      */
     public function saveShippingMethod($shippingMethod)
     {
-        if (empty($shippingMethod)) {
+        /*if (empty($shippingMethod)) {
             return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid shipping method.'));
         }
         $rate = $this->getQuote()->getShippingAddress()->getShippingRateByCode($shippingMethod);
@@ -589,7 +589,7 @@ class Mage_Checkout_Model_Type_Onepage
             return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid shipping method.'));
         }
         $this->getQuote()->getShippingAddress()
-            ->setShippingMethod($shippingMethod);
+            ->setShippingMethod($shippingMethod);*/
 
         $this->getCheckout()
             ->setStepData('shipping_method', 'complete', true)

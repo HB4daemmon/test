@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <modules>
-        <Kantwait_Shippingtime>
+        <Kantwait_Shippingmethod>
             <version>0.1.0</version>
-        </Kantwait_Shippingtime>
+        </Kantwait_Shippingmethod>
     </modules>
     <global>
         <models>
-            <shippingtime>
-                <class>Kantwait_Shippingtime_Model</class>
-            </shippingtime>
+            <shippingmethod>
+                <class>Kantwait_Shippingmethod_Model</class>
+            </shippingmethod>
         </models>
         <helpers>
-            <shippingtime>
-                <class>Kantwait_Shippingtime_Helper</class>
-            </shippingtime>
+            <shippingmethod>
+                <class>Kantwait_Shippingmethod_Helper</class>
+            </shippingmethod>
         </helpers>
     </global>
     <adminhtml>
@@ -26,9 +26,9 @@
                             <children>
                                 <config>
                                     <children>
-                                        <shippingtime_options>
-                                            <title>Shipping Time Sections</title>
-                                        </shippingtime_options>
+                                        <shippingmethod_options>
+                                            <title>Shipping Method Sections</title>
+                                        </shippingmethod_options>
                                     </children>
                                 </config>
                             </children>

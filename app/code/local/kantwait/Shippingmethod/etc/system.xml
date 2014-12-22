@@ -1,0 +1,73 @@
+<config>
+    <tabs>
+        <kantwaitconfig translate="label" module="shippingmethod">
+            <label>Kantwait Config Options</label>
+            <sort_order>99999</sort_order>
+        </kantwaitconfig>
+    </tabs>
+    <sections>
+        <shippingmethod_options translate="label" module="shippingmethod">
+            <label>Shipping Method Config</label>
+            <tab>kantwaitconfig</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <shippingmethod_fareast_label translate="label">
+                    <label>Define Fareast Shipping Method</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shippingmethod_fareast_name translate="label">
+                            <label>Shipping Method Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingmethod_fareast_name>
+                        <shippingmethod_fareast_value translate="label">
+                            <label>Shipping Method Value</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingmethod_fareast_value>
+                    </fields>
+                </shippingmethod_fareast_label>
+                <shippingmethod_walmart_label translate="label">
+                    <label>Define Walmart Shipping Method</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shippingmethod_walmart_name translate="label">
+                            <label>Shipping Method Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingmethod_walmart_name>
+                        <shippingmethod_walmart_value translate="label">
+                            <label>Shipping Method Value</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingmethod_walmart_value>
+                    </fields>
+                </shippingmethod_walmart_label>
+            </groups>
+        </shippingmethod_options>
+    </sections>
+</config>

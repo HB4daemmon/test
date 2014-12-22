@@ -626,6 +626,7 @@ ShippingMethod.prototype = {
         }
 
         for (var i=0; i<methods.length; i++) {
+            return true;
             if (methods[i].checked) {
                 return true;
             }

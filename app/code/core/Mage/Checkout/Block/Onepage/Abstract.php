@@ -420,7 +420,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
             $config = explode(',',trim($config_value_str));
         }elseif($method == 'name'){
             $config_name_str = $configstr["shippingmethod_".$store."_name"];
-            $confige = explode(',',trim($config_name_str));
+            $config = explode(',',trim($config_name_str));
         }
         return $config;
     }
@@ -432,8 +432,13 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
     }
 
     public function getTotalShippingFeeHtml($store_groups){
+        $total = 0;
         foreach ($store_groups as $key => $store_group){
+            $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
+            $fee = $this->getShippingmethodConfig($store_name,'value')[0];
+            $total = $total + floatval($fee);
         }
+        return "Shipping & Handle Total : $".number_format($total,2);
     }
 
     public function getCountryOptions()

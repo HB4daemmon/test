@@ -431,13 +431,18 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         return $config_name[0]." : $".$config_value[0];
     }
 
-    public function getTotalShippingFeeHtml($store_groups){
+    public function getTotalShippingFee($store_groups){
         $total = 0;
         foreach ($store_groups as $key => $store_group){
             $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';
             $fee = $this->getShippingmethodConfig($store_name,'value')[0];
             $total = $total + floatval($fee);
         }
+        return $total;
+    }
+
+    public function getTotalShippingFeeHtml($store_groups){
+        $total = $this->getTotalShippingFee($store_groups);
         return "Shipping & Handle Total : $".number_format($total,2);
     }
 

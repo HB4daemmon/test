@@ -47,6 +47,7 @@
 
         <?php }?>
         <p><?php echo $this->getTotalShippingFeeHtml($store_groups) ?></p>
+        <p><input type="hidden" name="shipping_method" value="<?php echo $this->getTotalShippingFee($store_groups)?>"></p>
     </div>
     <div class="buttons-set" id="shipping-method-buttons-container">
         <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

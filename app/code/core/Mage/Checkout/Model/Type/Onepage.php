@@ -587,9 +587,23 @@ class Mage_Checkout_Model_Type_Onepage
         $rate = $this->getQuote()->getShippingAddress()->getShippingRateByCode($shippingMethod);
         if (!$rate) {
             return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid shipping method.'));
-        }
+        }*/
+
+        $rate = Mage::getModel('sales/quote_address_rate');
+        $rate->setAddressId($this->getQuote()->getShippingAddress()->getId())
+            ->setCarrier('kantwait')
+            ->setCarrierTitle('kantwait')
+            ->setMethod('driver')
+            ->setCode('kantwait_driver')
+            ->setMethodDescription('driver')
+            ->setPrice($shippingMethod)
+            ->setMethodTitle('driver')
+            ->save();
+
         $this->getQuote()->getShippingAddress()
-            ->setShippingMethod($shippingMethod);*/
+            //->setShippingMethod('flatrate_flatrate');
+              ->setShippingMethod('kantwait_driver');
+        //$this->getQuote()->setGrandTotal($this->getQuote()->getShippingAddress()->getGrandTotal())->setBaseGrandTotal($this->getQuote()->getShippingAddress()->getBaseGrandTotal());
 
         $this->getCheckout()
             ->setStepData('shipping_method', 'complete', true)
@@ -637,6 +651,8 @@ class Mage_Checkout_Model_Type_Onepage
         }
         $this->getQuote()->setTipsLike($data['like']);
         $this->getQuote()->collectTotals();
+        $subtotal=$this->getQuote()->getGrandTotal();
+        Mage::log("tips total:".$subtotal);
         $this->getQuote()->save();
 
         $this->getCheckout()

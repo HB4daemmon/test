@@ -91,6 +91,7 @@ class Mage_Checkout_Block_Cart_Totals extends Mage_Checkout_Block_Cart_Abstract
             if ($total->getArea() != $area && $area != -1) {
                 continue;
             }
+            Mage::log($total->getCode()." : ".$area);
             $html .= $this->renderTotal($total, $area, $colspan);
         }
         return $html;

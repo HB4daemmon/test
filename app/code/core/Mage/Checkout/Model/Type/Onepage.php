@@ -588,23 +588,20 @@ class Mage_Checkout_Model_Type_Onepage
         if (!$rate) {
             return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid shipping method.'));
         }*/
-
-        $rate = Mage::getModel('sales/quote_address_rate');
-        $rate->setAddressId($this->getQuote()->getShippingAddress()->getId())
-            ->setCarrier('kantwait')
-            ->setCarrierTitle('kantwait')
-            ->setMethod('driver')
-            ->setCode('kantwait_driver')
-            ->setMethodDescription('driver')
-            ->setPrice($shippingMethod)
-            ->setMethodTitle('driver')
+        $custom = Mage::getModel("tips/custom_quote");
+        $custom->deteleByQuote($this->getQuote()->getId(),"shippingmethod");
+        $custom->setData("quote_id",$this->getQuote()->getId())
+            ->setData("key","shippingmethod")
+            ->setData("value",$shippingMethod)
             ->save();
 
-        $this->getQuote()->getShippingAddress()
+        /*$this->getQuote()->getShippingAddress()
             //->setShippingMethod('flatrate_flatrate');
-              ->setShippingMethod('kantwait_driver');
+              ->setData("shippingmethod_amount",$shippingMethod)
+              //->setData("base_shippingmethod_amount",$shippingMethod)
+              ->save();*/
         //$this->getQuote()->setGrandTotal($this->getQuote()->getShippingAddress()->getGrandTotal())->setBaseGrandTotal($this->getQuote()->getShippingAddress()->getBaseGrandTotal());
-
+        //Mage::log("Shipping Amount".$this->getQuote()->getShippingAddress()->getShippingmethodAmount());
         $this->getCheckout()
             ->setStepData('shipping_method', 'complete', true)
             ->setStepData('tips', 'allow', true);
@@ -652,7 +649,6 @@ class Mage_Checkout_Model_Type_Onepage
         $this->getQuote()->setTipsLike($data['like']);
         $this->getQuote()->collectTotals();
         $subtotal=$this->getQuote()->getGrandTotal();
-        Mage::log("tips total:".$subtotal);
         $this->getQuote()->save();
 
         $this->getCheckout()

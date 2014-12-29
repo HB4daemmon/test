@@ -16,6 +16,15 @@
                 <class>Kantwait_Shippingmethod_Helper</class>
             </shippingmethod>
         </helpers>
+        <sales>
+            <quote>
+                <totals>
+                    <shippingmethod>
+                        <class>shippingmethod/quote_address_total_shippingmethod</class>
+                    </shippingmethod>
+                </totals>
+            </quote>
+        </sales>
     </global>
     <adminhtml>
         <acl>

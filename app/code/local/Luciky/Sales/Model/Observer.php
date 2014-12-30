@@ -155,6 +155,13 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			$store_group=Mage::getModel('core/store_group')->load($order_storegroup->getStoregroupId());
 			$storeids=$store_group->getStoreIds();
 			$order_items->addFieldtoFilter('store_id',array('in'=>$storeids));
+
+            //get each shipping method cost
+            $store_name=($store_group->getName()=='Walmart')?'walmart':'fareast';
+            $configstr = Mage::getStoreConfig("shippingmethod_options/shippingmethod_".$store_name."_label");
+            $config_value_str = $configstr["shippingmethod_".$store_name."_value"];
+            $config = explode(',',trim($config_value_str));
+            $shippingmethod_amount=$config[0];
 			//商品价格总计subtotal
 			//计算税收总额tax_amount
 			//计算折扣总额 discount amount
@@ -187,6 +194,8 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 					'base_shipping_hidden_tax_amount'=>0,
 					'shipping_incl_tax'=>0,
 					'base_shipping_incl_tax'=>0,
+                    'shippingmethod_amount'=>0,
+                    'base_shippingmethod_amount'=>0,
 			);
 			
 			
@@ -228,14 +237,19 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 				$orderData['base_shipping_incl_tax']=$_order->getData('base_shipping_incl_tax') / $_count;
 				$orderData['state']=$_order->getData('state');
 				$orderData['status']=$_order->getData('status');
-			
+
+                $orderData['shippingmethod_amount']=$shippingmethod_amount;
+                $orderData['base_shippingmethod_amount']=$shippingmethod_amount;
+                $orderData['shipping_amount']= $orderData['shippingmethod_amount'];
+                $orderData['base_shipping_amount']=$orderData['base_shippingmethod_amount'];
+
 				$orderData['base_grand_total']=$orderData['base_subtotal']+ $orderData['base_shipping_amount'];
 				$orderData['grand_total']=$orderData['subtotal']+$orderData['shipping_amount'];
-				
+
 			foreach ($orderData as $key => $value){
 				$new_order->setData($key,$value);
 			}
-			
+
 			$new_order->save();
 
 		}

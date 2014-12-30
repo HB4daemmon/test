@@ -595,11 +595,11 @@ class Mage_Checkout_Model_Type_Onepage
             ->setData("value",$shippingMethod)
             ->save();
 
-        /*$this->getQuote()->getShippingAddress()
-            //->setShippingMethod('flatrate_flatrate');
-              ->setData("shippingmethod_amount",$shippingMethod)
+        $this->getQuote()->getShippingAddress()
+            ->setShippingMethod('freeshipping_freeshipping')
+              //->setData("shippingmethod_amount",$shippingMethod)
               //->setData("base_shippingmethod_amount",$shippingMethod)
-              ->save();*/
+              ->save();
         //$this->getQuote()->setGrandTotal($this->getQuote()->getShippingAddress()->getGrandTotal())->setBaseGrandTotal($this->getQuote()->getShippingAddress()->getBaseGrandTotal());
         //Mage::log("Shipping Amount".$this->getQuote()->getShippingAddress()->getShippingmethodAmount());
         $this->getCheckout()

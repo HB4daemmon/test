@@ -1,10 +1,10 @@
 <?php
 class Kantwait_Shippingmethod_Model_Quote_Address_Total_Shippingmethod extends Mage_Sales_Model_Quote_Address_Total_Abstract{
-    protected $_code = 'shippingmethod11';
+    protected $_code = 'shippingmethod';
 
     public function __construct()
     {
-        $this->setCode('shippingmethod11');
+        $this->setCode('shippingmethod');
     }
 
     public function collect(Mage_Sales_Model_Quote_Address $address)
@@ -25,7 +25,6 @@ class Kantwait_Shippingmethod_Model_Quote_Address_Total_Shippingmethod extends M
         $amount_arr = $custom->getByQuote($quote->getId(),"shippingmethod");
         $amount = $amount_arr["shippingmethod"];
         //$amount = $address->getData("shippingmethod_amount");
-        //Mage::log("quote_id".$quote->getId()."  method: ".$amount);
         if ($amount) {
             $exist_amount=$address->getData("shippingmethod_amount");
             $balance = $amount-$exist_amount;
@@ -42,7 +41,7 @@ class Kantwait_Shippingmethod_Model_Quote_Address_Total_Shippingmethod extends M
         $amt = $address->getShippingmethodAmount();
         $address->addTotal(array(
             'code'=>$this->getCode(),
-            'title'=>Mage::helper('shippingmethod')->__('Shipping & Handle 1'),
+            'title'=>Mage::helper('shippingmethod')->__('Shipping & Handle'),
             'value'=> $amt
         ));
         return $this;

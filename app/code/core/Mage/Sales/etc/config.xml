@@ -1232,11 +1232,11 @@
                         <after>subtotal,freeshipping,tax_subtotal</after>
                         <before>grand_total</before>
                     </shipping>
-                    <shipping_method>
+                    <shippingmethod>
                         <class>kantwait_shippingmethod/quote_address_total_shippingmethod</class>
                         <after>subtotal,freeshipping,tax_subtotal</after>
                         <before>grand_total</before>
-                    </shipping_method>
+                    </shippingmethod>
                     <grand_total>
                         <class>sales/quote_address_total_grand</class>
                         <after>subtotal</after>

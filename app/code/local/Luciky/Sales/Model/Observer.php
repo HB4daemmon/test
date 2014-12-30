@@ -245,7 +245,6 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 	public function OrderCancelledAfter(Varien_Event_Observer $observer){
 		
 		$parentId=$observer->getOrder()->getId();
-		Mage::log($parentId);
 		$ChildrenOrders=Mage::getModel('sales/order')->getCollection();
 		$ChildrenOrders->addFieldtoFilter('parent_order_id',$parentId);
 		foreach ($ChildrenOrders as $key => $order){

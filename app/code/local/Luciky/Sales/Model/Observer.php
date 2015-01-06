@@ -243,8 +243,11 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
                 $orderData['shipping_amount']= $orderData['shippingmethod_amount'];
                 $orderData['base_shipping_amount']=$orderData['base_shippingmethod_amount'];
 
-				$orderData['base_grand_total']=$orderData['base_subtotal']+ $orderData['base_shipping_amount'];
-				$orderData['grand_total']=$orderData['subtotal']+$orderData['shipping_amount'];
+                $orderData['tips_amount']= $_order->getData('tips_amount')/ $_count;
+                $orderData['base_tips_amount']=$_order->getData('base_tips_amount')/ $_count;
+
+				$orderData['base_grand_total']=$orderData['base_subtotal']+ $orderData['base_shipping_amount']+$orderData['tips_amount'];
+				$orderData['grand_total']=$orderData['subtotal']+$orderData['shipping_amount']+$orderData['base_tips_amount'];
 
 			foreach ($orderData as $key => $value){
 				$new_order->setData($key,$value);

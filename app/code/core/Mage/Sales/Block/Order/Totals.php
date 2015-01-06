@@ -118,6 +118,19 @@ class Mage_Sales_Block_Order_Totals extends Mage_Core_Block_Template
         }
 
         /**
+         * Add tips
+         */
+        if ($source->getTipsAmount()&&$source->getTipsAmount()!=0)
+        {
+            $this->_totals['tips'] = new Varien_Object(array(
+                'code'  => 'tips',
+                'field' => 'tips_amount',
+                'value' => $this->getSource()->getTipsAmount(),
+                'label' => $this->__('Tips')
+            ));
+        }
+
+        /**
          * Add discount
          */
         if (((float)$this->getSource()->getDiscountAmount()) != 0) {

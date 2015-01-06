@@ -105,7 +105,8 @@ class Mage_Checkout_Block_Onepage_Progress extends Mage_Checkout_Block_Onepage_A
 
     public function getShippingPriceExclTax()
     {
-        return $this->formatPrice($this->getQuote()->getShippingAddress()->getShippingAmount());
+        //return $this->formatPrice($this->getQuote()->getShippingAddress()->getShippingAmount());
+        return $this->__("Kantwait Shipping Method");
     }
 
     public function formatPrice($price)

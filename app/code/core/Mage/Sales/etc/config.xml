@@ -370,6 +370,8 @@
                 </email>
                 <shippingmethod_amount><to_order>*</to_order></shippingmethod_amount>
                 <base_shippingmethod_amount><to_order>*</to_order></base_shippingmethod_amount>
+                <tips_amount><to_order>*</to_order></tips_amount>
+                <base_tips_amount><to_order>*</to_order></base_tips_amount>
             </sales_convert_quote_address>
             <sales_convert_quote_payment>
                 <method>
@@ -925,6 +927,9 @@
             <kantwait_shippingmethod>
                 <class>Kantwait_Shippingmethod_Model</class>
             </kantwait_shippingmethod>
+            <kantwait_tips>
+                <class>Kantwait_Tips_Model</class>
+            </kantwait_tips>
             <sales_entity>
                 <class>Mage_Sales_Model_Entity</class>
                 <entities>
@@ -1239,6 +1244,11 @@
                         <after>subtotal,freeshipping,tax_subtotal</after>
                         <before>grand_total</before>
                     </shippingmethod>
+                    <tips>
+                        <class>kantwait_tips/quote_address_total_tips</class>
+                        <after>subtotal,freeshipping,tax_subtotal,shippingmethod</after>
+                        <before>grand_total</before>
+                    </tips>
                     <grand_total>
                         <class>sales/quote_address_total_grand</class>
                         <after>subtotal</after>

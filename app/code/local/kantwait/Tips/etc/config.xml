@@ -80,6 +80,15 @@
                 <class>Kantwait_Tips_Helper</class>
             </tips>
         </helpers>
+        <sales>
+            <quote>
+                <totals>
+                    <tips>
+                        <class>tips/quote_address_total_tips</class>
+                    </tips>
+                </totals>
+            </quote>
+        </sales>
         <resources>
             <tips_setup>
                 <setup>

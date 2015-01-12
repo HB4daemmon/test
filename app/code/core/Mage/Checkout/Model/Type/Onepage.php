@@ -131,7 +131,7 @@ class Mage_Checkout_Model_Type_Onepage
         $customerSession = $this->getCustomerSession();
         if (is_array($checkout->getStepData())) {
             foreach ($checkout->getStepData() as $step=>$data) {
-                if (!($step==='login' || $customerSession->isLoggedIn() && $step==='billing')) {
+                if (!($step==='login' || $customerSession->isLoggedIn() && $step==='shipping')) {
                     $checkout->setStepData($step, 'allow', false);
                 }
             }
@@ -843,10 +843,8 @@ class Mage_Checkout_Model_Type_Onepage
         }
         
        // Mage::dispatchEvent('before_saving_orders',array(''));
-
         $service = Mage::getModel('sales/service_quote', $this->getQuote());
         $service->submitAll();
-
         if ($isNewCustomer) {
             try {
                 $this->_involveNewCustomer();
@@ -854,11 +852,9 @@ class Mage_Checkout_Model_Type_Onepage
                 Mage::logException($e);
             }
         }
-
         $this->_checkoutSession->setLastQuoteId($this->getQuote()->getId())
             ->setLastSuccessQuoteId($this->getQuote()->getId())
             ->clearHelperData();
-
         $order = $service->getOrder();
         if ($order) {
             Mage::dispatchEvent('checkout_type_onepage_save_order_after',
@@ -936,10 +932,10 @@ class Mage_Checkout_Model_Type_Onepage
             }
         }
 
-        $addressValidation = $this->getQuote()->getBillingAddress()->validate();
+        /*$addressValidation = $this->getQuote()->getBillingAddress()->validate();
         if ($addressValidation !== true) {
             Mage::throwException(Mage::helper('checkout')->__('Please check billing address information.'));
-        }
+        }*/
 
         if (!($this->getQuote()->getPayment()->getMethod())) {
             Mage::throwException(Mage::helper('checkout')->__('Please select valid payment method.'));

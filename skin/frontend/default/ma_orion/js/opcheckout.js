@@ -36,9 +36,9 @@ Checkout.prototype = {
         this.method = '';
         this.payment = '';
         this.loadWaiting = false;
-        this.steps = ['login', 'billing', 'shipping', 'shipping_method', 'tips','shipping_time','payment', 'review'];
+        this.steps = ['login','shipping', 'shipping_method', 'tips','shipping_time','payment', 'review'];
         //We use billing as beginning step since progress bar tracks from billing
-        this.currentStep = 'billing';
+        this.currentStep = 'shipping';
 
         this.accordion.sections.each(function(section) {
             Event.observe($(section).down('.step-title'), 'click', this._onSectionClick.bindAsEventListener(this));

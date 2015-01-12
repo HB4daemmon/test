@@ -30,11 +30,11 @@
     </div>
     <div class="block-content">
         <dl>
-            <?php if ($this->getCheckout()->getStepData('billing', 'is_show')): ?>
-            <div id="billing-progress-opcheckout">
-                <?php echo $this->getChildHtml('billing.progress') ?>
-            </div>
-            <?php endif; ?>
+            <!--<?php //if ($this->getCheckout()->getStepData('billing', 'is_show')): ?>
+                <div id="billing-progress-opcheckout">
+                    <?php //echo $this->getChildHtml('billing.progress') ?>
+                </div>
+            <?php //endif; ?>-->
 
             <?php if ($this->getCheckout()->getStepData('shipping', 'is_show')): ?>
             <div id="shipping-progress-opcheckout">

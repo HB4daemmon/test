@@ -711,7 +711,6 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         if (isset($redirectUrl)) {
             $result['redirect'] = $redirectUrl;
         }
-
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
 

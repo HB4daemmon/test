@@ -304,12 +304,12 @@ class Mage_Sales_Model_Service_Quote
             }
         }
 
-        $addressValidation = $this->getQuote()->getBillingAddress()->validate();
+        /*$addressValidation = $this->getQuote()->getBillingAddress()->validate();
         if ($addressValidation !== true) {
             Mage::throwException(
                 Mage::helper('sales')->__('Please check billing address information. %s', implode(' ', $addressValidation))
             );
-        }
+        }*/
 
         if (!($this->getQuote()->getPayment()->getMethod())) {
             Mage::throwException(Mage::helper('sales')->__('Please select a valid payment method.'));

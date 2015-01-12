@@ -48,6 +48,10 @@ class Mage_Checkout_Block_Onepage_Shipping extends Mage_Checkout_Block_Onepage_A
             'is_show'   => $this->isShow()
         ));
 
+        if ($this->isCustomerLoggedIn()) {
+            $this->getCheckout()->setStepData('shipping', 'allow', true);
+        }
+
         parent::_construct();
     }
 

@@ -56,7 +56,7 @@ class Luciky_Checkout_Block_Onepage extends Mage_Checkout_Block_Onepage_Abstract
     
    protected function _getStepCodes()
     {
-        return array('login', 'billing', 'shipping', 'shipping_method','tips','shipping_time', 'payment', 'review');
+        return array('login', 'shipping', 'shipping_method','tips','shipping_time', 'payment', 'review');
     }
 
     /**
@@ -66,6 +66,6 @@ class Luciky_Checkout_Block_Onepage extends Mage_Checkout_Block_Onepage_Abstract
      */
     public function getActiveStep()
     {
-        return $this->isCustomerLoggedIn() ? 'billing' : 'login';
+        return $this->isCustomerLoggedIn() ? 'shipping' : 'login';
     }
 }

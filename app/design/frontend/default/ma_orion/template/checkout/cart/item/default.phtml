@@ -70,11 +70,11 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
     <td>
     <select name="cart[<?php echo $_item->getId() ?>][substitute]">
         <?php $_substitute = $this->getSubstitute(); ?>
-      <option value ="0" <?php echo $_substitute == "0" ? "selected='selected'":"" ?>>No</option>
       <option value ="1" <?php echo $_substitute == "1" ? "selected='selected'":"" ?>>YES</option>
+      <option value ="0" <?php echo $_substitute == "0" ? "selected='selected'":"" ?>>No</option>
       <option value="2" <?php echo $_substitute == "2" ? "selected='selected'":"" ?>>Call To Confirm</option>
     </select></td>
-    <td> <textarea name="cart[<?php echo $_item->getId() ?>][customer_message]" value="<?php //echo $this->getQty() ?>" size="40" title="<?php echo $this->__('customer message') ?>" /><?php echo $this->getCustomer_message() ?></textarea>
+    <td> <textarea name="cart[<?php echo $_item->getId() ?>][customer_message]" value="<?php //echo $this->getQty() ?>" size="40" placeholder="Note" title="<?php echo $this->__('customer message') ?>" /><?php echo $this->getCustomer_message() ?></textarea>
     </td>
     <td class="a-center">
         <?php if ($isVisibleProduct): ?>

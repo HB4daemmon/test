@@ -1724,7 +1724,7 @@ margin-right:4px;
 .cart .shipping .sp-methods { margin:10px 0 0; padding:5px 0 0; }
 
 /* Shopping Cart Totals */
-.cart .totals { border: 1px solid #ededed; background: #f9f9f9;}
+.cart .totals { border: 1px solid #ededed; background: #f9f9f9;margin-right: 20px;}
 .cart .totals table { width:100%; margin:7px 0; }
 .cart .totals td { padding:1px 15px 1px 7px; }
 .cart .totals tr.last td {}

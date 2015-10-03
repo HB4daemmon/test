@@ -31,7 +31,9 @@
 
     <div id="datetimepicker" class="input-append date">
      <ul>
-         <?php $store_groups = $this->getStoregroups();
+         <?php
+             print_r($store_groups);
+             $store_groups = $this->getStoregroups();
              foreach ($store_groups as $key => $store_group){
                 $store_groupid=$store_group->getId();
                 $store_name =  ($store_group->getStoregroupName()=='Walmart')?'walmart':'fareast';

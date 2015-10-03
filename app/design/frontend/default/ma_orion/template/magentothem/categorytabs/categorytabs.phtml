@@ -113,7 +113,6 @@ else {
 							//	}
 							//}
 						?>
-                        <span class='inCart' id="<?php echo $_product->getID() ?>" value="<?php if($items) { foreach($items as $item) {if($item->getProductId() == $_product->getID()) { echo $item->getQty(); } /*else { echo 0; }*/ } }?>" style="display: none;"></span>
 					</div>
 				</li>
 			<?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>

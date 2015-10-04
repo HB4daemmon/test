@@ -827,6 +827,7 @@ class Mage_Checkout_Model_Type_Onepage
      */
     public function saveOrder()
     {
+        Mage::log('saveOrder');
         $this->validate();
         $isNewCustomer = false;
         switch ($this->getCheckoutMethod()) {
@@ -842,7 +843,7 @@ class Mage_Checkout_Model_Type_Onepage
                 break;
         }
         
-       // Mage::dispatchEvent('before_saving_orders',array(''));
+        Mage::dispatchEvent('before_saving_orders',array(''));
         $service = Mage::getModel('sales/service_quote', $this->getQuote());
         $service->submitAll();
         if ($isNewCustomer) {

@@ -1,0 +1,67 @@
+<?php
+function formatOptionTimes($str){
+    $str_array = explode(',',$str);
+    $output = array();
+    foreach($str_array as $s){
+        $o = $s.':00 - '.($s+1).':00<br>';
+        array_push($output,$o);
+    }
+    return $output;
+}
+
+$shippingtime_fareast_workday_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_fareast_label/shippingtime_fareast_workday_options"));
+$shippingtime_fareast_weekend_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_fareast_label/shippingtime_fareast_weekend_options"));
+$shippingtime_walmart_workday_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_walmart_label/shippingtime_walmart_workday_options"));
+$shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_walmart_label/shippingtime_walmart_weekend_options"));
+
+
+?>
+
+<div >
+    <table width="100%">
+        <tr>
+            <th colspan="2"><b>Fareast Shipping Time Range</b></th>
+            <th colspan="2"><b>Walmart Shipping Time Range</b></th>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><b>Workday</b></td>
+            <td><b>Weekend</b></td>
+            <td><b>Workday</b></td>
+            <td><b>Weekend</b></td>
+        </tr>
+        <tr colspan="3">
+            <td>
+                <?php
+                    foreach($shippingtime_fareast_workday_options as $fwork){
+                        echo $fwork;
+                    }
+                ?>
+            </td>
+            <td>
+                <?php
+                foreach($shippingtime_fareast_weekend_options as $fweekend){
+                    echo $fweekend;
+                }
+                ?>
+            </td>
+            <td>
+                <?php
+                foreach($shippingtime_walmart_workday_options as $wwork){
+                    echo $wwork;
+                }
+                ?>
+            </td>
+            <td>
+                <?php
+                foreach($shippingtime_walmart_weekend_options as $wweekend){
+                    echo $wweekend;
+                }
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
+

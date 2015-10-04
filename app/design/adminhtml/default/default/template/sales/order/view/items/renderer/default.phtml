@@ -237,6 +237,8 @@
     <td class="a-right"><?php echo $this->displayPriceAttribute('tax_amount') ?></td>
     <td class="a-right"><?php echo $this->displayTaxPercent($_item) ?></td>
     <td class="a-right"><?php echo $this->displayPriceAttribute('discount_amount') ?></td>
+    <td class="a-right"><?php echo $_item->getCustomer_message() ?></td>
+    <td class="a-right"><?php echo ($_item->getSubstitute()==0)?'N':'Y' ?></td>
     <td class="a-right last">
         <?php echo $this->displayPrices(
             $_item->getBaseRowTotal() + $_item->getBaseTaxAmount() + $_item->getBaseHiddenTaxAmount() + $_item->getBaseWeeeTaxAppliedRowAmount() - $_item->getBaseDiscountAmount(),

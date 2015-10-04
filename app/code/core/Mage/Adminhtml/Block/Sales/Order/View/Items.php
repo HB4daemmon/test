@@ -59,7 +59,8 @@ class Mage_Adminhtml_Block_Sales_Order_View_Items extends Mage_Adminhtml_Block_S
         $real_order_id = $this->getOrder()->getId();
        
         $items=Mage::getModel('sales/order_item')->getCollection();
-        $items->addFieldtoFilter('real_order_id',array('eq'=>$real_order_id));
+        //$items->addFieldtoFilter('real_order_id',array('eq'=>$real_order_id));
+        $items->addFieldtoFilter('order_id',array('eq'=>$real_order_id));
         return $items;
     }
 }

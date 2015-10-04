@@ -98,6 +98,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 	
 		$_order=$observer->getOrder();
 		$_quote=$observer->getQuote();
+
 		$keys=array('state','status','shipping_description','quote_id','is_virtual','store_id','customer_id','customer_group_id','customer_gender','base_to_global_rate','base_to_order_rate','customer_is_guest','customer_note_notify','email_sent','store_currency_code',
 		'base_currency_code','customer_email','customer_firstname','customer_lastname','global_currency_code','order_currency_code','remote_ip','shipping_method','shipping_incl_tax','base_shipping_incl_tax');
 
@@ -137,7 +138,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			$new_order->setQuote($_quote);
 			$new_order->save();
 			$new_orderid=$new_order->getData('entity_id');
-		
+		    Mage::log('new order id'.$new_orderid);
 			$order_storegroup=Mage::getModel('sales/order_storegroup');
 			foreach ($pkeys as  $value){
 				$order_storegroup->setData($value,$quote_storegroup->getData($value));
@@ -200,6 +201,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			
 			
 			foreach ($order_items as $key => $order_item){
+                Mage::log(json_encode($order_item));
 				$orderData['base_discount_amount']+=$order_item->getData('base_discount_amount');
 				$orderData['base_subtotal']+=$order_item->getData('base_row_total');
 				$orderData['subtotal']+=$order_item->getData('row_total');

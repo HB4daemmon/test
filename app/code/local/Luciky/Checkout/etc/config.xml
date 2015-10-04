@@ -17,7 +17,7 @@
                         <onepage_shipping_method>Luciky_Checkout_Block_Onepage_Shippingmethod</onepage_shipping_method>
                         <onepage_tips>Luciky_Checkout_Block_Onepage_Tips</onepage_tips>
                         <observer>Luciky_Checkout_Model_Observer</observer>
-                        <type_onepage>Luciky_Checkout_Model_Checkout_Type_Onepage</type_onepage>
+                        <!--<type_onepage>Luciky_Checkout_Model_Checkout_Type_Onepage</type_onepage>-->
                </rewrite>  
             </checkout> 
 

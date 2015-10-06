@@ -44,11 +44,20 @@
                 <li class="fields">
                     <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
                 </li>
-                <li>
-                    <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
-                    <div class="input-box">
-                        <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="email" id="email_address" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
+                <li class="fields">
+                    <div class="field">
+                        <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                        <div class="input-box">
+                            <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="email" id="email_address" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
+                        </div>
                     </div>
+                    <div class="field">
+                        <label for="phone_number" class="required"><em>*</em><?php echo $this->__('Phone Number') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="phone_number" id="phone_number" value="<?php echo $this->escapeHtml($this->getFormData()->getPhone_number()) ?>" title="<?php echo $this->__('Phone Number') ?>" class="input-text" />
+                        </div>
+                    </div>
+
                 </li>
             <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
             <?php if ($_dob->isEnabled()): ?>

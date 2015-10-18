@@ -36,7 +36,17 @@ class Magentothem_Categorytabs_Block_Categorytabs_Advanced extends Mage_Catalog_
 			throw new Exception($att.' value not set');
 		}
 	}
-	
+
+    public function getProductLimit(){
+        return $this->getData('products_limit');
+    }
+
+    public function getCateUrl($_categoryId){
+        $_category = Mage::getModel('catalog/category')->load($_categoryId);
+
+        return  $_category->getUrlPath();
+    }
+
 	function getProductCate($id = NULL) {
         $storeId = Mage::app()->getStore()->getId();
         $_category = Mage::getModel('catalog/category')->load($id);
@@ -49,7 +59,7 @@ class Magentothem_Categorytabs_Block_Categorytabs_Advanced extends Mage_Catalog_
 				Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection);
 				Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection);
 		$productLimits = $this->getProductsCount();
-		if(!$productLimits) $productLimits = 10;
+		if(!$productLimits) $productLimits = 12;
 		$_productCollection->setPageSize($productLimits);
         $_productCollection->load();
 		return $_productCollection;

@@ -44,13 +44,15 @@ else {
 	<div class="tab_container"> 
 		<?php foreach($categoryIds as $cate_id) { ?>
 		 <div id="tab<?php echo $cate_id.'-'.$identify;?>" class="tab_content_<?php echo $identify; ?>"> 
-			<?php $_productCollection = $this->getProductCate($cate_id); ?>
+			<?php $_productCollection = $this->getProductCate($cate_id);?>
 			<?php $_collectionSize = $_productCollection->count() ?>
-			<?php $_columnCount = $productsOnRow; ?>
+			<?php $_columnCount = $productsOnRow;?>
 		<?php $i=0; foreach ($_productCollection as $_product): ?>
+
 			<?php if ($i++%$_columnCount==0): ?>
 			<ul class="products-grid row">
 			<?php endif ?>
+            <?php if ($i < $this->getProductLimit()){?>
 				<li class="col-md-3 col-sm-6 col-sms-6 col-smb-12 item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
 					<div class="item-container">
 						<div class="item-inner">
@@ -79,7 +81,7 @@ else {
 									<?php endif; ?>
 								</div>
 							</div>
-							
+
 							<ul class="add-to-links">
 								<?php if($addtowishlist) { ?>
 									<?php if ($this->helper('wishlist')->isAllow()) : ?>
@@ -95,10 +97,10 @@ else {
 						</div>
 						<?php
 							$newFromDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsFromDate();
-							$newToDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsToDate();                 
+							$newToDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsToDate();
 							$now = date("Y-m-d H:m(worry)");
 							// Get the Special Price
-							$specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+							$specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice();
 							// Get the Special Price FROM date
 							$specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
 							// Get the Special Price TO date
@@ -115,6 +117,11 @@ else {
 						?>
 					</div>
 				</li>
+            <?php }else{?>
+                <div style="color:#666;margin-top: 240px;margin-left: 20px;left: 20px;position: relative;cursor:pointer;">
+                    <a href="<?php echo $this->getCateUrl($cate_id);?>" style="border:1px solid #65C178;padding: 10px;" onmouseover="this.style.cssText='color:#FFA200; text-decoration:none;">view more</a>
+                </div>
+                <?php break;}?>
 			<?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
 			</ul>
 			<?php endif ?>

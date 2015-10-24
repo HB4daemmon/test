@@ -1,14 +1,14 @@
 	<?php
-ini_set('magic_gpc_quotes', 0);
-$profile = isset($_REQUEST["profile"]) ? $_REQUEST["profile"] : 'default';
+ini_set('gpc_magic_quotes', 0);
+    require_once("security.php");
+$profile = isset($_REQUEST["profile"]) ? strip_tags($_REQUEST["profile"]) : 'default';
 $_SESSION["last_runned_profile"] = $profile;
 session_write_close();
 ?>
 <script type="text/javascript">
-	var imp_params={engine:'magmi_productimportengine:Magmi_ProductImportEngine'};
+	var imp_params={engine:'magmi_productimportengine:Magmi_ProductImportEngine',token:'<?php echo $_SESSION["token"]?>'};
 	<?php
-foreach ($_REQUEST as $k => $v)
-{
+foreach ($_REQUEST as $k => $v) {
     echo "imp_params['$k']='$v';\n";
 }
 ?>
@@ -18,7 +18,7 @@ foreach ($_REQUEST as $k => $v)
 	<div class="section_title grid_12">
 		<span>Importing using profile (<?php echo $profile?>)...</span> <span><input
 			id="cancel_button" type="button" value="cancel"
-			onclick="cancelImport()"></input></span>
+			onclick="cancelImport()"></span>
 		<div id="progress_container">
 			&nbsp;
 			<div id="import_progress"></div>
@@ -35,10 +35,10 @@ foreach ($_REQUEST as $k => $v)
 
 	updateTime=function(tdiv,xprefix)
 	{
-		new Ajax.Updater(tdiv,'ajax_gettime.php',{parameters:{prefix:xprefix},
+		new Ajax.Updater(tdiv,'ajax_gettime.php',{parameters:{prefix:xprefix,token:'<?php echo $_SESSION['token']?>'},
 			onComplete:function(){$(tdiv).show();}});
 	};
-	
+
 	endImport=function(t)
 	{
 		if(window.upd!=null)
@@ -48,7 +48,7 @@ foreach ($_REQUEST as $k => $v)
 			window.upd=null;
 			updateTime('endimport_div','Import Ended');
 			if(window._sr!=null)
-			{		
+			{
 				window._sr.transport.abort();
 				window._sr=null;
 			}
@@ -60,10 +60,10 @@ foreach ($_REQUEST as $k => $v)
 		window.upd=new Ajax.PeriodicalUpdater("runlog","magmi_progress.php",{frequency:1,evalScripts:true,parameters:{
 		logfile:imp_params['logfile']}});
 	};
-	
+
 	startImport=function(imp_params)
 	{
-		
+
 		if(window._sr==null)
 		{
 			updateTime('startimport_div','Import Started');
@@ -75,7 +75,7 @@ foreach ($_REQUEST as $k => $v)
 													}});
 		}
 	};
-	
+
 	setProgress=function(pc)
 	{
 		$('import_current').setStyle({width:''+pc+'%'});
@@ -91,7 +91,7 @@ foreach ($_REQUEST as $k => $v)
 			window._sr=null;
 		}*/
 				new Ajax.Updater("runlog","magmi_progress.php",{evalScripts:true,
-					parameters:{logfile:imp_params['logfile']}
+					parameters:{logfile:imp_params['logfile'],token:'<?php echo $_SESSION['token']?>'}
 				});;
 	};
 

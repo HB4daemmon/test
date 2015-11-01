@@ -30,14 +30,14 @@ $isVisibleProduct = $_item->getProduct()->isVisibleInSiteVisibility();
 $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage_Catalog_Model_Product_Attribute_Source_Msrp_Type::TYPE_BEFORE_ORDER_CONFIRM);
 ?>
 <tr>
-    <td><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->resize(200); ?>"alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
+    <td><?php //if ($this->hasProductUrl()):?><a title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><?php //endif;?><img src="<?php echo $this->getProductThumbnail()->resize(200); ?>"alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
     <td>
         <h2 class="product-name">
-        <?php if ($this->hasProductUrl()):?>
-            <a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->escapeHtml($this->getProductName()) ?></a>
-        <?php else: ?>
+        <?php //if ($this->hasProductUrl()):?>
+            <a <?php echo $this->escapeHtml($this->getProductName()) ?></a>
+        <?php //else: ?>
             <?php echo $this->escapeHtml($this->getProductName()) ?>
-        <?php endif; ?>
+        <?php //endif; ?>
         </h2>
         <?php if ($_options = $this->getOptionList()):?>
         <dl class="item-options">

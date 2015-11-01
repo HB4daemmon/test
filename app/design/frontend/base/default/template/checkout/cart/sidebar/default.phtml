@@ -31,7 +31,7 @@
 ?>
 <li class="item">
     <?php if ($this->hasProductUrl()): ?>
-        <a href="<?php echo $this->getProductUrl()?>" title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><img src="<?php echo $this->getProductThumbnail()->resize(50, 50)->setWatermarkSize('30x10'); ?>" width="50" height="50" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /></a>
+        <a title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><img src="<?php echo $this->getProductThumbnail()->resize(50, 50)->setWatermarkSize('30x10'); ?>" width="50" height="50" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /></a>
     <?php else: ?>
         <span class="product-image"><img src="<?php echo $this->getProductThumbnail()->resize(50, 50)->setWatermarkSize('30x10'); ?>" width="50" height="50" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /></span>
     <?php endif; ?>
@@ -40,7 +40,7 @@
         <?php if ($isVisibleProduct): ?>
         <a href="<?php echo $this->getConfigureUrl() ?>" title="<?php echo $this->__('Edit item') ?>" class="btn-edit"><?php echo $this->__('Edit item')?></a>
         <?php endif ?>
-        <p class="product-name" style="padding-right: 20px"><?php if ($this->hasProductUrl()): ?><a href="<?php echo $this->getProductUrl() ?>"><?php endif; ?><?php echo $this->escapeHtml($this->getProductName()) ?><?php if ($this->hasProductUrl()): ?></a><?php endif; ?></p>
+        <p class="product-name" style="padding-right: 20px"><?php if ($this->hasProductUrl()): ?><p href="<?php //echo $this->getProductUrl() ?>"><?php endif; ?><?php echo $this->escapeHtml($this->getProductName()) ?><?php if ($this->hasProductUrl()): ?></p><?php endif; ?></p>
         <a href="setLocation('<?php echo $this->getDeleteUrl() ?>')" class="redQty" onclick=""><img src="<?php echo $this->getskinurl('images/triangle-left.png') ?>"></a> <strong id="itemCount"><?php echo $this->getQty() ?></strong> <a href="setLocation('<?php echo $this->getDeleteUrl() ?>')" class="addQty" onclick=""><img src="<?php echo $this->getskinurl('images/triangle-right.png') ?>"></a> x
 
     <?php if ($canApplyMsrp): ?>

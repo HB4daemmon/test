@@ -54,8 +54,8 @@
                 <div class="item-container">
 		    <div class="item-inner">
 			<div class="item-inner-top">
-			    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
-			    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+			    <a title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+			    <h2 class="product-name"><a title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
 			    <?php if($this->getProductCfg('product_review')): ?>
 				<?php //if($_product->getRatingSummary()): ?>
 				<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
@@ -65,7 +65,7 @@
 			</div>
                         
 			<div class="des-inbox">
-			    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+			    <h2 class="product-name"><a title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
 			    <?php if($this->getProductCfg('product_review')): ?>
 				<?php //if($_product->getRatingSummary()): ?>
 				<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>

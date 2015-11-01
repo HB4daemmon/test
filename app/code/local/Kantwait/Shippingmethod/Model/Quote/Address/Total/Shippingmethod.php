@@ -41,7 +41,7 @@ class Kantwait_Shippingmethod_Model_Quote_Address_Total_Shippingmethod extends M
         $amt = $address->getShippingmethodAmount();
         $address->addTotal(array(
             'code'=>$this->getCode(),
-            'title'=>Mage::helper('shippingmethod')->__('Shipping & Handle'),
+            'title'=>Mage::helper('shippingmethod')->__('Delivery Fee'),
             'value'=> $amt
         ));
         return $this;

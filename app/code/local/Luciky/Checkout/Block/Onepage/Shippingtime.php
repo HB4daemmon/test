@@ -38,7 +38,7 @@ class Luciky_Checkout_Block_Onepage_Shippingtime extends Mage_Checkout_Block_One
     protected function _construct()
     {
         $this->getCheckout()->setStepData('shipping_time', array(
-            'label'     => Mage::helper('checkout')->__('Deliver Time'),
+            'label'     => Mage::helper('checkout')->__('Delivery Time'),
             'is_show'   => $this->isShow()
         ));
 

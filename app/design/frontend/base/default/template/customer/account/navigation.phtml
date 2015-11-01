@@ -31,6 +31,15 @@
     <div class="block-content">
         <ul>
             <?php $_links = $this->getLinks(); ?>
+            <?php
+            unset($_links['billing_agreements']);
+            unset($_links['recurring_profiles']);
+            unset($_links['reviews']);
+            unset($_links['tags']);
+            unset($_links['OAuth Customer Tokens']);
+            unset($_links['downloadable_products']);
+
+            ?>
             <?php $_index = 1; ?>
             <?php $_count = count($_links); ?>
             <?php foreach ($_links as $_link): ?>

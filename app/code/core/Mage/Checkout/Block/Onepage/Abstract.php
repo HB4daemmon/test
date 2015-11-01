@@ -239,7 +239,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
             foreach($_date as $d){
                 $range = array();
                 foreach($_range[$i] as $r){
-                    $option = array('value'=>$r, 'label'=>Mage::helper('shippingtime')->__($r.":00 - ".($r+1).":00"));
+                    $option = array('value'=>$r, 'label'=>Mage::helper('shippingtime')->__($this->to12Hour($r)." - ".$this->to12Hour($r+1)));
                     array_push($range,$option);
                 }
                 $date[$d]=$range;
@@ -255,10 +255,22 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         $_range = $this->getShippingtimeDate($store,'range');
         $range = $_range[0];
         foreach($range as $r){
-            $option = array('value'=>$r, 'label'=>Mage::helper('shippingtime')->__($r.":00 - ".($r+1).":00"));
+            $option = array('value'=>$r, 'label'=>Mage::helper('shippingtime')->__(($this->to12Hour($r)." - ".$this->to12Hour($r+1))));
             array_push($result,$option);
         }
         return $result;
+    }
+
+    public function to12Hour($r){
+        if($r==0){
+            return "12:00 midnight";
+        }else if($r == 12){
+            return "12:00 noon";
+        }else if($r>0 &&$r<12){
+            return $r.":00 am";
+        }else{
+            return ($r-12).":00 pm";
+        }
     }
 
     public function getShippingtimeHtmlTime($store,$store_groupid){
@@ -292,7 +304,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
                         $_date =  strtotime("+3 hours +".$i." days");
                     }
                     $_numOfWeek = idate("w",$_date);
-                    $_dateTemp = date('Y-m-d',$_date);
+                    $_dateTemp = date('m-d-Y',$_date);
                     $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
                     array_push($result,$option);
                     array_push($dateResult,$_dateTemp);
@@ -428,7 +440,8 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
     public function getShippingmethodHtml($store){
         $config_name=$this->getShippingmethodConfig($store,'name');
         $config_value=$this->getShippingmethodConfig($store,'value');
-        return $config_name[0]." : $".$config_value[0];
+        //return $config_name[0]." : $".$config_value[0];
+        return $config_name[0];
     }
 
     public function getTotalShippingFee($store_groups){
@@ -443,7 +456,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 
     public function getTotalShippingFeeHtml($store_groups){
         $total = $this->getTotalShippingFee($store_groups);
-        return "Shipping & Handle Total : $".number_format($total,2);
+        return "Delivery Fee: $".number_format($total,2);
     }
 
     public function getCountryOptions()

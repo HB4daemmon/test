@@ -27,7 +27,7 @@
 <?php if ($this->getCheckout()->getStepData('shipping_time', 'complete')): ?>
 <?php $completeClass = $this->getCheckout()->getStepData('shipping_time', 'complete') ? 'complete' : ''; ?>
 <dt class="<?php echo $completeClass ?>">
-    <?php echo $this->__('Deliver time') ?> <span class="changelink"><span class="separator">|</span> <a
+    <?php echo $this->__('Delivery Time') ?> <span class="changelink"><span class="separator">|</span> <a
         href="#shipping_time"
         onclick="checkout.changeSection('opc-shippingtime');return false;"><?php echo $this->__('Change') ?></a></span>
 </dt>
@@ -38,7 +38,7 @@
 </dd>
 <?php else: ?>
 <dt>
-    <?php echo $this->__('Deliver Time') ?>
+    <?php echo $this->__('Delivery Time') ?>
 </dt>
 <?php endif; ?>
 

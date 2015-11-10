@@ -1,13 +1,13 @@
 <config>
     <tabs>
         <kantwaitconfig translate="label" module="shippingtime">
-            <label>Kantwait Config Options</label>
+            <label>Cartgogogo Config</label>
             <sort_order>99999</sort_order>
         </kantwaitconfig>
     </tabs>
     <sections>
         <shippingtime_options translate="label" module="shippingtime">
-            <label>Shippingtime Config</label>
+            <label>Shipping Time Config</label>
             <tab>kantwaitconfig</tab>
             <frontend_type>text</frontend_type>
             <sort_order>1000</sort_order>

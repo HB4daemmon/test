@@ -118,9 +118,12 @@ else {
 					</div>
 				</li>
             <?php }else{?>
-                <div style="color:#666;margin-top: 240px;margin-left: 20px;left: 20px;position: relative;cursor:pointer;">
+                <li class="col-md-3 col-sm-6 col-sms-6 col-smb-12 item">
+                    <div style="height:240px">
+
+                    </div>
                     <a href="<?php echo $this->getCateUrl($cate_id);?>" style="border:1px solid #65C178;padding: 10px;" onmouseover="this.style.cssText='color:#FFA200; text-decoration:none;">view more</a>
-                </div>
+                </li>
                 <?php break;}?>
 			<?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
 			</ul>

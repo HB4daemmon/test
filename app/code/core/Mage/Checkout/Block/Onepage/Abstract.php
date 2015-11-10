@@ -284,7 +284,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 
     //get date & range array
     public function getShippingtimeDate($store,$type){
-        $current_date = strtotime("+3 hours");
+        $current_date = strtotime("+2 hours");
         $numOfWeek = idate("w",$current_date);
         $hour = idate("H",$current_date);
         $config_workday = $this->getShippingtimeConfig($store,'workday');
@@ -335,7 +335,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
                         $_date =  strtotime("+3 hours +".$i." days");
                     }
                     $_numOfWeek = idate("w",$_date);
-                    $_dateTemp = date('Y-m-d',$_date);
+                    $_dateTemp = date('m-d-Y',$_date);
                     $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
                     array_push($result,$option);
                     array_push($dateResult,$_dateTemp);
@@ -360,7 +360,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
                         $_date = strtotime("+3 hours +".$i." days");
                     }
                     $_numOfWeek = idate("w",$_date);
-                    $_dateTemp = date('Y-m-d',$_date);
+                    $_dateTemp = date('m-d-Y',$_date);
                     $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
                     array_push($result,$option);
                     array_push($dateResult,$_dateTemp);
@@ -390,7 +390,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
                         $_date =  strtotime("+3 hours +".$i." days");
                     }
                     $_numOfWeek = idate("w",$_date);
-                    $_dateTemp = date('Y-m-d',$_date);
+                    $_dateTemp = date('m-d-Y',$_date);
                     $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
                     array_push($result,$option);
                     array_push($dateResult,$_dateTemp);
@@ -406,13 +406,77 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         }
 
         if($type == 'date'){
-            return $dateResult;
+            return $this->validateOrderCount($dateResult,$rangeResult,'date');
         }elseif($type == 'range'){
-            return $rangeResult;
+            return $this->validateOrderCount($dateResult,$rangeResult,'range');
         }else{
             return $result;
         }
 
+    }
+
+    public function validateOrderCount($date,$time,$type){
+        try{
+            $count = count($date);
+            $conn = $this->db_connect();
+            $new_date = array();
+            $test = array();
+
+            for($i = 0; $i<$count;$i++){
+                $d = $date[$i];
+                $ts = $time[$i];
+                $new_time[$i] = array();
+                //$format_date = date('m-d-Y',strtotime($d));
+                foreach($ts as $t){
+                    $sql = "select count(1) as order_num from sales_flat_order_storegroup s, sales_flat_order o
+                    where s.order_id = o.entity_id
+                    and o.status = 'processing'
+                    and s.date = '$d'
+                    and s.time_range = '$t';";
+                    $sqlres = $conn->query($sql);
+                    if(!$sqlres){
+                        throw new Exception("select order num error");
+                    }
+                    $row = $sqlres->fetch_assoc();
+                    if($row['order_num'] <= 3){
+                        array_push($new_time[$i],$t);
+                    }
+                    array_push($test,$sql);
+                }
+                if(count($new_time)>0){
+                    array_push($new_date,$d);
+                }
+
+            }
+
+
+
+            if($type == 'date'){
+                return $new_date;
+            }else if($type == 'range'){
+                return $new_time;
+            }
+            $conn->close();
+        }catch (Exception $e){
+            $conn->close();
+            return false;
+        }
+
+    }
+
+    public function db_connect() {
+        $xml_array = simplexml_load_file(dirname(__FILE__).'/../../../../../../etc/local.xml');
+        $host = $xml_array->global->resources->default_setup->connection->host;
+        $username = $xml_array->global->resources->default_setup->connection->username;
+        $password = $xml_array->global->resources->default_setup->connection->password;
+        $db_name = $xml_array->global->resources->default_setup->connection->dbname;
+
+        $res = new mysqli($host, $username, $password, $db_name);
+        if ($res->connect_errno) {
+            throw new Exception("Failed to connect database");
+        }
+        $res->query("SET NAMES utf8");
+        return $res;
     }
 
     public function getShippingtimeHtmlDate($store,$store_groupid){

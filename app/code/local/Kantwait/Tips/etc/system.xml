@@ -1,7 +1,7 @@
 <config>
     <tabs>
         <kantwaitconfig translate="label" module="tips">
-            <label>Kantwait Config Options</label>
+            <label>Cartgogogo Config</label>
             <sort_order>99999</sort_order>
         </kantwaitconfig>
     </tabs>

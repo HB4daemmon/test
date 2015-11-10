@@ -16,7 +16,7 @@
             timeRange.length = 0;
             var shippingDate = document.getElementById("shippingtime_"+store+":date").value;
             var allRange = <?php echo $this->getShippingtimeOption();?>;
-            //console.log(range);
+            console.log(range);
             var range = allRange[store][shippingDate];
             for (var r = 0; r < range.length; r++){
                 var options = document.createElement("option");

@@ -35,7 +35,7 @@ $jq(document).ready(function(){
        var extraWidth       = 0
        var wrapWidthPopup   = $jq(this).find('.popup').outerWidth(true); /*include padding + margin + border*/
        var actualWidthPopup = $jq(this).find('.popup').width(); /*no padding, margin, border*/
-       extraWidth           = wrapWidthPopup - actualWidthPopup;    
+       extraWidth           = wrapWidthPopup - actualWidthPopup;
        
        /* calculate new width of the popup*/
        var widthblock1 = $jq(this).find('.popup .block1').outerWidth(true);
@@ -73,7 +73,8 @@ $jq(document).ready(function(){
        /*set new width popup*/
        $jq(this).find('.popup').css('width',new_width_popup);
        $jq(this).find('.popup .block1').css('width',new_width_popup);
-       
+       $jq(this).find('.popup .block2').css('width',new_width_popup);
+
        /*return popup display none*/
        $jq(this).find('.popup').css('display','none');
        

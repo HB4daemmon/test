@@ -58,14 +58,14 @@ class Magentothem_Cattop_Block_Cattop extends Mage_Core_Block_Template
 	
     /*********** get & Resized image ***********/
 
-    public function getImage($cat)
+    /*public function getImage($cat)
     {
-        return $this->getCatResizedImage($cat, $this->getTopCfg('width_thumbnail'), $this->getTopCfg('height_thumbnail') );
+        return $this->getCatResizedImage($cat, $this->getTopCfg('width_thumbnail'), $this->getTopCfg('height_thumbnail'),100 );
     }
 
     public function getImageHover($cat)
     {
-        return $this->getCatResizedImageHover($cat, $this->getTopCfg('width_thumbnail'), $this->getTopCfg('height_thumbnail') );        
+        return $this->getCatResizedImageHover($cat, $this->getTopCfg('width_thumbnail'), $this->getTopCfg('height_thumbnail'),100 );
     }
 
     public function getImagePath()
@@ -165,7 +165,7 @@ class Magentothem_Cattop_Block_Cattop extends Mage_Core_Block_Template
         $imageObj->backgroundColor(array(255,255,255));
         $imageObj->resize ( $width, $height );
         $imageObj->save ( $imageResizedlUrl );        
-    }
+    }*/
 
     /*********** End get & Resized image ***********/
 

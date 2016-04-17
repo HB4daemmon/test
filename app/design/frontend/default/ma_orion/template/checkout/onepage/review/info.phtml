@@ -41,6 +41,8 @@
                 <th rowspan="<?php echo $rowspan ?>"><?php echo $this->__('Product Name') ?></th>
                 <th colspan="<?php echo $colspan ?>" class="a-center"><?php echo $this->__('Price') ?></th>
                 <th rowspan="<?php echo $rowspan ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
+                <th rowspan="<?php echo $rowspan ?>" class="a-center"><?php echo $this->__('Substitute') ?></th>
+                <th rowspan="<?php echo $rowspan ?>" class="a-center"><?php echo $this->__('Note') ?></th>
                 <th colspan="<?php echo $colspan ?>" class="a-center"><?php echo $this->__('Subtotal') ?></th>
             </tr>
             <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
@@ -61,7 +63,7 @@
         <?php $items=$this->getGroupItems($this->getItems());
         foreach ($items as $keys => $itemgroup) {
         ?>  
-          <tr class="store_review_info"><td class="store_review_name"> <?php echo $keys;?></td><td colspan="3"> <?php echo $this->helper('checkout')->formatPrice($itemgroup['total_price']);unset($itemgroup['total_price']); ?></td></tr>
+          <tr class="store_review_info"><td class="store_review_name"> <?php echo $keys;?></td><td colspan="5"> <?php echo $this->helper('checkout')->formatPrice($itemgroup['total_price']);unset($itemgroup['total_price']); ?></td></tr>
 
         <?php   foreach ($itemgroup as  $_item) {
                 echo $this->getItemHtml($_item);

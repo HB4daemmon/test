@@ -188,6 +188,8 @@
  * @method Mage_Sales_Model_Order_Item setBaseDiscountRefunded(float $value)
  * @method float getSubstitute()
  * @method Mage_Sales_Model_Order_Item setSubstitute(int $value)
+ * @method string getCustomerMessage()
+ * @method Mage_Sales_Model_Order_Item setCustomerMessage(string $value)
  *
  * @category    Mage
  * @package     Mage_Sales

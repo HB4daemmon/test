@@ -143,6 +143,17 @@
     </td>
     <?php endif; ?>
     <td class="a-center"><?php echo $_item->getQty() ?></td>
+    <td><?php
+        $sub = $this->getItem()->getSubstitute();
+        if ($sub == 1){
+            echo 'Y';
+        }else{
+            echo 'N';
+        }
+        ?></td>
+    <td><?php
+        echo $this->getItem()->getCustomerMessage();
+        ?></td>
     <!-- sub total starts here -->
     <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">

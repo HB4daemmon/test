@@ -54,7 +54,6 @@ class Mage_Checkout_Block_Onepage_Review_Info extends Mage_Sales_Block_Items_Abs
             $res_items[$keys][]=$item;
            $res_items[$keys]['total_price']=$res_items[$keys]['total_price'] + $item->getRowTotal();
         }
-
         return $res_items;
 
     }

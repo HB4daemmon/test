@@ -471,7 +471,7 @@ Shipping.prototype = {
         } else {
             Element.hide('shipping-new-address-form');
         }
-        shipping.setSameAsBilling(false);
+        //shipping.setSameAsBilling(false);
     },
 
     resetSelectedAddress: function(){
@@ -506,7 +506,7 @@ Shipping.prototype = {
         }
     },
 
-    setSameAsBilling: function(flag) {
+    /*setSameAsBilling: function(flag) {
         $('shipping:same_as_billing').checked = flag;
 // #5599. Also it hangs up, if the flag is not false
 //        $('billing:use_for_shipping_yes').checked = flag;
@@ -536,7 +536,7 @@ Shipping.prototype = {
         } else {
             $('shipping-address-select').value = $('billing-address-select').value;
         }
-    },
+    },*/
 
     setRegionValue: function(){
         $('shipping:region').value = $('billing:region').value;
@@ -934,7 +934,9 @@ Payment.prototype = {
     nextStep: function(transport){
         if (transport && transport.responseText){
             try{
+                console.log(transport.responseText);
                 response = eval('(' + transport.responseText + ')');
+                console.log(response);
             }
             catch (e) {
                 response = {};
@@ -960,7 +962,7 @@ Payment.prototype = {
 
         checkout.setStepResponse(response);
 
-        //checkout.setPayment();
+        //checkout.setReview();
     },
 
     initWhatIsCvvListeners: function(){
@@ -1089,9 +1091,9 @@ TipsMethod.prototype = {
     nextStep: function(transport){
         if (transport && transport.responseText){
             try{
-                console.log(transport.responseText);
+                //console.log(transport.responseText);
                 response = eval('(' + transport.responseText + ')');
-                console.log(response);
+                //console.log(response);
             }
             catch (e) {
                 response = {};

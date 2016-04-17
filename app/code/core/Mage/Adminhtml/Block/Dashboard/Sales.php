@@ -62,6 +62,8 @@ class Mage_Adminhtml_Block_Dashboard_Sales extends Mage_Adminhtml_Block_Dashboar
             $collection->addFieldToFilter('store_id', array('in' => $storeIds));
         }
 
+//        $collection->addFieldToFilter('parent_order_id',array('ne'=>''));
+
         $collection->load();
         $sales = $collection->getFirstItem();
 

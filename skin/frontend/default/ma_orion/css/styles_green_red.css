@@ -619,7 +619,7 @@ p.welcome-msg { margin: 0; line-height: 25px; text-align: center; display: none;
 .header .block-header .email span{ color: #e44f4f;}
 .header #search_mini_form { display: inline-block;}
 .header .form-search {   padding: 0; width: 647px; float: left; margin: auto; background: #e4e4e4; padding: 3px;}
-.header .form-search input.input-text { width: 420px; float: left; padding: 13px 10px 14px; font-style: italic; color: #999;}
+.header .form-search input.input-text { width: 528px; float: left; padding: 13px 10px 14px; font-style: italic; color: #999;}
 
 .header .form-search .select-search{ position: relative; float: left}
 .header .form-search #cat { font-family: OpenSansRegular; font-size: 14px;}
@@ -2756,7 +2756,7 @@ ul.tabs li .tab8:hover, ul.tabs li.active .tab8 { background-position: left -54p
 @media (max-width: 1199px) {
     body { font-size: 12px;}
     .header .form-search { width: 482px; }
-    .header .form-search input.input-text { width: 255px;}
+    .header .form-search input.input-text { width: 363px;}
     .pt_custommenu div.pt_menu .parentMenu a, .pt_custommenu div.pt_menu .parentMenu span.block-title { font-size: 15px; padding: 10px;}
     .home-banner-static .banner-box .banner-box-inner .banner-title, .footer-static-title h3 { font-size: 19px;}
     .categorytabsliders-title h2, .megamenu-title h2, .block .block-title strong, .categorytabs-title h2, .banner-static-home2 .banner-title h2, .categorytabsliders-title h2, .brand-title h2, .ma-onsale-product-title h2, .page-title h1, .page-title h2, .ma-upsellslider-title h2, .related-product-title h2 { font-size: 21px;}
@@ -2832,7 +2832,7 @@ ul.tabs li .tab8:hover, ul.tabs li.active .tab8 { background-position: left -54p
     
     .col2-set .col-1, .col2-set .col-2 { width: 100%; margin-bottom: 20px;}
     .header .form-search { width: 407px; }
-    .header .form-search input.input-text { width: 180px; }
+    .header .form-search input.input-text { width: 288px; }
     
 }
 
@@ -2864,7 +2864,7 @@ ul.tabs li .tab8:hover, ul.tabs li.active .tab8 { background-position: left -54p
     .form-list input.input-text, .form-list li.wide .input-box,
     .product-view .box-reviews .form-add .form-list input.input-text, .product-view .box-reviews .form-add .form-list textarea { width: 250px;}
     .header .form-search { width: 300px; }
-    .header .form-search input.input-text { width: 73px; }
+    .header .form-search input.input-text { width: 180px; }
     #product-review-table.data-table thead th { padding: 0;}
     #product-review-table.data-table th { padding: 5px;}
     .header .block-header .email { margin-top: 5px;}

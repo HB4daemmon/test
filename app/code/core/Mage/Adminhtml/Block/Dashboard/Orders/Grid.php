@@ -67,6 +67,8 @@ class Mage_Adminhtml_Block_Dashboard_Orders_Grid extends Mage_Adminhtml_Block_Da
             $collection->addRevenueToSelect(true);
         }
 
+        $collection->addAttributeToFilter('parent_order_id',array('neq'=>''));
+
         $this->setCollection($collection);
 
         return parent::_prepareCollection();

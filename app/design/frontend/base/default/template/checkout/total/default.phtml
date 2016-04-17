@@ -24,6 +24,11 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $node = explode('/',Mage::helper('core/url')->getCurrentUrl());
+$len = count($node);
+$current_page = $node[$len-2];
+if ($current_page != 'cart'){
+    ?>
 <tr>
     <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
         <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?><strong><?php endif; ?>
@@ -35,4 +40,8 @@
             <?php echo $this->helper('checkout')->formatPrice($this->getTotal()->getValue()) ?>
         <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?></strong><?php endif; ?>
     </td>
+    <td></td>
 </tr>
+<?php
+}
+?>

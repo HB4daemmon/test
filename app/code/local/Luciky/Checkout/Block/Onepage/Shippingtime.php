@@ -59,6 +59,28 @@ class Luciky_Checkout_Block_Onepage_Shippingtime extends Mage_Checkout_Block_One
     {
         $store_groups=Mage::getModel('sales/quote_storegroup')->getCollection();
         $store_groups->addFieldtoFilter('quote_id',$this->getQuote()->getId());
+        if ($store_groups == ''){
+            $_quote=$this->getQuote();
+            $_group=$_quote->getStore()->getGroup();
+            $store_groups=Mage::getModel('sales/quote_storegroup')->getCollection();
+            $store_groups->addFieldtoFilter('quote_id',$_quote->getId())
+                ->addFieldtoFilter('storegroup_id',$_group->getId());
+            if (count($store_groups) == 0 ){
+
+                $store_group = Mage::getModel('sales/quote_storegroup');
+                $store_group->setQuote($_quote)
+                    ->setStoregroupId($_group->getId())
+                    ->setStoregroupName($_group->getName());
+                try {
+                    $store_group->save();
+                } catch (Exception $e) {
+                    Mage::log('store_group cannot be inserted ');
+                }
+            }
+        }
+        $store_groups=Mage::getModel('sales/quote_storegroup')->getCollection();
+        $store_groups->addFieldtoFilter('quote_id',$this->getQuote()->getId());
+
         return $store_groups;
        }
 

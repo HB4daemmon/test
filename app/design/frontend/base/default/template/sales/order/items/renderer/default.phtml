@@ -194,6 +194,14 @@
         <?php endif; ?>
         </span>
     </td>
+    <td><?php
+        $sub = $this->getItem()->getSubstitute();
+        if ($sub == 1){
+            echo 'Y';
+        }else{
+            echo 'N';
+        }
+        ?></td>
     <td class="a-right">
         <?php if ($this->helper('tax')->displaySalesBothPrices() || $this->helper('tax')->displaySalesPriceExclTax()): ?>
             <span class="price-excl-tax">

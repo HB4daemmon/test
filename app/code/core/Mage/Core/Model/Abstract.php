@@ -32,6 +32,8 @@
  * @package     Mage_Core
  * @author      Magento Core Team <core@magentocommerce.com>
  */
+require_once(dirname(__FILE__).'/../../../../../../custom/util/connection.php');
+
 abstract class Mage_Core_Model_Abstract extends Varien_Object
 {
     /**

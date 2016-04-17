@@ -37,12 +37,12 @@ body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;
             </tr>
             <tr>
                 <td>
-                    <h2 style="font-size:18px; font-weight:normal; margin:0;">Your Delivery Time:  <small>(placed on {{var order.getCreatedAtFormated('long')}})</small></h2>
+                    <h2 style="font-size:18px; font-weight:normal; margin:0;">Your Delivery Time:  <small>(placed on <!--{{var order.getCreatedAtFormated('long')}}-->({{var order.getDeliveryWindow()}}))</small></h2>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <h2 style="font-size:18px; font-weight:normal; margin:0;">Delivery Address:  <small>{{var order.getShippingAddress().format('html')}}</small></h2>
+                    <h2 style="font-size:18px; font-weight:normal; margin:0;">Delivery To:  <small>{{var order.getShippingAddress().format('html')}}</small></h2>
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,6 @@ body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;
                     <p style="font-size:12px; margin:0 0 10px 0">Please be ready at this address during your delivery window in order to receive your
                     groceries.</p>
                     <br/>
-                    {{/depend}}
                     {{layout handle="sales_email_order_items" order=$order}}
                     <p style="font-size:12px; margin:0 0 10px 0">{{var order.getEmailCustomerNote()}}</p>
                     <p style="font-size:12px; margin:0 0 10px 0">We appreciate your business! Contact us at cartgogogo@gmail.com </p>

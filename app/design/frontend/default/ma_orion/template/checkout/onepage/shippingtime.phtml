@@ -32,7 +32,6 @@
     <div id="datetimepicker" class="input-append date">
      <ul>
          <?php
-             print_r($store_groups);
              $store_groups = $this->getStoregroups();
              foreach ($store_groups as $key => $store_group){
                 $store_groupid=$store_group->getId();

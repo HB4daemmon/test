@@ -76,11 +76,11 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
     </select></td>
     <td> <textarea name="cart[<?php echo $_item->getId() ?>][customer_message]" value="<?php //echo $this->getQty() ?>" size="40" placeholder="Note" title="<?php echo $this->__('customer message') ?>" /><?php echo $this->getCustomer_message() ?></textarea>
     </td>
-    <td class="a-center">
+    <!--<td class="a-center">
         <?php if ($isVisibleProduct): ?>
-        <a href="<?php echo $this->getConfigureUrl() ?>" title="<?php echo $this->__('Edit item parameters') ?>"><?php echo $this->__('Edit') ?></a>
+        <a href="<?php //echo $this->getConfigureUrl() ?>" title="<?php //echo $this->__('Edit item parameters') ?>"><?php //echo $this->__('Edit') ?></a>
         <?php endif ?>
-    </td>
+    </td>-->
     <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
     <td class="a-center">
         <?php if ($isVisibleProduct): ?>

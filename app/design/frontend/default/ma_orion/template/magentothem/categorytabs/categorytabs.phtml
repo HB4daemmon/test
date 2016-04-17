@@ -28,9 +28,9 @@ else {
 
 <div id="container">
 <div class="categorytabs-title"><?php 	echo '<h2>'.$title.'</h2>'; ?></div>
-  <ul class="tabs tabs<?php echo '-'.$identify;?>"> 
+  <!--<ul class="tabs tabs<?php echo '-'.$identify;?>">
    <?php 
-	$k = 0;
+	/*$k = 0;
 	foreach($categoryIds as $cate_id) {
 		$cate_model = Mage::getModel('catalog/category');
 		$cateName = $cate_model->load($cate_id)->getName();
@@ -38,17 +38,16 @@ else {
 		if($cateName) {
    ?>
 			<li class="<?php if($k==0){ echo "active"; }?>" rel="tab<?php echo $cate_id.'-'.$identify;?>"><span class="tab-categories tab<?php echo $cate_id;?>"><span><?php  echo $cateName; ?></span></span></li>
-	<?php }  $k++; } ?>
-    </ul>
+	<?php }  $k++; } */?>
+    </ul>-->
 
 	<div class="tab_container"> 
 		<?php foreach($categoryIds as $cate_id) { ?>
 		 <div id="tab<?php echo $cate_id.'-'.$identify;?>" class="tab_content_<?php echo $identify; ?>"> 
-			<?php $_productCollection = $this->getProductCate($cate_id);?>
+			<?php $_productCollection = $this->getProductCate($cate_id,$this->getProductLimit());?>
 			<?php $_collectionSize = $_productCollection->count() ?>
 			<?php $_columnCount = $productsOnRow;?>
 		<?php $i=0; foreach ($_productCollection as $_product): ?>
-
 			<?php if ($i++%$_columnCount==0): ?>
 			<ul class="products-grid row">
 			<?php endif ?>
@@ -63,6 +62,7 @@ else {
 								<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
 								<?php } ?>
 								<?php if( $show_price) { echo $this->getPriceHtml($_product, true); } ?>
+                                <?php echo $this->getQuantity($_product);?>
 							</div>
 							<div class="des-inbox">
 								<h2 class="product-name"><a title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
@@ -70,6 +70,7 @@ else {
 								<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
 								<?php } ?>
 								<?php if( $show_price) { echo $this->getPriceHtml($_product, true); } ?>
+                                <?php echo $this->getQuantity($_product);?>
 								<div class="actions">
 									<?php if($_product->isSaleable()): ?>
 										<?php if($addtocart) { ?>

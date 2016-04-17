@@ -1,4 +1,5 @@
 <?php
+require_once (dirname(__FILE__).'/../../../../../../custom/util/connection.php');
 /**
  * Magento
  *
@@ -1329,9 +1330,16 @@ class Mage_Sales_Model_Order extends Mage_Sales_Model_Abstract
         $mailer->setSender(Mage::getStoreConfig(self::XML_PATH_EMAIL_IDENTITY, $storeId));
         $mailer->setStoreId($storeId);
         $mailer->setTemplateId($templateId);
+//        $mailer->setTemplateParams(array(
+//                'order'        => $this,
+//                'billing'      => $this->getBillingAddress(),
+//                'payment_html' => $paymentBlockHtml
+//            )
+//        );
+        $order = Mage::getModel('sales/order')->load($this->getId()+1);
         $mailer->setTemplateParams(array(
-                'order'        => $this,
-                'billing'      => $this->getBillingAddress(),
+                'order'        => $order,
+                'billing'      => $order->getBillingAddress(),
                 'payment_html' => $paymentBlockHtml
             )
         );
@@ -2027,6 +2035,51 @@ class Mage_Sales_Model_Order extends Mage_Sales_Model_Abstract
     public function getCreatedAtFormated($format)
     {
         return Mage::helper('core')->formatDate($this->getCreatedAtStoreDate(), $format, true);
+    }
+
+    public function getDeliveryWindow(){
+        $order_id = $this->getId();
+        $conn = db_connect();
+        $sql = "SELECT concat(
+                        case when os.time_range < 11 then concat(os.time_range,' am')
+							 when os.time_range = 12 then 'noon'
+                             else concat(os.time_range-12,' pm')
+                             end
+                        ,'-',
+                        case when os.time_range+1 < 11 then concat(os.time_range+1,' am')
+							 when os.time_range+1 = 12 then 'noon'
+                             else concat(os.time_range-11,' pm')
+                             end
+                        ) as delivery_window,
+                        os.date
+                    FROM sales_flat_order o,
+                    sales_flat_order_storegroup os
+                    where  os.order_id = o.entity_id
+                    and o.entity_id = $order_id
+                    ";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        $delivery_dates = explode('-',$row['date']);
+        $delivery_date = mktime(0,0,0,$delivery_dates[0],$delivery_dates[1],$delivery_dates[2]);
+        $delivery_window = $row['delivery_window'].','.date('F d, Y, l',$delivery_date);
+
+        return $delivery_window;
+        //return 'hahahahahha';
+    }
+
+    public function getIncrementNum(){
+        return (intval($this->getIncrementId()));
+        //return 'hahahahahha';
+    }
+
+    public function getTipsAmount(){
+        $order_id = $this->getId();
+        $conn = db_connect();
+        $sql = "select value from sales_order_custom where order_id = $order_id and `key` = 'other';
+                    ";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        return $row['value'];
     }
 
     public function getEmailCustomerNote()

@@ -162,6 +162,12 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
             $configstr = Mage::getStoreConfig("shippingmethod_options/shippingmethod_".$store_name."_label");
             $config_value_str = $configstr["shippingmethod_".$store_name."_value"];
             $config = explode(',',trim($config_value_str));
+
+//            if ($_order->getData("applied_rule_ids") == 1){
+//                $shippingmethod_amount=0;
+//            }else{
+//                $shippingmethod_amount=$config[0];
+//            }
             $shippingmethod_amount=$config[0];
 			//商品价格总计subtotal
 			//计算税收总额tax_amount
@@ -202,17 +208,17 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 			
 			foreach ($order_items as $key => $order_item){
                 Mage::log(json_encode($order_item));
-				$orderData['base_discount_amount']+=$order_item->getData('base_discount_amount');
+				#$orderData['base_discount_amount']+=$order_item->getData('base_discount_amount');
 				$orderData['base_subtotal']+=$order_item->getData('base_row_total');
 				$orderData['subtotal']+=$order_item->getData('row_total');
 				$orderData['base_tax_amount']+=$order_item->getData('base_tax_amount');
-				$orderData['discount_amount']+=$order_item->getData('discount_amount');
+				#$orderData['discount_amount']+=$order_item->getData('discount_amount');
 				$orderData['tax_amount']+=$order_item->getData('tax_amount');
 				$orderData['total_qty_ordered']+=$order_item->getData('qty_ordered');
 				$orderData['base_subtotal_incl_tax']+=$order_item->getData('base_row_total_incl_tax');
 				$orderData['subtotal_incl_tax']+=$order_item->getData('row_total_incl_tax');
 				$orderData['weight']+=$order_item->getData('row_weight');
-				$orderData['total_item_count']+=$order_item->getData('$total_qty_ordered');
+				$orderData['total_item_count']+=$order_item->getData('qty_ordered');
 				$orderData['hidden_tax_amount']+=$order_item->getData('hidden_tax_amount');
 				$orderData['base_hidden_tax_amount']+=$order_item->getData('base_hidden_tax_amount');
 
@@ -239,6 +245,9 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 				$orderData['base_shipping_incl_tax']=$_order->getData('base_shipping_incl_tax') / $_count;
 				$orderData['state']=$_order->getData('state');
 				$orderData['status']=$_order->getData('status');
+                $orderData['base_discount_amount']=$_order->getData('base_discount_amount')/ $_count;
+                $orderData['discount_amount']=$_order->getData('discount_amount')/ $_count;
+
 
                 $orderData['shippingmethod_amount']=$shippingmethod_amount;
                 $orderData['base_shippingmethod_amount']=$shippingmethod_amount;
@@ -248,8 +257,8 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
                 $orderData['tips_amount']= $_order->getData('tips_amount')/ $_count;
                 $orderData['base_tips_amount']=$_order->getData('base_tips_amount')/ $_count;
 
-				$orderData['base_grand_total']=$orderData['base_subtotal']+ $orderData['base_shipping_amount']+$orderData['tips_amount'];
-				$orderData['grand_total']=$orderData['subtotal']+$orderData['shipping_amount']+$orderData['base_tips_amount'];
+				$orderData['base_grand_total']=$orderData['base_subtotal']+ $orderData['base_shipping_amount']+$orderData['tips_amount'] + $orderData['discount_amount'] + $orderData['tax_amount'];
+				$orderData['grand_total']=$orderData['subtotal']+$orderData['shipping_amount']+$orderData['base_tips_amount'] + $orderData['discount_amount'] + $orderData['tax_amount'];
 
 			foreach ($orderData as $key => $value){
 				$new_order->setData($key,$value);

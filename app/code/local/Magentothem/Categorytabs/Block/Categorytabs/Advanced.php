@@ -1,4 +1,5 @@
 <?php
+require_once (dirname(__FILE__).'/../../../../../../../custom/util/connection.php');
 class Magentothem_Categorytabs_Block_Categorytabs_Advanced extends Mage_Catalog_Block_Product_Abstract
 {
    protected function _construct()
@@ -42,12 +43,12 @@ class Magentothem_Categorytabs_Block_Categorytabs_Advanced extends Mage_Catalog_
     }
 
     public function getCateUrl($_categoryId){
-        $_category = Mage::getModel('catalog/category')->load($_categoryId);
+        $_category = Mage::getModel('catalog/category')->load($_categoryId)->getParentCategory();
 
         return  $_category->getUrlPath();
     }
 
-	function getProductCate($id = NULL) {
+	function getProductCate($id = NULL,$ProductLimit) {
         $storeId = Mage::app()->getStore()->getId();
         $_category = Mage::getModel('catalog/category')->load($id);
         $product = Mage::getModel('catalog/product');
@@ -55,7 +56,9 @@ class Magentothem_Categorytabs_Block_Categorytabs_Advanced extends Mage_Catalog_
         //load the category's products as a collection
         $_productCollection = $product->getCollection()
                 ->addAttributeToSelect('*')
-                ->addCategoryFilter($_category);
+                ->addCategoryFilter($_category)
+                ->setPageSize($ProductLimit)
+                ->setCurPage(1);
 				Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection);
 				Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection);
 		$productLimits = $this->getProductsCount();
@@ -65,4 +68,8 @@ class Magentothem_Categorytabs_Block_Categorytabs_Advanced extends Mage_Catalog_
 		return $_productCollection;
 		
     }
+
+
+
+
 }

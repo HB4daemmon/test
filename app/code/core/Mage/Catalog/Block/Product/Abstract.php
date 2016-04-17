@@ -32,6 +32,8 @@
  * @package    Mage_Catalog
  * @author     Magento Core Team <core@magentocommerce.com>
  */
+require_once (dirname(__FILE__).'/../../../../../../../custom/util/connection.php');
+
 abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Template
 {
     /**
@@ -663,5 +665,23 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
         }
 
         return $this;
+    }
+
+    public function getQuantity($product)
+    {
+        $product_id = $product->getId();
+        $conn = db_connect();
+        $sql = "select value as quantity from catalog_product_entity_varchar cpe,eav_attribute ea
+                where ea.attribute_code = 'quantity'
+                and ea.entity_type_id = 4
+                and cpe.attribute_id = ea.attribute_id
+                and cpe.entity_id = $product_id;";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        $conn->close();
+        if($res->num_rows == 0 || $row['quantity'] == null || $row['quantity'] == ''){
+            $row['quantity'] = 'EACH';
+        }
+        return $row['quantity'];
     }
 }

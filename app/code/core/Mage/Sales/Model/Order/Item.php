@@ -186,6 +186,8 @@
  * @method Mage_Sales_Model_Order_Item setDiscountRefunded(float $value)
  * @method float getBaseDiscountRefunded()
  * @method Mage_Sales_Model_Order_Item setBaseDiscountRefunded(float $value)
+ * @method float getSubstitute()
+ * @method Mage_Sales_Model_Order_Item setSubstitute(int $value)
  *
  * @category    Mage
  * @package     Mage_Sales
@@ -850,4 +852,8 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
         }
         return $totalDiscount;
     }
+
+//    public function getSubstitute(){
+//        return $this->getData('substitute');
+//    }
 }

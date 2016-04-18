@@ -31,7 +31,7 @@
 <?php if ($this->getTotals()): ?>
 <tfoot>
 
-    <?php $_colspan = $this->helper('tax')->displayCartBothPrices() ? 7 : 5; ?>
+    <?php $_colspan = $this->helper('tax')->displayCartBothPrices() ? 8 : 6; ?>
     <?php echo $this->renderTotals(null, $_colspan); ?>
     <?php echo $this->renderTotals('footer', $_colspan); ?>
     <?php if ($this->needDisplayBaseGrandtotal()):?>

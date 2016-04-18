@@ -26,6 +26,7 @@
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
+    <td style="width: 10%"><?php //if ($this->hasProductUrl()):?><a title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><?php //endif;?><img  style="width: 70%" src="<?php echo $this->getProductThumbnail()->resize(200); ?>"alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
     <td><h3 class="product-name"><?php echo $this->escapeHtml($this->getProductName()) ?></h3>
         <?php if ($_options = $this->getOptionList()):?>
         <dl class="item-options">

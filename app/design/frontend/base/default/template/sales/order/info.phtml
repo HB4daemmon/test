@@ -49,7 +49,7 @@
     </dd>
 </dl>
 <p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long'));
-    echo ' Delivery window:'.$_order->getDeliveryWindow();?>
+    echo ' Delivery Window: '.$_order->getDeliveryWindow();?>
 </p>
 <?php if (!$_order->getIsVirtual()): ?>
 <div class="col2-set order-info-box">

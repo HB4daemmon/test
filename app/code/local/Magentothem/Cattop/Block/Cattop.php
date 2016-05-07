@@ -1,5 +1,5 @@
 <?php
-class Magentothem_Cattop_Block_Cattop extends Mage_Core_Block_Template
+class Magentothem_Cattop_Block_Cattop extends Mage_Checkout_Block_Onepage_Abstract
 {
 
     protected $level = 1;
@@ -35,7 +35,10 @@ class Magentothem_Cattop_Block_Cattop extends Mage_Core_Block_Template
                             ->addFieldToFilter('is_active', array('eq'=>'1'));
         return $collection;
     }
-	
+
+    public function to12HourRange($r){
+        return $this->to12Hour($r).' - '.$this->to12Hour($r+1);
+    }
 	/*
     public function getCatByPath($parentId, $path)
     {

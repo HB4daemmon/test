@@ -30,7 +30,13 @@
     <?php if ($this->helper('rss/catalog')->getTagFeedUrl()): ?>
         <a href="<?php echo $this->helper('rss/catalog')->getTagFeedUrl() ?>" class="nobr link-rss"><?php echo $this->__('Subscribe to Feed') ?></a>
     <?php endif; ?>
-    <h1><?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?></h1>
+    <h1>
+        <?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?>
+        <span style="font-size:12px">
+            Request better search results <a target="_blank" href="http://docs.google.com/forms/d/1Fod5PwtnAWMRT8J8FMMrfVf1yat6_I94KUjTVOOKGek">here</a>!
+            &nbsp;Or request a new item <a target="_blank" href="http://docs.google.com/forms/d/1j59KtvQeJvPh1UuILB4jG36kTJqd10oXU0b4N-ZQ0R0">here</a>!
+        </span>
+    </h1>
 </div>
     <?php if ($messages = $this->getNoteMessages()):?>
     <p class="note-msg">
@@ -42,8 +48,13 @@
     <?php echo $this->getProductListHtml() ?>
 <?php else: ?>
 <div class="page-title">
-    <h1><?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?></h1>
-</div>
+    <h1>
+        <?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?>
+        <span style="font-size:12px">
+            Request better search results <a target="_blank" href="http://docs.google.com/forms/d/1Fod5PwtnAWMRT8J8FMMrfVf1yat6_I94KUjTVOOKGek">here</a>!
+            &nbsp;Or request a new item <a target="_blank" href="http://docs.google.com/forms/d/1j59KtvQeJvPh1UuILB4jG36kTJqd10oXU0b4N-ZQ0R0">here</a>!
+        </span>
+    </h1></div>
 <p class="note-msg">
     <?php echo ($this->getNoResultText()) ? $this->getNoResultText() : $this->__('Your search returns no results.') ?>
     <?php if ($messages = $this->getNoteMessages()):?>

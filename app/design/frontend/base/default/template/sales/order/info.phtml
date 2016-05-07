@@ -48,9 +48,11 @@
         <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'),['first','last']);</script>
     </dd>
 </dl>
-<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long'));
-    echo ' Delivery Window: '.$_order->getDeliveryWindow();?>
-</p>
+<span class="order-date" style="font-weight: bold;font-size: 13px;color: #0a263c;">Order Date:&nbsp;</span>
+<span><?php echo $this->__(' %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long'));?>&nbsp;</span>
+<span style="font-weight: bold;font-size: 13px;color: #0a263c;">Delivery Window:&nbsp;</span>
+<span style=""><?php echo $_order->getDeliveryWindow();?></span>
+
 <?php if (!$_order->getIsVirtual()): ?>
 <div class="col2-set order-info-box">
     <div class="col-1">

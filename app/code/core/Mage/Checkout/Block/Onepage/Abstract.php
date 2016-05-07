@@ -443,7 +443,14 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 
         $config_day = $config[$numOfWeek];
 
-        if($hour<=$config_day[0]||array_search($hour,$config_day)){
+        $this_day_option = [];
+        foreach($config_day as $c){
+            if ($c >= $hour){
+                array_push($this_day_option,$c);
+            }
+        }
+
+        if(count($this_day_option) > 0){
             //This day
             for($i=0;$i<7;$i++){
                 if($i == 0){
@@ -460,11 +467,12 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
                 array_push($dateResult,$_dateTemp);
 
                 if($i==0){
-                    if($index = array_search($hour,$config_day)){
-                        $_range = array_slice($config_day,$index);
-                    }else{
-                        $_range = $config_day;
-                    }
+//                    if($index = array_search($hour,$config_day)){
+//                        $_range = array_slice($config_day,$index);
+//                    }else{
+//                        $_range = $config_day;
+//                    }
+                    $_range = $this_day_option;
                 }else{
                     $_range = $config[$_numOfWeek+1];
                 }

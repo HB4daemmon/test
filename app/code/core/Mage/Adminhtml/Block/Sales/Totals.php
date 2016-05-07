@@ -89,6 +89,19 @@ class Mage_Adminhtml_Block_Sales_Totals extends Mage_Sales_Block_Order_Totals
             ));
         }
 
+        /**
+         * Add tips
+         */
+        if ($this->getSource()->getTipsAmount()&&$this->getSource()->getTipsAmount()!=0)
+        {
+            $this->_totals['tips'] = new Varien_Object(array(
+                'code'  => 'tips',
+                'field' => 'tips_amount',
+                'value' => $this->getSource()->getTipsAmount(),
+                'label' => $this->__('Tips')
+            ));
+        }
+
         $this->_totals['grand_total'] = new Varien_Object(array(
             'code'      => 'grand_total',
             'strong'    => true,

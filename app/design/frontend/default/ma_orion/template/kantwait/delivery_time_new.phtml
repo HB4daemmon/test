@@ -1,0 +1,26 @@
+<?php
+    $date = $this->getShippingtimeDate('walmart','date');
+    $range = $this->getShippingtimeDate('walmart','range');
+?>
+
+<div class="cattop">
+    <h2 class="cattop-title"><?php echo $this->getTopCfg('title')?></h2>
+    <li class="">
+        <?php
+            for($i = 0;$i < 4;$i++){
+                $ranges = $range[$i];
+                $str = '';
+
+                echo '<div style="width:90%">';
+                echo '<div style="width:15%;font-size: 16px;font-family: OpenSansBold;text-transform: uppercase;font-weight: normal;color: #444;">'.$date[$i].'</div>';
+                foreach ($ranges as $r){
+                    echo '<div style = "width:25%;float:left">'.$this->to12HourRange($r).'</div>';
+                }
+                echo '<br>';
+                echo '</div>';
+            }
+        ?>
+
+    </li>
+
+</div>

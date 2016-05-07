@@ -2061,7 +2061,7 @@ class Mage_Sales_Model_Order extends Mage_Sales_Model_Abstract
         $row = $res->fetch_assoc();
         $delivery_dates = explode('-',$row['date']);
         $delivery_date = mktime(0,0,0,$delivery_dates[0],$delivery_dates[1],$delivery_dates[2]);
-        $delivery_window = $row['delivery_window'].','.date('F d, Y, l',$delivery_date);
+        $delivery_window = $row['delivery_window'].', '.date('F d, Y, l',$delivery_date);
 
         return $delivery_window;
         //return 'hahahahahha';

@@ -27,7 +27,6 @@
 <SCRIPT language="javascript">
     function gbcount(id)
     {
-        console.log(id);
         var texts = document.getElementsByTagName("textarea");
         for(i=0;i<texts.length;i++){
             if (texts[i].name == 'cart['+id+'][customer_message]'){
@@ -44,12 +43,21 @@
             }
             //list[i].name = 'mm';
         }
+
+        var remain_character = document.getElementById('remain['+id+'][customer_message_character]');
+
         var max = 200;
-        if (text.value.length > max){
+        if (text.value.length >= max){
             text.value = text.value.substring(0,max);
             remain.value = 0;
+            remain_character.innerText = remain.value +' character left';
         }else{
             remain.value = max - text.value.length;
+            if (max - text.value.length == 1){
+                remain_character.innerText = remain.value +' character left';
+            }else{
+                remain_character.innerText = remain.value +' characters left';
+            }
         }
 
     }
@@ -106,7 +114,7 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
       <option value="2" <?php echo $_substitute == "2" ? "selected='selected'":"" ?>>Call To Confirm</option>
     </select></td>
     <td> <textarea style="font: 12px/15px OpenSansRegular;" onkeydown="gbcount(<?php echo $_item->getId() ?>);" onkeyup="gbcount(<?php echo $_item->getId() ?>);" maxlength="200" name="cart[<?php echo $_item->getId() ?>][customer_message]" value="<?php //echo $this->getQty() ?>" size="40" placeholder="Note" title="<?php echo $this->__('customer message') ?>" /><?php echo $this->getCustomer_message() ?></textarea>
-        <input style="border:none; background:#fff;font: 12px/15px OpenSansRegular;font-size:12px;color:rgb(151, 151, 151)" disabled maxLength="4" name="remain[<?php echo $_item->getId() ?>][customer_message]" size="3" value="200" class="inputtext"> <span style="font: 12px/15px OpenSansRegular;font-size:12px;color:rgb(151, 151, 151);margin-left: -10px;">character left</span>
+        <input style="display:none;border:none; background:#fff;font: 12px/15px OpenSansRegular;font-size:12px;color:rgb(151, 151, 151)" disabled maxLength="4" name="remain[<?php echo $_item->getId() ?>][customer_message]" size="3" value="200" class="inputtext"> <span id="remain[<?php echo $_item->getId() ?>][customer_message_character]" style="font: 12px/15px OpenSansRegular;font-size:12px;color:rgb(151, 151, 151);margin-left: -10px;"></span>
     </td>
     <!--<td class="a-center">
         <?php if ($isVisibleProduct): ?>

@@ -15,7 +15,35 @@
                 <li class="wide">
                     <label for="tips:other" class=""><?php echo $this->__('Tips are a great way to encourage your shopper and appreciate his/her work! 100% of tips go to them. Thank you!') ?></label>
                     <div class="input-box">
-                        <input style="width:100px" type='text' name='tips[other]'  class="input-text" id="tips:other" value='<?php echo $this->getQuote()->getOther()?>'/>
+
+                        <button id="button_tip_3" type="button" class="button" value="3" onclick="changeTips(this)">
+                            <span class="button_tips" id="span_tip_3" name="span_tip">
+                                $3
+                            </span>
+                        </button>
+                        <button id="button_tip_5" type="button" class="button" value="5" onclick="changeTips(this)">
+                            <span class="button_tips" id="span_tip_5" name="span_tip">
+                                $5
+                            </span>
+                        </button>
+                        <button id="button_tip_8" type="button" class="button" value="8" onclick="changeTips(this)">
+                            <span class="button_tips" id="span_tip_8" name="span_tip">
+                                $8
+                            </span>
+                        </button>
+                        <button type="button" class="button" value="-1" onclick="OpenTips()" id="button_tip_other">
+                            <span class="button_tips" name="span_tip" id="span_tip_other" >
+                                Custom Amount
+                            </span>
+                        </button>
+                        <div id="div_tips_other" style="display: none;margin-top:5px">
+                            Custom Amount: $<input style="width:100px;" type='text' name='tips[other]'  class="input-text required" id="tips:other" value='<?php echo $this->getQuote()->getOther()?>'/>
+                        </div>
+                        <button id="button_tip_0" type="button" class="button" value="0" onclick="changeTips(this)">
+                            <span class="button_tips" id="span_tip_0" name="span_tip">
+                                Tip Later
+                            </span>
+                        </button>
                     </div>
                 </li>
             </ul>
@@ -24,7 +52,7 @@
     </ul>
     <div class="buttons-set" id="tips-buttons-container">
         <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
-        <button type="button" title="<?php echo $this->__('Continue') ?>" class="button" onclick="tips.save()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+        <button type="button" title="<?php echo $this->__('Continue') ?>" class="button" onclick="checkTips();"><span><span><?php echo $this->__('Continue') ?></span></span></button>
         <span class="please-wait" id="tips-please-wait" style="display:none;">
             <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
         </span>
@@ -35,5 +63,45 @@
 //<![CDATA[
     var tips = new TipsMethod('co-tips-form','<?php echo $this->getUrl('checkout/onepage/saveTips') ?>');
     var tipsForm = new VarienForm('co-tips-form');
+
+    document.getElementById('tips:other').value = 5;
+    document.getElementById('span_tip_5').className = 'button_tips_active';
+
+    function changeTips(obj){
+        //console.log(obj);
+        var span_tips = document.getElementsByName("span_tip");
+        for (var i = 0;i<span_tips.length;i++){
+            span_tips[i].className = 'button_tips';
+        }
+
+        document.getElementById('tips:other').value = obj.value;
+        document.getElementById("span_tip_"+obj.value).className = 'button_tips_active';
+        document.getElementById("div_tips_other").style.display="none";
+    }
+    function OpenTips(){
+        var span_tips = document.getElementsByName("span_tip");
+        for (var i = 0;i<span_tips.length;i++){
+            span_tips[i].className = 'button_tips';
+        }
+        document.getElementById("span_tip_other").className = 'button_tips_active';
+        document.getElementById("div_tips_other").style.display="block";
+        document.getElementById('tips:other').value = 11;
+    }
+    function checkTips(){
+        var val = document.getElementById('tips:other').value;
+        if (isNaN(val) || val < 0){
+            alert("Input is not valid");
+        }else{
+            tips.save();
+        }
+    }
 //]]>
 </script>
+<style type="text/css">
+    button.button span.button_tips
+    { background-color: #aaa;}
+    button.button span.button_tips_active
+    { background-color: #65c178;}
+    button.button:hover span.button_tips
+    { background-color: #65c178;}
+</style>

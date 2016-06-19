@@ -86,6 +86,94 @@
         </dl>
     </div>
     <?php endif; ?>
+
+    <h2 class="table-caption"><?php echo $this->__('Items Changed') ?>
+        <?php if ($_order->getTracksCollection()->count()) : ?>
+            <span class="separator">|</span> <a href="#" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>','trackorder','top=0,left=0,width=800,height=600,resizable=yes,scrollbars=yes'); return false;" title="<?php echo $this->__('Track your order') ?>"><?php echo $this->__('Track your order') ?></a>
+        <?php endif; ?>
+    </h2>
+    <?php $order_details = $_order->getOrderDetail();?>
+    <table class="data-table">
+        <colgroup><col>
+            <col width="1">
+            <col width="1">
+            <col width="1">
+            <col width="1">
+            <col width="1">
+            <col width="1">
+        </colgroup><thead>
+        <tr class="first last">
+            <th>Product Name</th>
+            <th>SKU</th>
+            <th class="a-center">Status</th>
+            <th class="a-center">Price</th>
+            <th class="a-right">Qty</th>
+            <th class="a-right">Subtotal</th>
+        </tr>
+        <tbody class="odd">
+        <?php foreach($order_details['items'] as $i){?>
+        <tr class="border">
+            <td><?php echo $i['name'];?></td>
+            <td><?php echo $i['sku'];?></td>
+            <?php if ($i['item_status'] == 'substitute'){?>
+            <td><?php echo 'Substitute';?></td>
+            <td>$<?php echo number_format($i['sub_price'],2);?></td>
+            <td><?php echo number_format($i['sub_volume'],2);?></td>
+            <td>$<?php echo number_format($i['sub_price']* $i['sub_volume'],2);?></td>
+            <?php }else if ($i['item_status'] == 'out_of_stock'){?>
+            <td><?php echo 'Out of Stock';?></td>
+            <td>$<?php echo number_format($i['price'],2);?></td>
+            <td><?php echo number_format(0,2);?></td>
+            <td>$<?php echo number_format(0,2);?></td>
+            <?php } else{?>
+            <td><?php echo 'Pick Up';?></td>
+            <td>$<?php echo number_format($i['price'],2);?></td>
+            <td><?php echo number_format($i['qty_ordered'],2);?></td>
+            <td>$<?php echo number_format($i['row_total'],2);?></td>
+            <?php }?>
+        </tr>
+        <?php }?>
+        </tbody>
+        <tfoot>
+        <tr class="subtotal">
+            <td colspan="3" class="a-right">Original Grand Total</td>
+            <td colspan="3" class="a-right">$<?php echo $order_details['original_grand_total']?></td>
+        </tr>
+        <tr class="subtotal">
+            <td colspan="3" class="a-right">Out of Stock</td>
+            <td colspan="3" class="a-right">$<?php echo $order_details['out_of_stock']?></td>
+        </tr>
+        <tr class="subtotal">
+            <td colspan="3" class="a-right">Substitute</td>
+            <td colspan="3" class="a-right">$<?php echo $order_details['substitute']?></td>
+        </tr>
+        <tr class="subtotal">
+            <td colspan="3" class="a-right">Tax</td>
+            <td colspan="3" class="a-right">$<?php echo $order_details['tax']?></td>
+        </tr>
+        <tr class="subtotal">
+            <td colspan="3" class="a-right"><b>Grand Total</b></td>
+            <td colspan="3" class="a-right">$<?php echo $order_details['total']?></td>
+        </tr>
+        <tr class="subtotal">
+            <td colspan="3" class="a-right"><b>Total Adjustment</b></td>
+            <td colspan="3" class="a-right">$<?php echo $order_details['change']?></td>
+        </tr>
+        </tfoot>
+     </table>
+<!--    <div>Subtotal:&nbsp;$--><?php //echo $order_details['subtotal']?><!--</div>-->
+<!--    <div>Shipping & Handling:&nbsp; $--><?php //echo $order_details['shipping_amount']?><!--</div>-->
+<!--    <div>Tips:&nbsp;$--><?php //echo $order_details['tips']?><!--</div>-->
+<!--    <div>Original Tax:&nbsp;$--><?php //echo $order_details['original_tax']?><!--</div>-->
+<!--    <div>Original Grand Total:&nbsp;$--><?php //echo $order_details['original_grand_total']?><!--</div>-->
+<!--    <br>-->
+<!--    <div>Out of tock:&nbsp;$--><?php //echo $order_details['out_of_stock']?><!--</div>-->
+<!--    <div>Substitute:&nbsp;$--><?php //echo $order_details['substitute']?><!--</div>-->
+<!--    <div>Tax:&nbsp;$--><?php //echo $order_details['tax']?><!--</div>-->
+<!--    <div>Grand Total:&nbsp;$--><?php //echo $order_details['total']?><!--</div>-->
+<!--    <br>-->
+<!--    <div>Total Adjustment:&nbsp;$--><?php //echo $order_details['change']?><!--</div>-->
+
     <div class="buttons-set">
         <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->getBackTitle() ?></a></p>
     </div>

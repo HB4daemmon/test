@@ -2041,12 +2041,12 @@ class Mage_Sales_Model_Order extends Mage_Sales_Model_Abstract
         $order_id = $this->getId();
         $conn = db_connect();
         $sql = "SELECT concat(
-                        case when os.time_range < 11 then concat(os.time_range,' am')
+                        case when os.time_range <= 11 then concat(os.time_range,' am')
 							 when os.time_range = 12 then 'noon'
                              else concat(os.time_range-12,' pm')
                              end
                         ,'-',
-                        case when os.time_range+1 < 11 then concat(os.time_range+1,' am')
+                        case when os.time_range+1 <= 11 then concat(os.time_range+1,' am')
 							 when os.time_range+1 = 12 then 'noon'
                              else concat(os.time_range-11,' pm')
                              end
@@ -2065,6 +2065,65 @@ class Mage_Sales_Model_Order extends Mage_Sales_Model_Abstract
 
         return $delivery_window;
         //return 'hahahahahha';
+    }
+
+    public function getOrderDetail(){
+        $order_id = $this->getId();
+        $conn = db_connect();
+        $sql = "select o.increment_id,oi.item_id,oi.product_id,oi.store_id,oi.product_id,oi.weight,oi.sku,oi.name,oi.qty_ordered,
+                oi.price,cped.value as store_price,oi.base_price,oi.base_original_price,oi.row_total,oi.price_incl_tax,
+                oi.base_price_incl_tax,oi.row_total_incl_tax,oi.base_row_total_incl_tax,
+                if(oi.substitute=1,'Y','N') as substitute,oi.customer_message,oi.item_status,oi.sub_price,oi.sub_volume,
+                oi.tax_percent,oi.tax_amount
+                 from sales_flat_order_item oi,sales_flat_order o,catalog_product_entity_varchar cped,eav_attribute ea
+                where oi.order_id = o.entity_id
+                and oi.product_id = cped.entity_id
+                and cped.attribute_id = ea.attribute_id
+				and attribute_code = 'store_price'
+                and ea.entity_type_id = 4
+                and o.entity_id = $order_id;
+                    ";
+        $res = $conn->query($sql);
+        $order_items = array();
+        while($row = $res->fetch_assoc()){
+            array_push($order_items,$row);
+        }
+
+        $out_of_stock = 0;
+        $substitute = 0;
+        $tax = 0;
+
+        foreach($order_items as $i){
+            if ($i['item_status'] == 'out_of_stock'){
+                $out_of_stock -= $i['row_total'];
+            }else if ($i['item_status'] == 'substitute'){
+                $substitute += -$i['row_total'] + $i['sub_price'] * $i['sub_volume'];
+                $tax += round($i['sub_price'] * $i['sub_volume'] * $i['tax_percent']) / 100;
+            }else{
+                $tax += floatval($i['tax_amount']);
+            }
+
+            if ($i['store_price'] == null || $i['store_price'] == ''){
+                $i['store_price'] = $i['price'];
+            }
+
+        }
+
+        $order['subtotal'] = number_format($this->getData('subtotal'),2);
+        $order['shipping_amount'] = number_format($this->getData('shipping_amount'),2);
+        $order['tips'] = number_format($this->getTipsAmount(),2);
+        $order['original_tax'] = number_format($this->getData('tax_amount'),2);
+        $order['out_of_stock'] = number_format($out_of_stock,2);
+        $order['substitute'] = number_format($substitute,2);
+        $order['tax'] = number_format($tax,2);
+
+        $order['total'] = number_format($this->getData('grand_total') - $this->getData('original_tax') + $out_of_stock + $substitute + $tax,2);
+        $order['original_grand_total'] = number_format($this->getData('grand_total'),2);
+        $order['change'] = number_format($order['total'] - $order['original_grand_total'],2);
+
+        $order['items'] = $order_items;
+
+        return $order;
     }
 
     public function getIncrementNum(){

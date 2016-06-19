@@ -25,7 +25,7 @@
  */
 ?>
 <?php echo $this->getChildHtml('items_before'); ?>
-<div id="checkout-review-table-wrapper">
+<div id="checkout-review-table-wrapper" style="word-break: break-all;">
     <table class="data-table" id="checkout-review-table">
         <?php if ($this->helper('tax')->displayCartBothPrices()): $colspan = $rowspan = 2; else: $colspan = $rowspan = 1; endif; ?>
         <col />
@@ -64,7 +64,7 @@
         <?php $items=$this->getGroupItems($this->getItems());
         foreach ($items as $keys => $itemgroup) {
         ?>  
-          <tr class="store_review_info"><td class="store_review_name" colspan="6"> <?php echo $keys;?></td><td colspan="1"> <?php echo $this->helper('checkout')->formatPrice($itemgroup['total_price']);unset($itemgroup['total_price']); ?></td></tr>
+          <tr hidden="" class="store_review_info"><td class="store_review_name" colspan="6"> <?php echo $keys;?></td><td colspan="1"> <?php echo $this->helper('checkout')->formatPrice($itemgroup['total_price']);unset($itemgroup['total_price']); ?></td></tr>
 
         <?php   foreach ($itemgroup as  $_item) {
                 echo $this->getItemHtml($_item);

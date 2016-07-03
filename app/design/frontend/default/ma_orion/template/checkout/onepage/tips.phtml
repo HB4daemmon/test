@@ -89,7 +89,7 @@
     }
     function checkTips(){
         var val = document.getElementById('tips:other').value;
-        if (isNaN(val) || val < 0){
+        if (isNaN(val) || val <= 0){
             alert("Input is not valid");
         }else{
             tips.save();

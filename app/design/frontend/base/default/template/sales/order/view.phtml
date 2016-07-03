@@ -87,7 +87,7 @@
     </div>
     <?php endif; ?>
 
-    <h2 class="table-caption"><?php echo $this->__('Items Changed') ?>
+    <h2 class="table-caption"><?php echo $this->__('Shopping Summary') ?>
         <?php if ($_order->getTracksCollection()->count()) : ?>
             <span class="separator">|</span> <a href="#" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>','trackorder','top=0,left=0,width=800,height=600,resizable=yes,scrollbars=yes'); return false;" title="<?php echo $this->__('Track your order') ?>"><?php echo $this->__('Track your order') ?></a>
         <?php endif; ?>
@@ -140,23 +140,23 @@
             <td colspan="3" class="a-right">$<?php echo $order_details['original_grand_total']?></td>
         </tr>
         <tr class="subtotal">
-            <td colspan="3" class="a-right">Out of Stock</td>
+            <td colspan="3" class="a-right">Out of Stock adj.</td>
             <td colspan="3" class="a-right">$<?php echo $order_details['out_of_stock']?></td>
         </tr>
         <tr class="subtotal">
-            <td colspan="3" class="a-right">Substitute</td>
+            <td colspan="3" class="a-right">Substitute adj.</td>
             <td colspan="3" class="a-right">$<?php echo $order_details['substitute']?></td>
         </tr>
         <tr class="subtotal">
-            <td colspan="3" class="a-right">Tax</td>
-            <td colspan="3" class="a-right">$<?php echo $order_details['tax']?></td>
+            <td colspan="3" class="a-right">Tax adj.</td>
+            <td colspan="3" class="a-right">$<?php echo number_format($order_details['tax'] - $order['original_tax'],2)?></td>
         </tr>
         <tr class="subtotal">
-            <td colspan="3" class="a-right"><b>Grand Total</b></td>
+            <td colspan="3" class="a-right"><b>New Grand Total</b></td>
             <td colspan="3" class="a-right">$<?php echo $order_details['total']?></td>
         </tr>
         <tr class="subtotal">
-            <td colspan="3" class="a-right"><b>Total Adjustment</b></td>
+            <td colspan="3" class="a-right"><b>Refund</b></td>
             <td colspan="3" class="a-right">$<?php echo $order_details['change']?></td>
         </tr>
         </tfoot>

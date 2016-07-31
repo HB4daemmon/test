@@ -1,0 +1,7 @@
+##IN002,Raise account info,,,,,,,
+10/12/2015,test001,,,,,,,
+Number,Name,Account Number,Pin,Value,Price,Remaining,Discount rate,Note
+1,Walmart,#001,#4543,50,48.22,25,3.56%,note test
+2,Walmart,#002,#4544,40,43.22,25,3.56%,note test
+3,Walmart,#003,#4544,40,43.22,25,3.56%,note test
+4,Walmart,#004,#4544,40,43.22,30,3.56%,note test

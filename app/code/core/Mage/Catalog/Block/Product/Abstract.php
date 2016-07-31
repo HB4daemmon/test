@@ -671,7 +671,7 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
     {
         $product_id = $product->getId();
         $conn = db_connect();
-        $sql = "select value as quantity from catalog_product_entity_varchar cpe,eav_attribute ea
+        $sql = "select distinct value as quantity from catalog_product_entity_varchar cpe,eav_attribute ea
                 where ea.attribute_code = 'quantity'
                 and ea.entity_type_id = 4
                 and cpe.attribute_id = ea.attribute_id
@@ -679,9 +679,22 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
         $conn->close();
-        if($res->num_rows == 0 || $row['quantity'] == null || $row['quantity'] == ''){
-            $row['quantity'] = 'EACH';
+        $count = $res->num_rows;
+        $quantity = "EACH";
+
+        if ($count == 1){
+            $quantity = $row['quantity'];
         }
-        return $row['quantity'];
+//        if ($res != null){
+//            $row = $res->fetch_assoc();
+//            $conn->close();
+//            if($res->num_rows == 0 || $row['quantity'] == null || $row['quantity'] == ''){
+//                $row['quantity'] = 'EACH';
+//            }
+//        }else{
+//            $row['quantity'] = 'EACH';
+//        }
+
+        return $quantity;
     }
 }

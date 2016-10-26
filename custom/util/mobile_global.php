@@ -5,3 +5,4 @@ Mage::app();
 umask(0);
 ob_start();
 session_start();
+Mage::getSingleton("core/session", array("name" => "frontend"));

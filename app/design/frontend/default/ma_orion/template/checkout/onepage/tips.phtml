@@ -77,6 +77,7 @@
         document.getElementById('tips:other').value = obj.value;
         document.getElementById("span_tip_"+obj.value).className = 'button_tips_active';
         document.getElementById("div_tips_other").style.display="none";
+        console.log();
     }
     function OpenTips(){
         var span_tips = document.getElementsByName("span_tip");
@@ -88,8 +89,9 @@
         document.getElementById('tips:other').value = 11;
     }
     function checkTips(){
+        var can_order = document.getElementById("span_tip_0").className == 'button_tips_active';
         var val = document.getElementById('tips:other').value;
-        if (isNaN(val) || val <= 0){
+        if (isNaN(val) || val < 0 || (val == 0 && can_order == false)){
             alert("Input is not valid");
         }else{
             tips.save();

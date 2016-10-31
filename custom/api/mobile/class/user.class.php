@@ -24,7 +24,7 @@ class MobileUser{
         return $user;
     }
 
-    public function edit($id,$firstname,$lastname,$email,$phone_number){
+    public static function edit($id,$firstname,$lastname,$email,$phone_number){
         try {
             $customer = Mage::getModel("customer/customer")->load($id);
             if ($customer->getId() == null){
@@ -77,13 +77,15 @@ class MobileUser{
         $customer = Mage::getModel("customer/customer");
         $customer->website_id = $websiteId;
         $customer->setStore($store);
-        try {
-            $customer->load(MobileUser::getCustomerId());
-            return $customer;
-        }catch(Exception $e){
-            print($e->getMessage());
-            return null;
+        $customer->load(MobileUser::getCustomerId());
+
+        $data = $customer->getData();
+        unset($data['password_hash']);
+        unset($data['rp_token']);
+        if (!in_array('id',$data)){
+            throw new Exception("No user has login");
         }
+        return $data;
     }
 
     public static function resetPassword($email){

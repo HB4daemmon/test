@@ -1,45 +1,91 @@
 <?php
-require_once(dirname(__FILE__) . '/../../util/mobile_global.php');
+//require_once(dirname(__FILE__) . '/../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/class/user.class.php');
 
-try{
-    $param = array();
-    foreach($_REQUEST as $k=>$v){
-        $param[addslashes($k)] = addslashes($v);
-    }
-    if (!isset($param['method'])){
-        throw new Exception("Method is null");
-    }
-
-    if(!$param['method']){
-        throw new Exception("Method is null");
-    }
-    $result = array("success"=>1,"data"=>'',"return_code"=>"");
-
-    $user = new MobileUser();
-
-    if($param['method'] == 'register'){
-        $result['data'] = $user->register($param['firstname'],$param['lastname'],$param['email'],$param['password'],$param['phonenumber']);
-    }else if($param['method'] == 'login'){
-        $result['data'] =  $user->login($param['email'],$param['password']);
-    }else if($param['method'] == 'isLogin'){
-        $result['data'] =  $user->isLogin($param['sessionId']);
-    }else if($param['method'] == 'getCustomerId'){
-        $result['data'] =  $user->getCustomerId();
-    }else if($param['method'] == 'resetPassword'){
-        $result['data'] =  $user->resetPassword($param['email']);
-    }else if($param['method'] == 'logout'){
-        $result['data'] =  $user->logout();
-    }else if($param['method'] == 'edit'){
-        $result['data'] =  $user->edit($param['id'],$param['firstname'],$param['lastname'],$param['email'],$param['phone_number']);
-    }else{
-        throw new Exception("Invalid Method");
+class UserHandler {
+    // get current user
+    function get() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $result['data'] = MobileUser::getCurrentCustomer();
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
     }
 
-    echo json_encode($result);
-}catch(Exception $e){
-    $result['return_code'] = $e->getMessage();
-    $result['success'] = 0;
-    echo json_encode($result);
-    exit;
+    // Register
+    function post() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['POST'];
+            params($p,['firstname','lastname','email','password','phone_number']);
+            $result['data'] = MobileUser::register($p['firstname'],$p['lastname'],$p['email'],$p['password'],$p['phonenumber']);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+
+    // edit the user
+//    function put(){
+//        try{
+//            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+//            $p = $GLOBALS['PUT'];
+//            params($p,['id','firstname','lastname','email','phone_number']);
+//            $result['data'] = MobileUser::edit($p['id'],$p['firstname'],$p['lastname'],$p['email'],$p['phone_number']);
+//        }catch(Exception $e){
+//            $result['return_code'] = $e->getMessage();
+//            $result['success'] = 0;
+//        }
+//        echo json_encode($result);
+//    }
+}
+
+class UserLoginHandler {
+    // Login
+    function post() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['POST'];
+            params($p,['email','password']);
+            $result['data'] = MobileUser::login($p['email'],$p['password']);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}
+
+class UserLogoutHandler {
+    // Logout
+    function post() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $result['data'] = MobileUser::logout();
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}
+
+class UserResetHandler {
+    // Logout
+    function put() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['PUT'];
+            params($p,['email']);
+            $result['data'] = MobileUser::resetPassword($p['email']);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
 }

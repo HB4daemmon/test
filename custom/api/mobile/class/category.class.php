@@ -126,5 +126,5 @@ class MobileCategory{
     }
 }
 
-$mc = new MobileCategory();
-print_r($mc->getPage());
+//$mc = new MobileCategory();
+//print_r($mc->getPage());

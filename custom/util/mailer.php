@@ -14,10 +14,10 @@ function sendmail($to,$subject,$content) {
 	$mail->AddAddress($to, "");
 	$mail->Subject = $subject;
 	$mail->Body    = $content;
-	$host    = 'smtp.exmail.qq.com';
-	$username = 'admin@dhui100.com';
-	$password = 'You1234567';
-	$from    = 'admin@dhui100.com';
+	$host    = 'smtp.gmail.com';
+	$username = 'cartgogogo@gmail.com';
+	$password = 'startup2015';
+	$from    = 'cartgogogo@gmail.com';
 	$fromname = 'Cartgogogo Team';
 	$mail->Host    = $host;
 	$mail->Username = $username;

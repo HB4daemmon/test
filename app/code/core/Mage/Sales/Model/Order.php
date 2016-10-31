@@ -2119,7 +2119,7 @@ class Mage_Sales_Model_Order extends Mage_Sales_Model_Abstract
 
         $order['total'] = number_format($this->getData('grand_total') - $this->getData('tax_amount') + $out_of_stock + $substitute + $tax,2);
         $order['original_grand_total'] = number_format($this->getData('grand_total'),2);
-        $order['change'] = number_format($order['total'] - $order['original_grand_total'],2);
+        $order['change'] = number_format($tax - $this->getData('tax_amount') + $substitute + $out_of_stock ,2);
 
         $order['items'] = $order_items;
 

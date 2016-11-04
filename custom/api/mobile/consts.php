@@ -2,36 +2,44 @@
 require_once(dirname(__FILE__) . '/../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/class/consts.class.php');
 
-try{
-    $param = array();
-    foreach($_REQUEST as $k=>$v){
-        $param[addslashes($k)] = addslashes($v);
+class ConstsTermsHandler {
+    //
+    function get() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $result['data'] = MobileConsts::getTerms();
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
     }
-    if (!isset($param['method'])){
-        throw new Exception("Method is null");
+}
+
+class ConstsPolicyHandler {
+    //
+    function get() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $result['data'] = MobileConsts::getPolicy();
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
     }
+}
 
-    if(!$param['method']){
-        throw new Exception("Method is null");
+class ConstsDeliveryCountHandler {
+    //
+    function get() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $result['data'] = MobileConsts::getFreeDeliveryCount();
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
     }
-    $result = array("success"=>1,"data"=>'',"return_code"=>"");
-
-    $consts = new MobileConsts();
-
-    if($param['method'] == 'getTerms'){
-        $result['data'] = $consts->getTerms();
-    }else if($param['method'] == 'getPolicy'){
-        $result['data'] =  $consts->getPolicy();
-    }else if($param['method'] == 'getFreeDeliveryCount'){
-        $result['data'] =  $consts->getFreeDeliveryCount();
-    }else{
-        throw new Exception("Invalid Method");
-    }
-
-    echo json_encode($result);
-}catch(Exception $e){
-    $result['return_code'] = $e->getMessage();
-    $result['success'] = 0;
-    echo json_encode($result);
-    exit;
 }

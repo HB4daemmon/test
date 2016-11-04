@@ -3,9 +3,9 @@ require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.class.php');
 
 class MobileAddress{
-    public function create($first_name,$last_name,$street,$postcode,$city,$telephone){
+    public static function create($first_name,$last_name,$street,$postcode,$city,$telephone){
         try {
-            $customer = MobileUser::getCurrentCustomer();
+            $customer = MobileUser::getCurrentCustomer(false);
             if ($customer == null){
                 throw new Exception("Can't get current user");
             }
@@ -27,9 +27,9 @@ class MobileAddress{
         }
     }
 
-    public function get(){
+    public static function get(){
         try {
-            $customer = MobileUser::getCurrentCustomer();
+            $customer = MobileUser::getCurrentCustomer(false);
             $addresses = [];
             if ($customer == null){
                 throw new Exception("Can't get current user");
@@ -55,7 +55,7 @@ class MobileAddress{
         }
     }
 
-    public function delete($id){
+    public static function delete($id){
         try {
             $address = Mage::getModel('customer/address')->load($id);
             $_id = $address->getId();
@@ -70,7 +70,7 @@ class MobileAddress{
         }
     }
 
-    public function edit($id,$first_name,$last_name,$street,$postcode,$city,$telephone){
+    public static function edit($id,$first_name,$last_name,$street,$postcode,$city,$telephone){
         try {
             $address = Mage::getModel('customer/address')->load($id);
             $_id = $address->getId();
@@ -92,15 +92,15 @@ class MobileAddress{
         }
     }
 
-    public function getRegionCollection($countryCode)
+    public static function getRegionCollection($countryCode)
     {
         $regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
         return $regionCollection;
     }
 }
 
-$mc = new MobileAddress();
+//$mc = new MobileAddress();
 //print_r($mc->delete(8));
 //print_r($mc->edit(24,'daemon','wang','Ningshuangload','1111','Beijing','1234321'));
 //print_r($mc->get());
-print_r($mc->getRegionCollection('US'));
+//print_r($mc->getRegionCollection('US'));

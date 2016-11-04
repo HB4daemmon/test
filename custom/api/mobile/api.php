@@ -2,6 +2,9 @@
 
 require_once(dirname(__FILE__) . '/../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.php');
+require_once(dirname(__FILE__) . '/category.php');
+require_once(dirname(__FILE__) . '/address.php');
+require_once(dirname(__FILE__) . '/consts.php');
 
 class MainHandler {
     #get current user
@@ -27,9 +30,21 @@ class MainHandler {
 }
 
 Toro::serve(array(
+    //user
     "/user" => "UserHandler",
     "/user/login" => "UserLoginHandler",
     "/user/logout" => "UserLogoutHandler",
     "/user/reset" => "UserResetHandler",
+    //category
+    "/category/mainpage" => "CategoryMainPageHandler",
+    "/category/product/list" => "CategoryProductListHandler",
+    "/category/product" => "CategoryProductHandler",
+    //address
+    "/address" => "AddressHandler",
+    //consts
+    "/consts/terms" => "ConstsTermsHandler",
+    "/consts/policy" => "ConstsPolicyHandler",
+    "/consts/deliverycount" => "ConstsDeliveryCountHandler",
+
     "/main" => "MainHandler",
 ));

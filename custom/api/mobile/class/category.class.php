@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 
 class MobileCategory{
-    public function getAll(){
+    public static function getAll(){
         try {
             $_helper = Mage::helper('catalog/category');
             $_categories = $_helper->getStoreCategories();
@@ -33,7 +33,7 @@ class MobileCategory{
         }
     }
 
-    public function getPage(){
+    public static function getPage(){
         try {
             $cms_page = Mage::getModel('cms/page')
                 ->getCollection()

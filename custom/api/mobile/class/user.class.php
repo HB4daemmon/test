@@ -52,7 +52,7 @@ class MobileUser{
             ->setPassword($password)
             ->setPhoneNumber($phonenumber);
 
-        $customer->save();
+        return $customer->save();
     }
 
     public static function isLogin(){
@@ -71,21 +71,25 @@ class MobileUser{
         return  Mage::getSingleton('customer/session')->logout();
     }
 
-    public static function getCurrentCustomer(){
+    public static function getCurrentCustomer($json=true){
         $websiteId = 1;
         $store = Mage::app()->getStore();
         $customer = Mage::getModel("customer/customer");
         $customer->website_id = $websiteId;
         $customer->setStore($store);
         $customer->load(MobileUser::getCustomerId());
-
         $data = $customer->getData();
         unset($data['password_hash']);
         unset($data['rp_token']);
-        if (!in_array('id',$data)){
+        if (!array_key_exists('entity_id',$data)){
             throw new Exception("No user has login");
         }
-        return $data;
+        if($json){
+            return $data;
+        }else{
+            return $customer;
+        }
+
     }
 
     public static function resetPassword($email){

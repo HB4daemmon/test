@@ -10,6 +10,10 @@ Mage::getSingleton("core/session", array("name" => "frontend"));
 $type = $_SERVER['REQUEST_METHOD'];
 parse_str(file_get_contents('php://input'), $data);
 $GLOBALS[$type] = $data;
+if ($type == 'GET'){
+   $GLOBALS[$type] = $_GET;
+}
+//print_r($GLOBALS);
 ///$data = array_merge($_POST, $data);
 
 

@@ -29,7 +29,7 @@ class MobileCategory{
             }
             return $cate;
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ class MobileCategory{
             return $result;
 
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ class MobileCategory{
             return $category;
 
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -121,7 +121,7 @@ class MobileCategory{
             return $product;
 
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 }

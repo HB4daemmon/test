@@ -1,0 +1,54 @@
+/* Customer Account */
+ul.saved-cards label {
+    display: inline;
+}
+#new-card .form-list select {
+    width: auto;
+}
+#new-card .form-list label {
+    float: none;
+}
+#cryozonic_stripe_cc_cid {
+    width: 40px;
+}
+
+/* Checkout */
+ul#payment_form_cryozonic_stripe {
+    padding-left: 20px;
+}
+ul#payment_form_cryozonic_stripe li {
+    display: block;
+}
+ul#payment_form_cryozonic_stripe li.stripe-new {
+    display: none;
+}
+ul#payment_form_cryozonic_stripe.stripe-new li.stripe-new {
+    display: block;
+}
+.sp-methods ul.saved-cards li label {
+    float: none;
+}
+ul.saved-cards {
+    margin-top: 14px;
+}
+ul.saved-cards input.select {
+    position: relative;
+    top: -1px;
+}
+ul.saved-cards span {
+    display: inline-block;
+}
+ul.saved-cards span.type {
+    font-weight: bold;
+    margin-left: 3px;
+}
+ul.saved-cards span.exp {
+    float: right;
+}
+ul.saved-cards label {
+    display: inline;
+}
+ul.saved-cards span.cryozonic-stripe-fade {
+    color: #aaa;
+    font-weight: normal;
+}

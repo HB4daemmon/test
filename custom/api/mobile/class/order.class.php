@@ -1,16 +1,18 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.class.php');
+require_once(dirname(__FILE__) . '/../../../vendor/stripe-php/init.php');
 ini_set("display_errors", "On");
 
 error_reporting(E_ALL | E_STRICT);
 
 class MobileOrder{
-    function create(){
+    public static function create(){
         try {
-            $customer = MobileUser::getCurrentCustomer();
-            error_log($customer->getId());
-
+            $customer = MobileUser::getCurrentCustomer(false);
+            if ($customer == null){
+                throw new Exception("Can't get current user");
+            }
 //            $transaction = Mage::getModel('core/resource_transaction');
             $storeId = $customer->getStoreId();
             $reservedOrderId = Mage::getSingleton('eav/config')->getEntityType('order')->fetchNewIncrementId($storeId);
@@ -35,17 +37,15 @@ class MobileOrder{
                 ->setState('new')
                 ->setStatus('pending')
                 ->setIs('pending')
-                ->setParentOrderId(0)
-                ->setSalesFlatStoregroupId(83)
                 ->setStoregroupId(5);
 
-            $billing = $customer->getDefaultBillingAddress();
+            $billing = $customer->getDefaultShippingAddress();
             $billingAddress = Mage::getModel('sales/order_address')
                 ->setStoreId($storeId)
                 ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING)
                 ->setCustomerId($customer->getId())
                 ->setCustomerAddressId($customer->getDefaultShipping())
-                ->setCustomer_address_id($billing->getEntityId())
+                //->setCustomer_address_id($billing->getEntityId())
                 ->setPrefix($billing->getPrefix())
                 ->setFirstname($billing->getFirstname())
                 ->setMiddlename($billing->getMiddlename())
@@ -138,16 +138,43 @@ class MobileOrder{
                 ->setGrandTotal($subTotal)
                 ->setBaseGrandTotal($subTotal);
             $order->save();
-//            $transaction->addObject($order);
-//            $transaction->addCommitCallback(array($order, 'place'));
-//            $transaction->addCommitCallback(array($order, 'save'));
-//            $transaction->save();
+            $order_id = $order->getId();
+            $store_groups=Mage::getModel('sales/order_storegroup')
+                         ->setOrderId($order_id)
+                         ->setStoregroupId(5)
+                         ->setStoregroupName('Walmart')
+                         ->setDate('11-11-2016')
+                         ->setTimeRange('11');
+            $store_groups->save();
+
+
+            $order->setParentOrderId($order_id)
+                  ->setSalesFlatStoregroupId($store_groups->getId());
+
+
             var_dump($order->getId());
             return $customer;
         }catch(Exception $e){
-            var_dump($e->getTraceAsString());
-            return $e->getTraceAsString();
+            throw new Exception($e->getMessage());
         }
+    }
+
+    public static function stripe_pay($token,$amount){
+        \Stripe\Stripe::setApiKey(" sk_test_EU4rEaLtNKmhSMcYZzMpMh8B");
+
+        try {
+            $charge = \Stripe\Charge::create(array(
+                "amount" => $amount, // Amount in cents
+                "currency" => "usd",
+                "source" => $token,
+                "description" => "Cartgogogo order"
+            ));
+            return $charge;
+        } catch(\Stripe\Error\Card $e) {
+            // The card has been declined
+            throw new Exception($e->getMessage());
+        }
+
     }
 
 }

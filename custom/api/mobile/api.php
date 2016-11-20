@@ -5,6 +5,7 @@ require_once(dirname(__FILE__) . '/user.php');
 require_once(dirname(__FILE__) . '/category.php');
 require_once(dirname(__FILE__) . '/address.php');
 require_once(dirname(__FILE__) . '/consts.php');
+require_once(dirname(__FILE__) . '/order.php');
 
 class MainHandler {
     #get current user
@@ -45,6 +46,9 @@ Toro::serve(array(
     "/consts/terms" => "ConstsTermsHandler",
     "/consts/policy" => "ConstsPolicyHandler",
     "/consts/deliverycount" => "ConstsDeliveryCountHandler",
+    "/consts/helpfulquestions" => "ConstsHelpfulQuestionsHandler",
+    //order
+    "/order" => "OrderHandler",
 
     "/main" => "MainHandler",
 ));

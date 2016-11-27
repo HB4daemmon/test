@@ -141,6 +141,6 @@ class MobileUtils{
 
 }
 
-$mc = new MobileUtils();
-print_r($mc->getShippingtimeDate('walmart',"date"));
-print_r($mc->getShippingtimeDate('walmart',"range"));
+//$mc = new MobileUtils();
+//print_r($mc->getShippingtimeDate('walmart',"date"));
+//print_r($mc->getShippingtimeDate('walmart',"range"));

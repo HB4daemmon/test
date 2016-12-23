@@ -23,7 +23,7 @@ class MobileAddress{
             $address->save();
             return 'success';
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ class MobileAddress{
 
             return $addresses;
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ class MobileAddress{
 
             return 'success';
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ class MobileAddress{
             $address->save();
             return 'success';
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
     }
 

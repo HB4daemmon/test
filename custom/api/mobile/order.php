@@ -1,29 +1,18 @@
 <?php
-require_once(dirname(__FILE__) . '/../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/class/order.class.php');
 
-try{
-    $param = array();
-    foreach($_REQUEST as $k=>$v){
-        $param[addslashes($k)] = addslashes($v);
-    }
-    if (!isset($param['method'])){
-        throw new Exception("Method is null");
-    }
 
-    if(!$param['method']){
-        throw new Exception("Method is null");
+class OrderHandler {
+    function post() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['POST'];
+            params($p,['token']);
+            $result['data'] = MobileOrder::stripe_pay($p['token'],1);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
     }
-
-    $order = new MobileOrder();
-
-    if($param['method'] == 'create'){
-        print_r($order->create());
-    }else{
-        throw new Exception("Invalid Method");
-    }
-
-}catch(Exception $e){
-    echo json_encode(array("success"=>0,"data"=>'',"error_msg"=>$e->getMessage()));
-    exit;
 }

@@ -38,7 +38,7 @@ class MobileUser{
             $customer->save();
             return 'success';
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
 
     }
@@ -79,11 +79,12 @@ class MobileUser{
         $customer->setStore($store);
         $customer->load(MobileUser::getCustomerId());
         $data = $customer->getData();
-        unset($data['password_hash']);
-        unset($data['rp_token']);
         if (!array_key_exists('entity_id',$data)){
             throw new Exception("No user has login");
         }
+        unset($data['password_hash']);
+        unset($data['rp_token']);
+
         if($json){
             return $data;
         }else{
@@ -103,7 +104,7 @@ class MobileUser{
                 $customer->sendPasswordResetConfirmationEmail();
                 return $newResetPasswordLinkToken;
             } catch (Exception $e) {
-                return $e->getMessage();
+                throw new Exception($e->getMessage());
             }
         }
     }

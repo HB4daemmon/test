@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
+require_once(dirname(__FILE__) . '/utils.class.php');
 
 class MobileCategory{
     public static function getAll(){
@@ -120,6 +121,57 @@ class MobileCategory{
             $product['special_to_date'] = $_product->getSpecialToDate();
             return $product;
 
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function queryProduct($query_text,$page,$page_size){
+        try {
+            $page = intval($page);
+            $page_size = intval($page_size);
+
+            $query = Mage::getModel('catalogsearch/query')->setQueryText($query_text)->prepare();
+            Mage::getResourceModel('catalogsearch/fulltext')->prepareResult(
+                Mage::getModel('catalogsearch/fulltext'),
+                $query_text,
+                $query
+            );
+
+            $collection = Mage::getResourceModel('catalog/product_collection');
+            $collection->getSelect()->joinInner(
+                array('search_result' => $collection->getTable('catalogsearch/result')),
+                $collection->getConnection()->quoteInto(
+                    'search_result.product_id=e.entity_id AND search_result.query_id=?',
+                    $query->getId()
+                ),
+                array('relevance' => 'relevance')
+            );
+            $productIds = $collection->getAllIds();
+            $length = count($productIds);
+            $pager = MobileUtils::count_page($length,$page,$page_size);
+            if($pager['skip'] <= $length){
+                $skip = $pager['skip'];
+            }else{
+                $skip = $length;
+            }
+
+            if($pager['skip'] + $page_size <= $length){
+                $end = $pager['skip']+ $page_size;
+            }else{
+                $end = $length;
+            }
+
+            $data = array();
+            if($skip != $end){
+                for($i=$skip;$i<$end;$i++){
+                    $id = $productIds[$i];
+                    $product = MobileCategory::getProduct($id);
+                    array_push($data,$product);
+                }
+            }
+            $products = array("pager"=>$pager,"data"=>$data);
+            return $products;
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

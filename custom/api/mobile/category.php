@@ -47,3 +47,19 @@ class CategoryProductHandler {
         echo json_encode($result);
     }
 }
+
+class CategoryProductSearchHandler{
+    // product search
+    function get(){
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['GET'];
+            params($p,['query_text','page','page_size']);
+            $result['data'] = MobileCategory::queryProduct($p['query_text'],$p['page'],$p['page_size']);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}

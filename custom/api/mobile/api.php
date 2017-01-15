@@ -40,6 +40,7 @@ Toro::serve(array(
     //category
     "/category/mainpage" => "CategoryMainPageHandler",
     "/category/product/list" => "CategoryProductListHandler",
+    "/category/product/query" => "CategoryProductSearchHandler",
     "/category/product" => "CategoryProductHandler",
     //address
     "/address" => "AddressHandler",

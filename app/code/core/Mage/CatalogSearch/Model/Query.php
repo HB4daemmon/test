@@ -102,12 +102,10 @@ class Mage_CatalogSearch_Model_Query extends Mage_Core_Model_Abstract
         $collection = $this->getData('result_collection');
         if (is_null($collection)) {
             $collection = $this->getSearchCollection();
-
             $text = $this->getSynonymFor();
             if (!$text) {
                 $text = $this->getQueryText();
             }
-
             $collection->addSearchFilter($text)
                 ->addStoreFilter()
                 ->addMinimalPrice()

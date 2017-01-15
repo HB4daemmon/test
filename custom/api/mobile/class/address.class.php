@@ -1,13 +1,14 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.class.php');
+require_once(dirname(__FILE__) . '/utils.class.php');
 
 class MobileAddress{
-    public static function create($first_name,$last_name,$street,$postcode,$city,$telephone){
+    public static function create($user_id,$first_name,$last_name,$street,$postcode,$city,$telephone){
         try {
-            $customer = MobileUser::getCurrentCustomer(false);
-            if ($customer == null){
-                throw new Exception("Can't get current user");
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
             }
 
             $address = Mage::getModel("customer/address");
@@ -27,12 +28,12 @@ class MobileAddress{
         }
     }
 
-    public static function get(){
+    public static function get($user_id){
         try {
-            $customer = MobileUser::getCurrentCustomer(false);
             $addresses = [];
-            if ($customer == null){
-                throw new Exception("Can't get current user");
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
             }
 
             foreach ($customer->getAddresses() as $address)
@@ -96,6 +97,16 @@ class MobileAddress{
     {
         $regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
         return $regionCollection;
+    }
+
+    public static function getAddressConfig($method){
+        if($method == 'city'){
+            return MobileUtils::getCityList();
+        }else if ($method == 'state'){
+            return MobileUtils::getState();
+        }else if ($method == 'zipcode'){
+            return MobileUtils::getZipCode();
+        }
     }
 }
 

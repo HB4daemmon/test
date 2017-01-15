@@ -43,6 +43,7 @@ Toro::serve(array(
     "/category/product" => "CategoryProductHandler",
     //address
     "/address" => "AddressHandler",
+    "/address/config" => "AddressConfigHandler",
     //consts
     "/consts/terms" => "ConstsTermsHandler",
     "/consts/policy" => "ConstsPolicyHandler",

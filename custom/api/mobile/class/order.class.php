@@ -7,11 +7,11 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
 class MobileOrder{
-    public static function create(){
+    public static function create($user_id){
         try {
-            $customer = MobileUser::getCurrentCustomer(false);
-            if ($customer == null){
-                throw new Exception("Can't get current user");
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
             }
 //            $transaction = Mage::getModel('core/resource_transaction');
             $storeId = $customer->getStoreId();

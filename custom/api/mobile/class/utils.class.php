@@ -139,6 +139,21 @@ class MobileUtils{
 
     }
 
+    public static function getCityList(){
+        $city_list = ["Champaign","Urbana"];
+        return $city_list;
+    }
+
+    public static function getZipCode(){
+        $zip_code = [61820,61801,61802];
+        return $zip_code;
+    }
+
+    public static function getState(){
+        $state = ["Illionis"];
+        return $state;
+    }
+
 }
 
 //$mc = new MobileUtils();

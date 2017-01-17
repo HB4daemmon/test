@@ -32,6 +32,27 @@ class CategoryProductListHandler {
     }
 }
 
+class CategoryListHandler {
+    // get products
+    function get() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['GET'];
+            if(!isset($p['type'])){
+                $type = 'default';
+            }else{
+                $type = $p['type'];;
+            }
+//            print_r($p);
+            $result['data'] = MobileCategory::getCategoryList($type);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}
+
 class CategoryProductHandler {
     // get products
     function get() {

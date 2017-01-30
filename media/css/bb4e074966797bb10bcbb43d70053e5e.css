@@ -2543,8 +2543,8 @@ input[type="button"].btn-block {
 @font-face {
   font-family: 'Glyphicons Halflings';
 
-  src: url('http://localhost/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.eot');
-  src: url('http://localhost/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://localhost/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.woff') format('woff'), url('http://localhost/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('http://localhost/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('http://localhost/kantwait/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.eot');
+  src: url('http://localhost/kantwait/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://localhost/kantwait/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.woff') format('woff'), url('http://localhost/kantwait/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('http://localhost/kantwait/skin/frontend/default/ma_orion/css/../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -6398,7 +6398,7 @@ td.visible-print {
 .widget-new-products .products-list .product-image { width:85px; height:85px; }
 .widget-new-products .products-list .product-shop { margin-left:100px; }
 .sidebar .widget-new-products .block { font-size:11px; line-height:1.25; }
-.sidebar .widget-new-products .block-title strong { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-new.gif) 0 1px no-repeat; padding-left:21px; color:#dc5033; }
+.sidebar .widget-new-products .block-title strong { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-new.gif) 0 1px no-repeat; padding-left:21px; color:#dc5033; }
 
 /* Widget: Recently Viewed Proructs */
 .widget-viewed { display:block; }
@@ -6407,7 +6407,7 @@ td.visible-print {
 .widget-viewed .products-list .product-image { width:85px; height:85px; }
 .widget-viewed .products-list .product-shop { margin-left:100px; }
 .sidebar .widget-viewed .block { font-size:11px; line-height:1.25; }
-.sidebar .widget-viewed .block-title strong { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_block-list.gif) 0 0 no-repeat; padding-left:21px; }
+.sidebar .widget-viewed .block-title strong { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_block-list.gif) 0 0 no-repeat; padding-left:21px; }
 
 /* Widget: Recently Compared Proructs */
 .widget-compared { display:block;}
@@ -6416,7 +6416,7 @@ td.visible-print {
 .widget-compared .products-list .product-image { width:85px; height:85px; }
 .widget-compared .products-list .product-shop { margin-left:100px; }
 .sidebar .widget-compared .block { font-size:11px; line-height:1.25; }
-.sidebar .widget-compared .block-title strong { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_block-list.gif) 0 0 no-repeat; padding-left:21px; }
+.sidebar .widget-compared .block-title strong { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_block-list.gif) 0 0 no-repeat; padding-left:21px; }
 
 /* Widget: CMS Static Block */
 .widget-static-block {}
@@ -6431,28 +6431,28 @@ td.visible-print {
 .widget-product-link-inline { display:inline; }
 
 .col-main .widget-product-link { display:block; text-align:right; margin:7px 0; }
-.col-main .widget-product-link a { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding-right:15px; }
+.col-main .widget-product-link a { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding-right:15px; }
 
 .sidebar .widget-product-link { display:block; margin:0 0 15px; padding:0 10px; }
-.sidebar .widget-product-link a { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding:0 15px 0 0; }
+.sidebar .widget-product-link a { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding:0 15px 0 0; }
 
 /* Widget: Catalog Category Link */
 .widget-category-link-inline { display:inline; }
 
 .col-main .widget-category-link { display:block; text-align:right; margin:7px 0; }
-.col-main .widget-category-link a { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding-right:15px; }
+.col-main .widget-category-link a { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding-right:15px; }
 
 .sidebar .widget-category-link { display:block; margin:0 0 15px; padding:0 10px; }
-.sidebar .widget-category-link a { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding:0 15px 0 0; }
+.sidebar .widget-category-link a { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding:0 15px 0 0; }
 
 /* Widget: CMS Page Link */
 .widget-cms-link-inline { display:inline; }
 
 .col-main .widget-cms-link { display:block; text-align:right; margin:7px 0; }
-.col-main .widget-cms-link a { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding-right:15px; }
+.col-main .widget-cms-link a { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding-right:15px; }
 
 .sidebar .widget-cms-link { display:block; margin:0 0 15px; padding:0 10px; }
-.sidebar .widget-cms-link a { background:url(http://localhost/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding:0 15px 0 0; }
+.sidebar .widget-cms-link a { background:url(http://localhost/kantwait/skin/frontend/base/default/css/../images/widgets/i_widget-link.gif) 100% 4px no-repeat; padding:0 15px 0 0; }
 /* ======================================================================================= */
 
 #cryozonic-stripe-accepted-cards img {
@@ -6634,7 +6634,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 }
 
 #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
-	background-image: url('http://localhost/skin/frontend/default/ma_orion/magentothem/fancybox/fancybox_sprite.png');
+	background-image: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/fancybox/fancybox_sprite.png');
 }
 
 #fancybox-loading {
@@ -6652,7 +6652,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 #fancybox-loading div {
 	width: 44px;
 	height: 44px;
-	background: url('http://localhost/skin/frontend/default/ma_orion/magentothem/fancybox/fancybox_loading.gif') center center no-repeat;
+	background: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/fancybox/fancybox_loading.gif') center center no-repeat;
 }
 
 .fancybox-close {
@@ -6672,7 +6672,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 	height: 100%;
 	cursor: pointer;
 	text-decoration: none;
-	background: transparent url('http://localhost/skin/frontend/default/ma_orion/magentothem/fancybox/blank.gif'); /* helps IE */
+	background: transparent url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/fancybox/blank.gif'); /* helps IE */
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	z-index: 8040;
 }
@@ -6733,7 +6733,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 	overflow: hidden;
 	display: none;
 	z-index: 8010;
-	background: url('http://localhost/skin/frontend/default/ma_orion/magentothem/fancybox/fancybox_overlay.png');
+	background: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/fancybox/fancybox_overlay.png');
 }
 
 .fancybox-overlay-fixed {
@@ -6872,7 +6872,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 
 .ma-bestsellerproductslider-container  .bx-wrapper .bx-loading {
 	min-height: 50px;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -6936,7 +6936,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 	width: 10px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
 	margin: 0 3px;
 }
 
@@ -6951,7 +6951,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 	width: 9px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
 	margin: 0 3px;
 }
 
@@ -6999,7 +6999,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -7010,7 +7010,7 @@ ul.saved-cards span.cryozonic-stripe-fade {
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -7158,7 +7158,7 @@ ul.tabs li.active{
 
 .tab_categorys  .bx-wrapper .bx-loading {
 	min-height: 50px;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -7207,12 +7207,12 @@ ul.tabs li.active{
 
 .tab_categorys  .bx-wrapper .bx-prev {
 	left: 10px;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) no-repeat 0 -32px;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) no-repeat 0 -32px;
 }
 
 .tab_categorys  .bx-wrapper .bx-next {
 	right: 10px;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) no-repeat -43px -32px;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) no-repeat -43px -32px;
 }
 
 .tab_categorys  .bx-wrapper .bx-prev:hover {
@@ -7250,7 +7250,7 @@ ul.tabs li.active{
 	width: 10px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
 	margin: 0 3px;
 }
 
@@ -7265,7 +7265,7 @@ ul.tabs li.active{
 	width: 9px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
 	margin: 0 3px;
 }
 
@@ -7314,7 +7314,7 @@ ul.tabs li.active{
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -7325,7 +7325,7 @@ ul.tabs li.active{
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -7405,7 +7405,7 @@ ul.tabs li.active{
 .pt_custommenu .itemSubMenu h4.level3,
 .pt_custommenu .itemSubMenu a.level3,
 .pt_custommenu .itemMenu a.level1.nochild{
-    background: url("http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/black-dot.jpg") no-repeat left center;
+    background: url("http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/black-dot.jpg") no-repeat left center;
     color: #666;
     padding-left: 8px;
     text-transform: none;
@@ -8004,7 +8004,7 @@ button.ui-button::-moz-focus-inner {
 	height: 100%;
 }
 .ui-progressbar .ui-progressbar-overlay {
-	background: url("http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/animated-overlay.gif");
+	background: url("http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/animated-overlay.gif");
 	height: 100%;
 	filter: alpha(opacity=25);
 	opacity: 0.25;
@@ -8274,14 +8274,14 @@ body .ui-tooltip {
 	font-size: 1em;
 }
 .ui-widget-content {
-	background: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-slider-range.png) 50% 50% repeat-x;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-slider-range.png) 50% 50% repeat-x;
 	color: #222222;
 }
 .ui-widget-content a {
 	color: #222222;
 }
 .ui-widget-header {
-	background: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-slider-range.png) 50% 50% repeat-x;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-slider-range.png) 50% 50% repeat-x;
 	color: #222222;
 	font-weight: bold;
 }
@@ -8320,7 +8320,7 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
 	border: 1px solid #fcefa1;
-	background: #fbf9ee url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x;
+	background: #fbf9ee url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x;
 	color: #363636;
 }
 .ui-state-highlight a,
@@ -8332,7 +8332,7 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-error,
 .ui-widget-header .ui-state-error {
 	border: 1px solid #cd0a0a;
-	background: #fef1ec url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
+	background: #fef1ec url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
 	color: #cd0a0a;
 }
 .ui-state-error a,
@@ -8378,27 +8378,27 @@ body .ui-tooltip {
 }
 .ui-icon,
 .ui-widget-content .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_222222_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_222222_256x240.png);
 }
 .ui-widget-header .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_222222_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_222222_256x240.png);
 }
 .ui-state-default .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_888888_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_888888_256x240.png);
 }
 .ui-state-hover .ui-icon,
 .ui-state-focus .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_454545_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_454545_256x240.png);
 }
 .ui-state-active .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_454545_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_454545_256x240.png);
 }
 .ui-state-highlight .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_2e83ff_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_2e83ff_256x240.png);
 }
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {
-	background-image: url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_cd0a0a_256x240.png);
+	background-image: url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-icons_cd0a0a_256x240.png);
 }
 
 /* positioning */
@@ -8611,14 +8611,14 @@ body .ui-tooltip {
 
 /* Overlays */
 .ui-widget-overlay {
-	background: #aaaaaa url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+	background: #aaaaaa url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
 	opacity: .3;
 	filter: Alpha(Opacity=30);
 }
 .ui-widget-shadow {
 	margin: -8px 0 0 -8px;
 	padding: 8px;
-	background: #aaaaaa url(http://localhost/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+	background: #aaaaaa url(http://localhost/kantwait/skin/frontend/default/ma_orion/layerednavigationajax/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
 	opacity: .3;
 	filter: Alpha(Opacity=30);
 	border-radius: 8px;
@@ -8670,7 +8670,7 @@ body .ui-tooltip {
 
 .ma-newproductslider-container  .bx-wrapper .bx-loading {
 	min-height: 50px;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -8735,7 +8735,7 @@ body .ui-tooltip {
 	width: 10px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
 	margin: 0 3px;
 }
 
@@ -8750,7 +8750,7 @@ body .ui-tooltip {
 	width: 9px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
 	margin: 0 3px;
 }
 
@@ -8801,7 +8801,7 @@ body .ui-tooltip {
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -8883,7 +8883,7 @@ body .ui-tooltip {
 
 .ma-onsaleproductslider-container  .bx-wrapper .bx-loading {
 	min-height: 50px;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/bx_loader.gif) center center no-repeat #fff;
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -8948,7 +8948,7 @@ body .ui-tooltip {
 	width: 10px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -11px no-repeat;
 	margin: 0 3px;
 }
 
@@ -8965,7 +8965,7 @@ body .ui-tooltip {
 	width: 9px;
 	height: 11px;
 	outline: 0;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/images/controls.png) -86px -44px no-repeat;
 	margin: 0 3px;
 }
 
@@ -9013,7 +9013,7 @@ body .ui-tooltip {
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -9024,7 +9024,7 @@ body .ui-tooltip {
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -9081,7 +9081,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 
 /* Direction Nav */
 .ma-relatedslider-container .flex-direction-nav {*height: 0;}
-.ma-relatedslider-container .flex-direction-nav a {width: 30px; height: 30px; margin: -20px 0 0; display: block; background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/bg_direction_nav.png) no-repeat 0 0; position: absolute; top: 50%; cursor: pointer; text-indent: -9999px; }
+.ma-relatedslider-container .flex-direction-nav a {width: 30px; height: 30px; margin: -20px 0 0; display: block; background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/bg_direction_nav.png) no-repeat 0 0; position: absolute; top: 50%; cursor: pointer; text-indent: -9999px; }
 .ma-relatedslider-container .flex-direction-nav .flex-next { background-position: 100% 0; right: 6px; }
 .ma-relatedslider-container .flex-direction-nav .flex-prev { left: 6px;}
 .ma-relatedslider-container .flexslider:hover .flex-next { }
@@ -9108,7 +9108,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 	height: 16px;
 	position: absolute;
 	z-index: 99;
-	background: url(http://localhost/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
+	background: url(http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/css/../images/loader.gif) no-repeat ;
 	top: 50%;
 	left: 50%;
 	margin: -8px 0 0 -8px;
@@ -9267,7 +9267,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 
 	/*
 	.pslogin-share .soc-button {
-		background-image: url("http://localhost/skin/frontend/base/default/css/plumrocket/pslogin/images/social_retina.png");
+		background-image: url("http://localhost/kantwait/skin/frontend/base/default/css/plumrocket/pslogin/images/social_retina.png");
 		background-size: 328px 185px;
 		display: block;
 		height: 30px;
@@ -9517,7 +9517,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 	}
 
 	.pslogin-block .pslogin-buttons ul li .pslogin-button-icon {
-		background: url('http://localhost/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/social.png');
+		background: url('http://localhost/kantwait/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/social.png');
 		display: block;
 		float: left;
 		width: 32px;
@@ -10058,7 +10058,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 }
 
 	.pslogin-openid .network-logo {
-		background: url('http://localhost/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/social_openid.png');
+		background: url('http://localhost/kantwait/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/social_openid.png');
 		width: 180px;
 		height: 70px;
 		margin: 0 auto 15px auto;
@@ -10120,7 +10120,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 	}
 
 		.pslogin-openid .ajax-loader .image-gif {
-			background: url('http://localhost/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/ajax-loader-h.gif');
+			background: url('http://localhost/kantwait/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/ajax-loader-h.gif');
 			width: 110px;
 			height: 14px;
 			display: none;
@@ -10137,7 +10137,7 @@ html[xmlns] .ma-relatedslider-container .slides {display: block;}
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
 
 	.pslogin-block .pslogin-buttons ul li .pslogin-button-icon {
-		background: url('http://localhost/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/social_retina.png');
+		background: url('http://localhost/kantwait/skin/frontend/base/default/css/plumrocket/pslogin/../../../images/plumrocket/pslogin/social_retina.png');
 		background-size: 236px 340px;
 		-webkit-background-size: 236px 340px;
 		-moz-background-size: 236px 340px;
@@ -10882,20 +10882,20 @@ Sequence.js and its dependencies are (c) Ian Lunn Design 2012 - 2013 unless othe
 
 @font-face {
     font-family: 'OpenSansRegular';
-    src: url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.eot');
-    src: url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.eot') format('embedded-opentype'),
-         url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.woff') format('woff'),
-         url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.ttf') format('truetype'),
-         url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.svg#OpenSansRegular') format('svg');
+    src: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.eot');
+    src: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.eot') format('embedded-opentype'),
+         url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.woff') format('woff'),
+         url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.ttf') format('truetype'),
+         url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-regular.svg#OpenSansRegular') format('svg');
 }
 
 @font-face {
     font-family: 'OpenSansBold';
-    src: url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.eot');
-    src: url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.eot') format('embedded-opentype'),
-         url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.woff') format('woff'),
-         url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.ttf') format('truetype'),
-         url('http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.svg#OpenSansBold') format('svg');
+    src: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.eot');
+    src: url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.eot') format('embedded-opentype'),
+         url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.woff') format('woff'),
+         url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.ttf') format('truetype'),
+         url('http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../fonts/opensans-bold.svg#OpenSansBold') format('svg');
 }
 
 .sequence-theme {
@@ -10909,7 +10909,7 @@ Sequence.js and its dependencies are (c) Ian Lunn Design 2012 - 2013 unless othe
   overflow: hidden;
   width: 100%;
   background-color: #D9D9D9;
-  background-image: url("http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../images/bg-sequence.jpg");
+  background-image: url("http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/../images/bg-sequence.jpg");
   background-repeat: no-repeat;
   background-position: 50% 100%;
   color: white;
@@ -10950,7 +10950,7 @@ Sequence.js and its dependencies are (c) Ian Lunn Design 2012 - 2013 unless othe
     display: none;
     text-indent: -9999px;
     font-weight: normal;
-    background: url("http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/images/arrow-banner7.png") no-repeat 0 0 #aaa;
+    background: url("http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/images/arrow-banner7.png") no-repeat 0 0 #aaa;
     position: absolute;
     top: 47%;
     z-index: 1000;
@@ -11115,7 +11115,7 @@ Sequence.js and its dependencies are (c) Ian Lunn Design 2012 - 2013 unless othe
   left: 47%;
   top: 57%; 
   padding: 13px 30px;
-  background: url("http://localhost/skin/frontend/default/ma_orion/magentothem/bannersequence/css/images/bg-subtitle-banner.png") repeat;
+  background: url("http://localhost/kantwait/skin/frontend/default/ma_orion/magentothem/bannersequence/css/images/bg-subtitle-banner.png") repeat;
   font-size: 15px;
   font-family: 'helveticaneue';
   color: #fff;

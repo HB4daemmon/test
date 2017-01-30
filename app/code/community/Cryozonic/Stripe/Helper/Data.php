@@ -25,7 +25,7 @@ class Cryozonic_Stripe_Helper_Data extends Mage_Payment_Helper_Data
         $checkout = Mage::getSingleton('checkout/session')->getQuote();
         if ($checkout->getItemsCount() > 0) // Are we at the checkout page?
         {
-            $billAddress = $checkout->getBillingAddress();
+            $billAddress = $checkout->getShippingAddress();
             $address['address_line1'] = $billAddress->getData('street');
             $address['address_zip'] = $billAddress->getData('postcode');
         }
@@ -36,7 +36,7 @@ class Cryozonic_Stripe_Helper_Data extends Mage_Payment_Helper_Data
             $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
 
             if (!empty($quote)) {
-                $billAddress = $quote->getBillingAddress();
+                $billAddress = $quote->getShippingAddress();
                 $address['address_line1'] = $billAddress->getData('street');
                 $address['address_zip'] = $billAddress->getData('postcode');
             }
@@ -44,7 +44,7 @@ class Cryozonic_Stripe_Helper_Data extends Mage_Payment_Helper_Data
         else if (empty($address['address_line1']))
         {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
-            $customerAddressId = $customer->getDefaultBilling();
+            $customerAddressId = $customer->getDefaultShipping();
             if ($customerAddressId)
             {
                 $billAddress = Mage::getModel('customer/address')->load($customerAddressId);

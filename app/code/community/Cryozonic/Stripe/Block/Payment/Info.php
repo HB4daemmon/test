@@ -71,7 +71,9 @@ class Cryozonic_Stripe_Block_Payment_Info extends Mage_Payment_Block_Info
 
         try
         {
-            $token = $this->helper->cleanToken($this->getMethod()->getInfoInstance()->getLastTransId());
+            $id = $this->getMethod()->getInfoInstance()->getLastTransId();
+            $stripe->log($id);
+            $token = $this->helper->cleanToken($id);
             $this->charge = $stripe->retrieveCharge($token);
         }
         catch (Stripe_Error $e)

@@ -14,19 +14,25 @@ function sendmail($to,$subject,$content) {
 	$mail->AddAddress($to, "");
 	$mail->Subject = $subject;
 	$mail->Body    = $content;
-	$host    = 'smtp.gmail.com';
-	$username = 'cartgogogo@gmail.com';
-	$password = 'startup2015';
-	$from    = 'cartgogogo@gmail.com';
-	$fromname = 'Cartgogogo Team';
+//	$host    = 'smtp.gmail.com';
+//	$username = 'cartgogogo@gmail.com';
+//	$password = 'startup2015';
+//	$from    = 'cartgogogo@gmail.com';
+//	$fromname = 'Cartgogogo Team';
+    $host    = 'smtp.163.com';
+    $username = 'hb4daemon@163.com';
+    $password = 'HB4daemon';
+    $from    = 'hb4daemon@163.com';
+    $fromname = 'Cartgogogo Team';
 	$mail->Host    = $host;
 	$mail->Username = $username;
 	$mail->Password = $password;
 	$mail->From    = $from;
 	$mail->FromName = $fromname;
 	$mail->Port = 465;
-//	$mail->SMTPDebug = true;
-	return $mail->send();
+	$mail->SMTPDebug = true;
+	$res = $mail->send();
+    return $res;
 }
 
 function fill_mail($host, $content) {

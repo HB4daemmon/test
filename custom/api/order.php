@@ -331,24 +331,22 @@ function completeOrder($order_id){
         return array("success"=>0,"data"=>'',"error_msg"=>$e->getMessage());
     }
 
-    if($res){
-        try{
-            $conn = db_connect();
-            $sql = "update sales_flat_order set order_completed = 1 where entity_id = $order_id";
-            $res = $conn->query($sql);
-            if(!$res){
-                throw new Exception("update order status error.Msg[$sql]");
-            }
-            $update = "update sales_flat_order_item set item_status = 'out_of_stock' where order_id = $order_id and item_status is null";
-            $conn->query($update);
-            $conn->commit();
-            $conn->close();
-            return array("success"=>1,"data"=>"Success");
-        }catch (Exception $e){
-            $conn->rollback();
-            $conn->close();
-            return array("success"=>0,"data"=>'',"error_msg"=>$e->getMessage());
+    try{
+        $conn = db_connect();
+        $sql = "update sales_flat_order set order_completed = 1 where entity_id = $order_id";
+        $res = $conn->query($sql);
+        if(!$res){
+            throw new Exception("update order status error.Msg[$sql]");
         }
+        $update = "update sales_flat_order_item set item_status = 'out_of_stock' where order_id = $order_id and item_status is null";
+        $conn->query($update);
+        $conn->commit();
+        $conn->close();
+        return array("success"=>1,"data"=>"Success");
+    }catch (Exception $e){
+        $conn->rollback();
+        $conn->close();
+        return array("success"=>0,"data"=>'',"error_msg"=>$e->getMessage());
     }
 }
 

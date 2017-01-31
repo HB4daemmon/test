@@ -3,10 +3,11 @@ require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/utils.class.php');
 
 class MobileCategory{
-    public static function getAll(){
+    public static function getCategoryList($type="default"){
         try {
             $_helper = Mage::helper('catalog/category');
             $_categories = $_helper->getStoreCategories();
+            $_sub_cates = array();
             $cate = array();
             if (count($_categories) > 0){
                 foreach($_categories as $_category){
@@ -20,6 +21,7 @@ class MobileCategory{
                             $_sub['name'] = $_subcategory->getName();
                             $_sub['id'] = $_subcategory->getId();
                             array_push($sub,$_sub);
+                            array_push($_sub_cates,$_sub);
                         }
                     }
                     $_cate['name'] = $_category->getName();
@@ -28,7 +30,14 @@ class MobileCategory{
                     array_push($cate,$_cate);
                 }
             }
-            return $cate;
+            if($type == 'default'){
+                return $cate;
+            }else if ($type == 'sub'){
+                return $_sub_cates;
+            }else{
+                return null;
+            }
+
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

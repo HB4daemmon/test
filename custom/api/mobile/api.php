@@ -38,6 +38,7 @@ Toro::serve(array(
     "/user/logout" => "UserLogoutHandler",
     "/user/reset" => "UserResetHandler",
     //category
+    "/category/list" => "CategoryListHandler",
     "/category/mainpage" => "CategoryMainPageHandler",
     "/category/product/list" => "CategoryProductListHandler",
     "/category/product/query" => "CategoryProductSearchHandler",

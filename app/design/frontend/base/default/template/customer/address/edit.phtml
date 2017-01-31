@@ -131,15 +131,16 @@
                     </div>
                 </div>
             </li>
-            <li<?php if($this->canSetAsDefaultBilling()) echo ' class="control"' ?>>
-                <?php if($this->isDefaultBilling()): ?>
-                    <strong><?php echo $this->__('Default Billing Address') ?></strong>
-                <?php elseif($this->canSetAsDefaultBilling()): ?>
-                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" title="<?php echo $this->__('Use as My Default Billing Address') ?>" class="checkbox" /><label for="primary_billing"><?php echo $this->__('Use as my default billing address') ?></label>
-                <?php else: ?>
-                    <input type="hidden" name="default_billing" value="1" />
-                <?php endif; ?>
-            </li>
+<!--            <li-->
+<!--                --><?php //if($this->canSetAsDefaultBilling()) echo ' class="control"' ?><!-->
+<!--                --><?php //if($this->isDefaultBilling()): ?>
+<!--                    <strong>--><?php //echo $this->__('Default Billing Address') ?><!--</strong>-->
+<!--                --><?php //elseif($this->canSetAsDefaultBilling()): ?>
+<!--                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" title="--><?php //echo $this->__('Use as My Default Billing Address') ?><!--" class="checkbox" /><label for="primary_billing">--><?php //echo $this->__('Use as my default billing address') ?><!--</label>-->
+<!--                --><?php //else: ?>
+<!--                    <input type="hidden" name="default_billing" value="1" />-->
+<!--                --><?php //endif; ?>
+<!--            </li>-->
             <li<?php if($this->canSetAsDefaultShipping()) echo ' class="control"' ?>>
                 <?php if($this->isDefaultShipping()): ?>
                     <strong><?php echo $this->__('Default Shipping Address') ?></strong>
@@ -161,5 +162,12 @@
 //<![CDATA[
     var dataForm = new VarienForm('form-validate', true);
     new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
+    var select = document.getElementById('region_id');
+    for(var i=0; i<select.options.length; i++){
+        if(select.options[i].innerHTML == 'Illinois'){
+            select.options[i].selected = true;
+            break;
+        }
+    }
 //]]>
 </script>

@@ -1,26 +1,112 @@
-<?php
+<style>
+    #delivery_time th{
+        text-align: center;
+        color: #65c178;
+        font-size:16px;
+        font-weight: bold;
+    }
+
+    #delivery_time td{
+        text-align: left;
+        line-height: 25px;
+        font-size: 11px;
+        padding: 5px;
+    }
+
+    .border_right{
+        border-right:1px solid #bababa ;
+    }
+
+    .circle{
+        bottom: 0;
+        color: #fff !important;
+        display: inline-block;
+        height: 20px;
+        left: 0;
+        line-height: 20px;
+        margin: auto;
+        text-align: center;
+        top: 0;
+        width: 20px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .dgreen{
+        background: #65c178 none repeat scroll 0 0;
+    }
+
+    .dgrey{
+        background: #bababa none repeat scroll 0 0;
+    }
+
+    .square{
+        border-radius: 0px;
+    }
+
+    .mini{
+        height: 15px;
+        width: 15px;
+        line-height: 15px;
+        margin-right: 5px;
+    }
+
+    #block2_pt_item_menu_delivery_time{
+        margin-left: -12px;
+    }
+</style>
+<div style="margin-left: -10px">
+    <?php
     $date = $this->getShippingtimeDate('walmart','date');
     $range = $this->getShippingtimeDate('walmart','range');
-?>
+    $date = $this->format_date($date);
+    ?>
 
-<div class="cattop">
-    <h2 class="cattop-title"><?php echo $this->getTopCfg('title')?></h2>
-    <li class="">
+    <table id="delivery_time" style="width: 100%; ">
         <?php
-            for($i = 0;$i < 4;$i++){
-                $ranges = $range[$i];
-                $str = '';
+        echo "<tr>";
+        for($i = 0;$i < 3;$i++){
+            echo '<th colspan="2">'.$date[$i].'</th>';
+        }
+        echo "</tr>";
 
-                echo '<div style="width:90%">';
-                echo '<div style="width:15%;font-size: 16px;font-family: OpenSansBold;text-transform: uppercase;font-weight: normal;color: #444;">'.$date[$i].'</div>';
-                foreach ($ranges as $r){
-                    echo '<div style = "width:25%;float:left">'.$this->to12HourRange($r).'</div>';
+        for($i = 0;$i < 6;$i++){
+            echo "<tr>";
+            $x = $i + 9;
+            for($j = 0;$j<3;$j++){
+                $r = $range[$j];
+                if (in_array($x,$r)){
+                    $button = "<span class='circle dgreen square mini'>A</span>";
+                }else{
+                    $button = "<span class='circle dgrey square mini'>U</span>";
                 }
-                echo '<br>';
-                echo '</div>';
+                if (in_array($x+6,$r)){
+                    $button2 = "<span class='circle dgreen square mini'>A</span>";
+                }else{
+                    $button2 = "<span class='circle dgrey square mini'>U</span>";
+                }
+
+                if ($x < 11){
+                    echo "<td>".$button.($x).":00 am - ".($x+1).":00 am </td>";
+                }elseif ($x == 11){
+                    echo "<td>".$button.($x).":00 am - ".($x+1).":00 noon </td>";
+                }elseif ($x == 12){
+                    echo "<td>".$button.($x).":00 noon - ".($x+1-12).":00 pm </td>";
+                }else{
+                    echo "<td>".$button.($x-12).":00 pm - ".($x+1-12).":00 pm </td>";
+                }
+                if ($j == 2){
+                    echo "<td>".$button2.($x+6-12).":00 pm - ".($x+6+1-12).":00 pm </td>";
+                }else{
+                    echo "<td class='border_right'>".$button2.($x+6-12).":00 pm - ".($x+6+1-12).":00 pm </td>";
+                }
             }
+            echo "</tr>";
+        }
         ?>
-
-    </li>
-
+    </table>
+    <div style="margin-left: 20px;margin-top: 25px">
+        <span class='circle dgreen square'>A</span><span style='font-size: 14px;margin-left: 5px'>Available</span>
+        <span class='circle dgrey square' style='margin-left: 25px'>U</span><span style='font-size: 14px;margin-left: 5px'>Unavailable</span>
+    </div>
 </div>

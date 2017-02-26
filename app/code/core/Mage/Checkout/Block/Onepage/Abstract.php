@@ -429,13 +429,13 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         $numOfWeek = idate("w",$current_date);
         $hour = idate("H",$current_date);
 
-        $config[1]= $this->getShippingtimeConfig($store,'monday');
-        $config[2]= $this->getShippingtimeConfig($store,'tuesday');
-        $config[3]= $this->getShippingtimeConfig($store,'wednesday');
-        $config[4]= $this->getShippingtimeConfig($store,'thursday');
-        $config[5]= $this->getShippingtimeConfig($store,'friday');
-        $config[6]= $this->getShippingtimeConfig($store,'saturday');
-        $config[0]= $this->getShippingtimeConfig($store,'sunday');
+        $config[2]= $this->getShippingtimeConfig($store,'monday');
+        $config[3]= $this->getShippingtimeConfig($store,'tuesday');
+        $config[4]= $this->getShippingtimeConfig($store,'wednesday');
+        $config[5]= $this->getShippingtimeConfig($store,'thursday');
+        $config[6]= $this->getShippingtimeConfig($store,'friday');
+        $config[0]= $this->getShippingtimeConfig($store,'saturday');
+        $config[1]= $this->getShippingtimeConfig($store,'sunday');
 
         $result = array();
         $rangeResult =  array();
@@ -509,6 +509,15 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 
     }
 
+    public function format_date($date_arry){
+        $res = array();
+        foreach($date_arry as $d){
+            $darry = explode("-",$d);
+            $date = date("D, M j, Y",strtotime($darry[2].'-'.$darry[0].'-'.$darry[1].' 00:00:00'));
+            array_push($res,$date);
+        }
+        return $res;
+    }
 
     public function validateOrderCount($date,$time,$type){
         try{

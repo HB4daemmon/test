@@ -1,21 +1,3 @@
-<?php
-function formatOptionTimes($str){
-    $str_array = explode(',',$str);
-    $output = array();
-    foreach($str_array as $s){
-        $o = $s.':00 - '.($s+1).':00<br>';
-        array_push($output,$o);
-    }
-    return $output;
-}
-
-$shippingtime_fareast_workday_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_fareast_label/shippingtime_fareast_workday_options"));
-$shippingtime_fareast_weekend_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_fareast_label/shippingtime_fareast_weekend_options"));
-$shippingtime_walmart_workday_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_walmart_label/shippingtime_walmart_workday_options"));
-$shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("shippingtime_options/shippingtime_walmart_label/shippingtime_walmart_weekend_options"));
-
-
-?>
 <style>
     th{
         text-align: center;
@@ -25,9 +7,11 @@ $shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("
     }
 
     td{
-        text-align: center;
+        text-align: left;
         margin-top: 15px;
         line-height: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .border_right{
@@ -60,6 +44,13 @@ $shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("
     .square{
         border-radius: 0px;
     }
+
+    .mini{
+        height: 15px;
+        width: 15px;
+        line-height: 15px;
+        margin-right: 5px;
+    }
 </style>
 <div >
     <div>
@@ -71,7 +62,15 @@ $shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("
     <?php
     $date = $this->getShippingtimeDate('walmart','date');
     $range = $this->getShippingtimeDate('walmart','range');
+    $date = $this->format_date($date);
     ?>
+
+<!--    <p>-->
+<!--        --><?php
+//            print_r($date[2]);
+//            print_r($range[2]);
+//        ?>
+<!--    </p>-->
 
     <table style="width: 100%;margin-top:20px; ">
         <?php
@@ -81,21 +80,44 @@ $shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("
         }
         echo "</tr>";
 
-        for($i = 0;$i < 5;$i++){
+        for($i = 0;$i < 6;$i++){
             echo "<tr>";
-            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
-            echo "<td class='border_right'>".($i+1)."am - ".($i+2)."am </td>";
-            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
-            echo "<td class='border_right'>".($i+1)."am - ".($i+2)."am </td>";
-            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
-            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
+            $x = $i + 9;
+            for($j = 0;$j<3;$j++){
+                $r = $range[$j];
+                if (in_array($x,$r)){
+                    $button = "<span class='circle green square mini'>A</span>";
+                }else{
+                    $button = "<span class='circle grey square mini'>U</span>";
+                }
+                if (in_array($x+6,$r)){
+                    $button2 = "<span class='circle green square mini'>A</span>";
+                }else{
+                    $button2 = "<span class='circle grey square mini'>U</span>";
+                }
+
+                if ($x < 11){
+                    echo "<td>".$button.($x).":00 am - ".($x+1).":00 am </td>";
+                }elseif ($x == 11){
+                    echo "<td>".$button.($x).":00 am - ".($x+1).":00 noon </td>";
+                }elseif ($x == 12){
+                    echo "<td>".$button.($x).":00 noon - ".($x+1-12).":00 pm </td>";
+                }else{
+                    echo "<td>".$button.($x-12).":00 pm - ".($x+1-12).":00 pm </td>";
+                }
+                if ($j == 2){
+                    echo "<td>".$button2.($x+6-12).":00 pm - ".($x+6+1-12).":00 pm </td>";
+                }else{
+                    echo "<td class='border_right'>".$button2.($x+6-12).":00 pm - ".($x+6+1-12).":00 pm </td>";
+                }
+            }
             echo "</tr>";
         }
         ?>
     </table>
     <div style="margin-left: 20px;margin-top: 25px">
-        <span class="circle green square">A</span><span style="font-size: 14px;margin-left: 5px">Available</span>
-        <span class="circle grey square" style="margin-left: 25px">U</span><span style="font-size: 14px;margin-left: 5px">Unavailable</span>
+        <span class='circle green square'>A</span><span style='font-size: 14px;margin-left: 5px'>Available</span>
+        <span class='circle grey square' style='margin-left: 25px'>U</span><span style='font-size: 14px;margin-left: 5px'>Unavailable</span>
     </div>
     <div style="margin-left: 20px;margin-top: 25px">
         <span class="circle green">!</span><span style="font-size: 15px;margin-left: 5px">Delivery times are subject to change.</span>

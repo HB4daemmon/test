@@ -16,52 +16,110 @@ $shippingtime_walmart_weekend_options = formatOptionTimes(Mage::getStoreConfig("
 
 
 ?>
+<style>
+    th{
+        text-align: center;
+        color: #65c178;
+        font-size:16px;
+        font-weight: bold;
+    }
 
+    td{
+        text-align: center;
+        margin-top: 15px;
+        line-height: 30px;
+    }
+
+    .border_right{
+        border-right:1px solid #bababa ;
+    }
+
+    .circle{
+        bottom: 0;
+        color: #fff;
+        display: inline-block;
+        height: 20px;
+        left: 0;
+        line-height: 20px;
+        margin: auto;
+        text-align: center;
+        top: 0;
+        width: 20px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .green{
+        background: #65c178 none repeat scroll 0 0;
+    }
+
+    .grey{
+        background: #bababa none repeat scroll 0 0;
+    }
+
+    .square{
+        border-radius: 0px;
+    }
+</style>
 <div >
-    <table width="100%">
-        <tr>
-            <!--<th colspan="2"><b>Fareast Shipping Time Range</b></th>-->
-            <th colspan="2"><b>Walmart Shipping Time Range</b></th>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <!--<td><b>Workday</b></td>
-            <td><b>Weekend</b></td>-->
-            <td><b>Workday</b></td>
-            <td><b>Weekend</b></td>
-        </tr>
-        <tr colspan="3">
-            <!--<td>
-                <?php
-                    /*foreach($shippingtime_fareast_workday_options as $fwork){
-                        echo $fwork;
-                    }*/
-                ?>
-            </td>
-            <td>
-                <?php
-                /*foreach($shippingtime_fareast_weekend_options as $fweekend){
-                    echo $fweekend;
-                }*/
-                ?>
-            </td>-->
-            <td>
-                <?php
-                foreach($shippingtime_walmart_workday_options as $wwork){
-                    echo $wwork;
-                }
-                ?>
-            </td>
-            <td>
-                <?php
-                foreach($shippingtime_walmart_weekend_options as $wweekend){
-                    echo $wweekend;
-                }
-                ?>
-            </td>
-        </tr>
-    </table>
-</div>
+    <div>
+        <img src="<?php echo $this->getSkinUrl('cartgogogo/images/delivery_banner.png')?>" style="height:120px;width: 100%">
+    </div>
+    <div style="text-align: center;margin-top: 25px">
+        <b>Walmart Shipping Time Range</b>
+    </div>
+    <?php
+    $date = $this->getShippingtimeDate('walmart','date');
+    $range = $this->getShippingtimeDate('walmart','range');
+    ?>
 
+    <table style="width: 100%;margin-top:20px; ">
+        <?php
+        echo "<tr>";
+        for($i = 0;$i < 3;$i++){
+            echo '<th colspan="2">'.$date[$i].'</th>';
+        }
+        echo "</tr>";
+
+        for($i = 0;$i < 5;$i++){
+            echo "<tr>";
+            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
+            echo "<td class='border_right'>".($i+1)."am - ".($i+2)."am </td>";
+            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
+            echo "<td class='border_right'>".($i+1)."am - ".($i+2)."am </td>";
+            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
+            echo "<td>".($i+1)."am - ".($i+2)."am </td>";
+            echo "</tr>";
+        }
+        ?>
+    </table>
+    <div style="margin-left: 20px;margin-top: 25px">
+        <span class="circle green square">A</span><span style="font-size: 14px;margin-left: 5px">Available</span>
+        <span class="circle grey square" style="margin-left: 25px">U</span><span style="font-size: 14px;margin-left: 5px">Unavailable</span>
+    </div>
+    <div style="margin-left: 20px;margin-top: 25px">
+        <span class="circle green">!</span><span style="font-size: 15px;margin-left: 5px">Delivery times are subject to change.</span>
+    </div>
+
+<!--    <div class="cattop">-->
+<!--        <h2 class="cattop-title">--><?php //echo $this->getTopCfg('title')?><!--</h2>-->
+<!--        <li class="">-->
+<!--            --><?php
+//            for($i = 0;$i < 3;$i++){
+//                $ranges = $range[$i];
+//                $str = '';
+//
+//                echo '<div style="width:90%">';
+//                echo '<div style="width:15%;font-size: 16px;font-family: OpenSansBold;text-transform: uppercase;font-weight: normal;color: #444;">'.$date[$i].'</div>';
+//                foreach ($ranges as $r){
+//                    echo '<div style = "width:25%;float:left">'.$this->to12HourRange($r).'</div>';
+//                }
+//                echo '<br>';
+//                echo '</div>';
+//            }
+//            ?>
+<!---->
+<!--        </li>-->
+<!---->
+<!--    </div>-->
+</div>

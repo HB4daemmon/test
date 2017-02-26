@@ -48,6 +48,115 @@
         <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'),['first','last']);</script>
     </dd>
 </dl>
+<span class="order-date" style="font-weight: bold;font-size: 13px;color: #0a263c;">Order Status:&nbsp;</span><br>
+
+
+<style>
+    .icon{
+        width: 88px;
+        vertical-align: top
+    }
+
+    .svg{
+        margin: 10px;
+    }
+
+    .line{
+        display: inline-block;
+        text-align:center;
+        height: 158px;
+        margin:0 auto;
+    }
+
+    .green{
+        color:#65c178 !important;
+    }
+
+    .orange{
+        color:#ffa200 !important;
+    }
+
+    .grey{
+        color:#bababa !important;
+    }
+
+    .unwrap{
+        width: 120px;
+        margin-left: -18px;
+    }
+
+    .icon div span{
+        font-weight: bold;
+    }
+
+    .line hr{
+        margin-top: 65px;
+    }
+</style>
+<?php $status = $this->getHistoryStatus($_order);?>
+<div style="margin-top: 40px;margin-bottom:40px;display: inline-block">
+    <div class="line">
+        <hr style=" height:2px;border:none;border-top:2px solid ;width: 44px" class="<?php echo $status['complete'][2];?>"/>
+    </div>
+    <div class="line icon <?php echo $status["complete"][2];?>">
+        <div><span>Pending</span></div>
+        <embed src="<?php echo $this->getSkinUrl("cartgogogo/images/1-".$status['complete'][3]."pending.svg") ?>" width="68" height="68"
+               type="image/svg+xml" class="svg"
+               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+        <div><?php echo $status["complete"][0];?></div>
+        <div class="unwrap"><?php echo $status["complete"][1];?></div>
+    </div>
+    <div class="line">
+        <hr style=" height:2px;border:none;border-top:2px solid ;width: 65px" class="<?php echo $status["confirmed"][2];?>">
+    </div>
+    <div class="line icon <?php echo $status["confirmed"][2];?>">
+        <div><span>Confirmed</span></div>
+        <embed src="<?php echo $this->getSkinUrl("cartgogogo/images/2-".$status["confirmed"][3]."confirmed.svg") ?>" width="68" height="68"
+               type="image/svg+xml" class="svg"
+               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+        <div><?php echo $status["confirmed"][0];?></div>
+        <div class="unwrap"><?php echo $status["confirmed"][1];?></div>
+    </div>
+    <div class="line">
+        <hr style=" height:2px;border:none;border-top:2px solid ;width: 65px" class="<?php echo $status["in_progress"][2];?>"/>
+    </div>
+    <div class="line icon <?php echo $status["in_progress"][2];?>">
+        <div><span>In Progress</span></div>
+        <embed src="<?php echo $this->getSkinUrl("cartgogogo/images/3-".$status["in_progress"][3]."in progress.svg") ?>" width="68" height="68"
+               type="image/svg+xml" class="svg"
+               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+        <div><?php echo $status["in_progress"][0];?></div>
+        <div class="unwrap"><?php echo $status["in_progress"][1];?></div>
+    </div>
+    <div class="line">
+        <hr style=" height:2px;border:none;border-top:2px solid ;width: 65px" class="<?php echo $status["in_transit"][2];?>"/>
+    </div>
+    <div class="line icon <?php echo $status["in_transit"][2];?>">
+        <div><span>In Transit</span></div>
+        <embed src="<?php echo $this->getSkinUrl("cartgogogo/images/4-".$status["in_transit"][3]."in transit.svg") ?>" width="68" height="68"
+               type="image/svg+xml" class="svg"
+               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+        <div><?php echo $status["in_transit"][0];?></div>
+        <div class="unwrap"><?php echo $status["in_transit"][1];?></div>
+    </div>
+    <div class="line">
+        <hr style=" height:2px;border:none;border-top:2px solid ;width: 65px" class="<?php echo $status["in_transit"][2];?>"/>
+    </div>
+    <div class="line icon <?php echo $status["delivered"][2];?>">
+        <div><span>Delivered</span></div>
+        <embed src="<?php echo $this->getSkinUrl("cartgogogo/images/5-".$status["delivered"][3]."delivered.svg") ?>" width="68" height="68"
+               type="image/svg+xml" class="svg"
+               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+        <div><?php echo $status["delivered"][0];?></div>
+        <div class="unwrap"><?php echo $status["delivered"][1];?></div>
+    </div>
+    <div class="line <?php echo $status["delivered"][2];?>" style="vertical-align: top;margin-top: 33px;">
+        <embed src="<?php echo $this->getSkinUrl("cartgogogo/images/6-".$status["delivered"][3]."arrow.svg") ?>" width="44" height="44"
+               type="image/svg+xml" class="svg"
+               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+    </div>
+</div>
+<br>
 <span class="order-date" style="font-weight: bold;font-size: 13px;color: #0a263c;">Order Date:&nbsp;</span>
 <span><?php echo $this->__(' %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long'));?>&nbsp;</span>
 <span style="font-weight: bold;font-size: 13px;color: #0a263c;">Delivery Window:&nbsp;</span>

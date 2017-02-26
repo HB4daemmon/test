@@ -77,4 +77,52 @@ class Mage_Sales_Block_Order_Recent extends Mage_Core_Block_Template
     {
         return $this->getUrl('sales/order/reorder', array('order_id' => $order->getId()));
     }
+
+    public function getHistoryStatus($order){
+        $res = Array();
+        $status_name = "";
+        $status_list = ['complete','in_progress','in_transit','delivered'];
+        $index = 0;
+        foreach($order->getStatusHistoryCollection() as $s){
+            $index ++;
+            $status = $s->getData();
+            if ($status['status'] != $status_name){
+                $status_name = $status['status'];
+                $created_at = $status['created_at'];
+                $d = strtotime($created_at);
+                $d1 = date("h:i a", $d);
+                $d2 = date("D, M j, Y", $d);
+                if ($index == 1){
+                    $d3 = "orange";
+                    $d4 = 4;
+                }else{
+                    $d3 = "green";
+                    $d4 = 3;
+                }
+                $res[$status_name] = [$d1,$d2,$d3,$d4];
+            }
+        }
+
+        $res_count = count($res);
+        $res['confirmed'] = array_merge([],$res['complete']);
+        if ($res_count == 1){
+            $res['complete'][2] = "green";
+            $res['complete'][3] = 3;
+            $res['confirmed'][2] = "orange";
+            $res['confirmed'][3] = 4;
+        }
+
+        foreach($status_list as $s){
+            if (!isset($res[$s])){
+                $res[$s] = ["&nbsp;","&nbsp;","grey",5];
+            }
+        }
+        return $res;
+    }
+
+    public function getStandDataFormat($date){
+//        return date("D, M j, Y", $d);
+        $d = strtotime($date);
+        return date("D, M j, Y", $d);
+    }
 }

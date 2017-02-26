@@ -8,7 +8,7 @@ function changeOrderStatus($orderid,$order_status){
         throw new Exception("Order status is not valid");
     }
     $_order->setStatus($order_status);
-    $history = $_order->addStatusHistoryComment('Manually set order to'. $order_status .'.', false);
+    $history = $_order->addStatusHistoryComment('Manually set order to '. $order_status .'.', false);
     $history->setIsCustomerNotified(false);
     $_order->save();
     return json_encode(array("success"=>1,"data"=>'success',"error_msg"=>''));

@@ -59,6 +59,17 @@
                 }
             });
         })();
+        jQuery('body').click(function (event) {
+            var target = jQuery(event.target);       // 判断自己当前点击的内容
+            if (!target.hasClass('popover')
+                && !target.hasClass('pop')
+                && !target.hasClass('popover-content')
+                && !target.hasClass('popover-title')
+                && !target.hasClass('arrow')) {
+                jQuery('[data-toggle="popover"]').popover('hide');      // 当点击body的非弹出框相关的内容的时候，关闭所有popover
+            }
+        });
+
         jQuery('[data-toggle="popover"]').popover();
     })
 </script>

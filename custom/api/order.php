@@ -33,10 +33,11 @@ function getOrderList($status,$increment_id,$date){
                     o.increment_id,o.customer_email,o.customer_firstname,o.customer_lastname,o.created_at
                     ,c.email,concat(os.date,' ',os.time_range,':00-',os.time_range+1,':00') as delivery_window,
                     c.reg_phone,s.name as store_name,driver_confirmed,soc.value as tips,
-                    o.order_completed,o.tax_amount as order_tax
+                    o.order_completed,o.tax_amount as order_tax,status_label.label as status_label
                     FROM sales_flat_order o,
                     sales_order_custom soc,
                     sales_flat_order_storegroup os,
+                    sales_order_status status_label,
                     (select c.entity_id,c.email,c_v.value as reg_phone from customer_entity c
                     left join eav_attribute c_eav on c.entity_type_id = c_eav.entity_type_id and c_eav.attribute_code = 'phone_number'
                     left join customer_entity_varchar c_v on c_eav.attribute_id = c_v.attribute_id and c_v.entity_id = c.entity_id) as c,
@@ -48,6 +49,7 @@ function getOrderList($status,$increment_id,$date){
                     and o.store_id = s.store_id
                     and soc.order_id = o.entity_id
                     and soc.key = 'other'
+                    and o.status = status_label.status
                     $increment_sql
                     $status_sql
                     $date_sql

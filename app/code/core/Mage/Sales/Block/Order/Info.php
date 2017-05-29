@@ -140,8 +140,10 @@ class Mage_Sales_Block_Order_Info extends Mage_Core_Block_Template
                 $status_name = $status['status'];
                 $created_at = $status['created_at'];
                 $d = strtotime($created_at);
-                $d1 = date("h:i a", $d);
-                $d2 = date("D, M j, Y", $d);
+//                $d1 = date("h:i a", $d);
+//                $d2 = date("D, M j, Y", $d);
+                $d1 = Mage::getSingleton('core/date')->date( "h:i a", $d );
+                $d2 = Mage::getSingleton('core/date')->date( "D, M j, Y", $d );
                 if ($index == 1){
                     $d3 = "orange";
                     $d4 = 4;

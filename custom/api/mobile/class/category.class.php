@@ -88,8 +88,18 @@ class MobileCategory{
             $category['url_key'] = $_category->getUrlKey();
             $category['display_mode'] = $_category->getDisplayMode();
             $category['url_path'] = $_category->getUrlPath();
+//            $category['getSize'] = $_category->getProductCollection()->getSize();
+//            $category['getLastPageNumber'] = $_category->getProductCollection()->getLastPageNumber();
+//            $category['getPageSize'] = $_category->getProductCollection()->getPageSize();
+//            $category['getCurPage'] = $_category->getProductCollection()->getCurPage();
+            $category['count'] = $_category->getProductCollection()->count();
+
+//            $category['all_products'] = $_category->getProductCollection()->getData();
 
             $products_collection = $_category->getProductCollection()->setPage($page,$page_size);
+            $category['page'] = $products_collection->getCurPage();
+            $category['page_size'] = $products_collection->getPageSize();
+            $category['last_page_number'] = $products_collection->getLastPageNumber();
             foreach ($products_collection as $p){
                 $product = MobileCategory::getProduct($p->getId());
                 $category['products'][] = $product;

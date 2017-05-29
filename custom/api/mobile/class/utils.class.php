@@ -76,6 +76,10 @@ class MobileUtils
         $config[6] = $this->getShippingtimeConfig($store, 'saturday');
         $config[0] = $this->getShippingtimeConfig($store, 'sunday');
 
+        $test['config'] = $config;
+        $test['current_date'] = $current_date;
+        $test['numOfWeek'] = $numOfWeek;
+
         $result = array();
         $rangeResult = array();
         $dateResult = array();
@@ -88,6 +92,8 @@ class MobileUtils
                 array_push($this_day_option, $c);
             }
         }
+
+        $test['this_day_option'] = $this_day_option;
 
         if (count($this_day_option) > 0) {
             //This day
@@ -108,7 +114,7 @@ class MobileUtils
                 if ($i == 0) {
                     $_range = $this_day_option;
                 } else {
-                    $_range = $config[$_numOfWeek + 1];
+                    $_range = $config[$_numOfWeek];
                 }
                 array_push($rangeResult, $_range);
 
@@ -128,16 +134,22 @@ class MobileUtils
                 array_push($result, $option);
                 array_push($dateResult, $_dateTemp);
 
-                $_range = $config[$_numOfWeek + 1];
+                $_range = $config[$_numOfWeek];
                 array_push($rangeResult, $_range);
             }
         }
+
+        $test['dateResult'] = $dateResult;
+        $test['rangeResult'] = $rangeResult;
 
         if ($type == 'date') {
             return $this->validateOrderCount($dateResult, $rangeResult, 'date');
         } elseif ($type == 'range') {
             return $this->validateOrderCount($dateResult, $rangeResult, 'range');
-        } else {
+        }elseif($type == 'test'){
+            return $test;
+        }
+        else {
             return $result;
         }
 

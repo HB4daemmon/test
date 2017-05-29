@@ -474,7 +474,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 //                    }
                     $_range = $this_day_option;
                 }else{
-                    $_range = $config[$_numOfWeek+1];
+                    $_range = $config[$_numOfWeek];
                 }
                 array_push($rangeResult,$_range);
 
@@ -494,7 +494,7 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
                 array_push($result,$option);
                 array_push($dateResult,$_dateTemp);
 
-                $_range = $config[$_numOfWeek+1];
+                $_range = $config[$_numOfWeek];
                 array_push($rangeResult,$_range);
             }
         }

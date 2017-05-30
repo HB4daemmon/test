@@ -54,6 +54,7 @@ Toro::serve(array(
     "/consts/helpfulquestions" => "ConstsHelpfulQuestionsHandler",
     //order
     "/order" => "OrderHandler",
+    "/order/list" => "OrderListHandler",
     //shipping
     "/shipping/time" => "ShippingTimeHandler",
     "/main" => "MainHandler",

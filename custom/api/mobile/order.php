@@ -20,9 +20,9 @@ class OrderHandler {
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['POST'];
-            params($p,['user_id','token','products','address_id','delivery_date','delivery_range']);
-            $result['data'] = MobileOrder::create($p['user_id'],$p['token'],$p['products'],$p['address_id'],
-            $p['delivery_date'],$p['delivery_range']);
+            params($p,['user_id','token','products','address_id','delivery_date','delivery_range','tips']);
+            $result['data'] = MobileOrder::place2($p['user_id'],$p['token'],$p['products'],$p['address_id'],
+            $p['delivery_date'],$p['delivery_range'],$p['tips']);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;

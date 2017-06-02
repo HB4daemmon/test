@@ -1017,7 +1017,7 @@ class Luciky_Sales_Model_Quote extends Mage_Sales_Model_Quote
     	 $_store=$item->getStore();
     	 Mage::throwException('id'.$this->getId());
     	 $store_group=Mage::getModel('sales/quote_storegroup')->getCollection()
-    	 			->addFieldtoFilter('quote_id',$_quote->getId())
+    	 			->addFieldtoFilter('quote_id',$this->getId())
     	 			->addFieldtoFilter('storegroup_id',$_store->getGroupId());
 
     	 //if the storegroup record doesn't exist
@@ -1025,7 +1025,7 @@ class Luciky_Sales_Model_Quote extends Mage_Sales_Model_Quote
     	if (count($store_group) == 0) {
     		$store_group_item=Mage::getModel('sales/quote_storegroup');
     	//	Mage::throwException($this->getId());
-    		$store_group_item->setQuote($_quote)
+    		$store_group_item->setQuote($this)
     			->setStoregroupfromStore($_store)
     			->save();
 			if (!$store_group_item->getId()) {

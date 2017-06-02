@@ -8,7 +8,7 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
 class MobileOrder{
-    public static function create($user_id,$token,$products,$address_id,$delivery_date,$delivery_range){
+    public static function create($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips){
         try {
             $customer = Mage::getModel("customer/customer")->load($user_id);
             if ($customer->getId() == null){
@@ -41,29 +41,29 @@ class MobileOrder{
                 ->setIs('pending')
                 ->setStoregroupId(5);
 
-//            $billing = $customer->getDefaultShippingAddress();
-//            $billingAddress = Mage::getModel('sales/order_address')
-//                ->setStoreId($storeId)
-//                ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING)
-//                ->setCustomerId($customer->getId())
-////                ->setCustomerAddressId($customer->getDefaultShipping())
-//                ->setCustomerAddressId($address_id)
-//                //->setCustomer_address_id($billing->getEntityId())
-//                ->setPrefix($billing->getPrefix())
-//                ->setFirstname($billing->getFirstname())
-//                ->setMiddlename($billing->getMiddlename())
-//                ->setLastname($billing->getLastname())
-//                ->setSuffix($billing->getSuffix())
-//                ->setCompany($billing->getCompany())
-//                ->setStreet($billing->getStreet())
-//                ->setCity($billing->getCity())
-//                ->setCountryId($billing->getCountryId())
-//                ->setRegion($billing->getRegion())
-//                ->setRegionId($billing->getRegionId())
-//                ->setPostcode($billing->getPostcode())
-//                ->setTelephone($billing->getTelephone())
-//                ->setFax($billing->getFax());
-//            $order->setBillingAddress($billingAddress);
+            $billing = Mage::getModel('customer/address')->load($address_id);
+            $billingAddress = Mage::getModel('sales/order_address')
+                ->setStoreId($storeId)
+                ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING)
+                ->setCustomerId($customer->getId())
+//                ->setCustomerAddressId($customer->getDefaultShipping())
+                ->setCustomerAddressId($address_id)
+                //->setCustomer_address_id($billing->getEntityId())
+                ->setPrefix($billing->getPrefix())
+                ->setFirstname($billing->getFirstname())
+                ->setMiddlename($billing->getMiddlename())
+                ->setLastname($billing->getLastname())
+                ->setSuffix($billing->getSuffix())
+                ->setCompany($billing->getCompany())
+                ->setStreet($billing->getStreet())
+                ->setCity($billing->getCity())
+                ->setCountryId($billing->getCountryId())
+                ->setRegion($billing->getRegion())
+                ->setRegionId($billing->getRegionId())
+                ->setPostcode($billing->getPostcode())
+                ->setTelephone($billing->getTelephone())
+                ->setFax($billing->getFax());
+            $order->setBillingAddress($billingAddress);
 
             $shipping = Mage::getModel('customer/address')->load($address_id);
             $shippingAddress = Mage::getModel('sales/order_address')
@@ -104,12 +104,28 @@ class MobileOrder{
             // let say, we have 2 products
             //check that your products exists
             //need to add code for configurable products if any
+            $order->save();
+            $order_id = $order->getId();
+            $store_groups=Mage::getModel('sales/order_storegroup')
+                ->setOrderId($order_id)
+                ->setStoregroupId(5)
+                ->setStoregroupName('Walmart')
+                ->setDate($delivery_date)
+                ->setTimeRange($delivery_range);
+            $store_groups->save();
+            $store_groups_id = $store_groups->getId();
+
             $subTotal = 0;
             $products = json_decode($products,true);
 //            return $products;
             foreach ($products as $productId=>$product) {
                 $_product = Mage::getModel('catalog/product')->load($productId);
                 $rowTotal = $_product->getPrice() * $product['qty'];
+                if ($product['substitute'] == "Y"){
+                    $sub = 1;
+                }else{
+                    $sub = 0;
+                }
                 $orderItem = Mage::getModel('sales/order_item')
                     ->setStoreId($storeId)
                     ->setQuoteItemId(0)
@@ -117,7 +133,7 @@ class MobileOrder{
                     ->setProductId($productId)
                     ->setProductType($_product->getTypeId())
                     ->setQtyBackordered(NULL)
-                    ->setTotalQtyOrdered($product['rqty'])
+                    ->setTotalQtyOrdered($product['qty'])
                     ->setQtyOrdered($product['qty'])
                     ->setName($_product->getName())
                     ->setSku($_product->getSku())
@@ -125,8 +141,12 @@ class MobileOrder{
                     ->setBasePrice($_product->getPrice())
                     ->setOriginalPrice($_product->getPrice())
                     ->setRowTotal($rowTotal)
-                    ->setBaseRowTotal($rowTotal);
-
+                    ->setBaseRowTotal($rowTotal)
+                    ->setCustomerMessage($product['note'])
+                    ->setSubstitute($sub)
+                    ->setRealOrderId($store_groups_id)
+                    ->setIsVirtual(0)
+                    ->setIsQtyDecimal(0);
                 $subTotal += $rowTotal;
                 $order->addItem($orderItem);
             }
@@ -134,29 +154,180 @@ class MobileOrder{
                 ->setBaseSubtotal($subTotal)
                 ->setGrandTotal($subTotal)
                 ->setBaseGrandTotal($subTotal);
-            $order->save();
-            $order_id = $order->getId();
-            $store_groups=Mage::getModel('sales/order_storegroup')
-                         ->setOrderId($order_id)
-                         ->setStoregroupId(5)
-                         ->setStoregroupName('Walmart')
-                         ->setDate($delivery_date)
-                         ->setTimeRange($delivery_range);
-            $store_groups->save();
-
-
             $order->setParentOrderId($order_id)
                   ->setSalesFlatStoregroupId($store_groups->getId());
+            $order->save();
 
             $stripe_res = MobileOrder::stripe_pay($token,$subTotal*100);
             if ($stripe_res['status'] == 'succeeded'){
-                $order->setStatus("in_progress");
-                $history = $order->addStatusHistoryComment('Manually set order to In Progress.', false);
+                $order->setStatus("confirmed");
+                $history = $order->addStatusHistoryComment('Manually set order to Confirmed.', false);
                 $history->setIsCustomerNotified(false);
-                $order->save();
             }
+
             return $customer;
         }catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function place($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips){
+        try{
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
+            }
+            $storeId = 3;
+            // Start New Sales Order Quote
+            $quote = Mage::getModel('sales/quote')->setStoreId($storeId);
+            $quote->setCurrency("USD");
+            $quote->assignCustomer($customer);
+
+            $products = json_decode($products,true);
+            foreach ($products as $productId=>$product)
+            {
+                $product = Mage::getModel('catalog/product')->load($productId);
+                if ($product['substitute'] == "Y"){
+                    $sub = 1;
+                }else{
+                    $sub = 0;
+                }
+                $quote->addProduct($product, new Varien_Object(array('qty' => $product['qty'],
+                    'substitute'=>$sub,'customer_message'=>$product['note'])));
+            }
+
+
+            $address_entity = Mage::getModel('customer/address')->load($address_id);
+            $address = array(
+                'customer_address_id' => $address_id,
+                'prefix' => $address_entity->getPrefix(),
+                'firstname' => $address_entity->getFirstname(),
+                'middlename' => $address_entity->getMiddlename(),
+                'lastname' => $address_entity->getLastname(),
+                'suffix' => $address_entity->getSuffix(),
+                'company' => $address_entity->getCompany(),
+                'street' => $address_entity->getStreet()[0]+$address_entity->getStreet()[1],
+                'city' => $address_entity->getCity(),
+                'country_id' => $address_entity->getCountryId(),
+                'region' => $address_entity->getRegion(),
+                'region_id' => $address_entity->getRegionId(),
+                'postcode' => $address_entity->getPostcode(),
+                'telephone' => $address_entity->getTelephone(),
+                'fax' => $address_entity->getFax(),
+            );
+
+//            $quote->setShippingAddress($address_entity);
+//            $quote->setBillingAddress($address_entity);
+            $shippingAddress = $quote->getShippingAddress()->addData($address);
+            $billingAddress  = $quote->getBillingAddress()->addData($address);
+            $shippingAddress->setCollectShippingRates(true)
+                ->collectShippingRates()
+                ->setShippingMethod('flatrate_flatrate')
+//                ->setPaymentMethod('cryozonic_stripe')
+                ->setPaymentMethod('checkmo')
+                ->save();
+            $quote->getPayment()->importData(array('method' => 'checkmo','cc_stripejs_token'=>$token));
+            $quote->collectTotals()->save();
+
+            try {
+                // Create Order From Quote
+                $service = Mage::getModel('sales/service_quote', $quote);
+                $service->submitAll();
+                $order = $service->getOrder();
+
+                $order_id = $order->getId();
+                $store_groups=Mage::getModel('sales/order_storegroup')
+                    ->setOrderId($order_id)
+                    ->setStoregroupId(5)
+                    ->setStoregroupName('Walmart')
+                    ->setDate($delivery_date)
+                    ->setTimeRange($delivery_range);
+                $store_groups->save();
+
+                $order->setParentOrderId($order_id);
+                $order->setStoregroupId(5);
+                $order->setSalesFlatStoregroupId($store_groups->getId());
+                $order->save();
+            }
+            catch (Exception $ex) {
+                echo $ex->getMessage();
+            }
+            catch (Mage_Core_Exception $e) {
+                echo $e->getMessage();
+            }
+            return $order->getRealOrderId();
+        }catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips){
+        try{
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
+            }
+            Mage::getSingleton('customer/session')->loginById($customer->getId());
+            $storeId = 3;
+            // Start New Sales Order Quote
+            $address_entity = Mage::getModel('customer/address')->load($address_id);
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            $quote->setStoreId($storeId)
+                   ->setCurrency("USD")
+                   ->assignCustomer($customer);
+            $quote->setBillingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address_entity))
+                ->setShippingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address_entity));
+            $cart = Mage::getSingleton('checkout/cart');
+            $cart->setQuote($quote);
+            $cart->truncate();
+            $products = json_decode($products,true);
+            foreach ($products as $productId=>$product_setting)
+            {
+                $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
+                if ($product_setting['substitute'] == "Y"){
+                    $sub = 1;
+                }else{
+                    $sub = 0;
+                }
+                try {
+                    $quote->addProduct($product, new Varien_Object(array('qty' => $product_setting['qty'],
+                        'substitute'=>$sub,'customer_message'=>$product_setting['note'])));
+                    $quote->save();
+                    $quote_item = $quote->getItemByProduct($product);
+                    $quote_item->setQty($product_setting['qty'])
+                                ->setSubstitute($sub)
+                                ->setCustomerMessage($product_setting['note'])
+                                ->save();
+                    $quote->addItem($quote_item);
+                } catch (Exception $ex) {
+                    throw new Exception($ex->getMessage());
+                }
+            }
+            $quote->setOther($tips);
+            $quote->save();
+            $checkout = Mage::getSingleton('checkout/type_onepage');
+            $checkout->initCheckout();
+            $checkout->setQuote($quote);
+            $checkout->saveCheckoutMethod('register');
+            $checkout->saveShippingMethod('5');
+            $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token));
+
+            $quote_store_groups=Mage::getModel('sales/quote_storegroup')
+                ->setQuoteId($quote->getId())
+                ->setStoregroupId(5)
+                ->setStoregroupName('Walmart')
+                ->setDate($delivery_date)
+                ->setTimeRange($delivery_range);
+            $quote_store_groups->save();
+
+            $checkout->saveOrder();
+            $cart->truncate();
+            $cart->save();
+            $cart->getItems()->clear()->save();
+            Mage::getSingleton('customer/session')->logout();
+            return "success";
+        }catch(Exception $e){
+            print_r($e);
             throw new Exception($e->getMessage());
         }
     }

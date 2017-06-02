@@ -863,7 +863,6 @@ class Mage_Sales_Model_Quote_Address extends Mage_Customer_Model_Address_Abstrac
         if (!$this->getCollectShippingRates()) {
             return $this;
         }
-
         $this->setCollectShippingRates(false);
 
         $this->removeAllShippingRates();
@@ -871,7 +870,6 @@ class Mage_Sales_Model_Quote_Address extends Mage_Customer_Model_Address_Abstrac
         if (!$this->getCountryId()) {
             return $this;
         }
-
         $found = $this->requestShippingRates();
         if (!$found) {
             $this->setShippingAmount(0)
@@ -879,7 +877,6 @@ class Mage_Sales_Model_Quote_Address extends Mage_Customer_Model_Address_Abstrac
                 ->setShippingMethod('')
                 ->setShippingDescription('');
         }
-
         return $this;
     }
 
@@ -946,7 +943,6 @@ class Mage_Sales_Model_Quote_Address extends Mage_Customer_Model_Address_Abstrac
         $found = false;
         if ($result) {
             $shippingRates = $result->getAllRates();
-
             foreach ($shippingRates as $shippingRate) {
                 $rate = Mage::getModel('sales/quote_address_rate')
                     ->importShippingRate($shippingRate);

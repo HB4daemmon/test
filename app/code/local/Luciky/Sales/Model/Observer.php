@@ -95,7 +95,7 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 	 * @param Varien_Event_Observer $observer
 	 */
 	public function SaveOrdertoOrders(Varien_Event_Observer $observer){
-	
+
 		$_order=$observer->getOrder();
 		$_quote=$observer->getQuote();
 
@@ -119,6 +119,8 @@ class Luciky_Sales_Model_Observer extends Mage_Sales_Model_Observer{
 		$pkeys=array('storegroup_id','storegroup_name','time_range','date');
 
 		$_count=count($quote_storegroups);
+//        print_r($quote_storegroups->getData());
+//        print_r($_quote->getData());
 
 		foreach ($quote_storegroups as  $quote_storegroup){//创建子订单
 			$_convert=Mage::getModel('sales/convert_quote');

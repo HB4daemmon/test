@@ -81,13 +81,13 @@ class Luciky_Sales_Model_Quote_Storegroup extends Mage_Core_Model_Abstract
     	return $items;
     }
     
-    public function setDate(){
-    	
-    }
-    
-    public function setTimeRange(){
-    	
-    }
+//    public function setDate(){
+//
+//    }
+//
+//    public function setTimeRange(){
+//
+//    }
 
     
 }

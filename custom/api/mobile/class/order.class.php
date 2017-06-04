@@ -299,6 +299,7 @@ class MobileOrder{
                                 ->setCustomerMessage($product_setting['note'])
                                 ->save();
                     $quote->addItem($quote_item);
+                    $quote->save();
                 } catch (Exception $ex) {
                     throw new Exception($ex->getMessage());
                 }
@@ -327,7 +328,6 @@ class MobileOrder{
             Mage::getSingleton('customer/session')->logout();
             return "success";
         }catch(Exception $e){
-            print_r($e);
             throw new Exception($e->getMessage());
         }
     }

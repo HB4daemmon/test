@@ -313,13 +313,18 @@ class MobileOrder{
             $checkout->saveShippingMethod('5');
             $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token));
 
-            $quote_store_groups=Mage::getModel('sales/quote_storegroup')
-                ->setQuoteId($quote->getId())
-                ->setStoregroupId(5)
-                ->setStoregroupName('Walmart')
-                ->setDate($delivery_date)
-                ->setTimeRange($delivery_range);
-            $quote_store_groups->save();
+            $quote_store_groups = Mage::getModel('sales/quote_storegroup')
+                ->getCollection()
+                ->addFieldToFilter('quote_id',$quote->getId());
+            if ($quote_store_groups->count() == 0){
+                $quote_store_groups=Mage::getModel('sales/quote_storegroup')
+                    ->setQuoteId($quote->getId())
+                    ->setStoregroupId(5)
+                    ->setStoregroupName('Walmart')
+                    ->setDate($delivery_date)
+                    ->setTimeRange($delivery_range);
+                $quote_store_groups->save();
+            }
 
             $checkout->saveOrder();
             $cart->truncate();

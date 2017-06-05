@@ -316,15 +316,19 @@ class MobileOrder{
             $quote_store_groups = Mage::getModel('sales/quote_storegroup')
                 ->getCollection()
                 ->addFieldToFilter('quote_id',$quote->getId());
-            if ($quote_store_groups->count() == 0){
-                $quote_store_groups=Mage::getModel('sales/quote_storegroup')
-                    ->setQuoteId($quote->getId())
-                    ->setStoregroupId(5)
-                    ->setStoregroupName('Walmart')
-                    ->setDate($delivery_date)
-                    ->setTimeRange($delivery_range);
-                $quote_store_groups->save();
+            if ($quote_store_groups->count() > 0){
+                foreach($quote_store_groups as $_quote){
+                    $_quote -> delete();
+                }
             }
+
+            $quote_store_groups=Mage::getModel('sales/quote_storegroup')
+                ->setQuoteId($quote->getId())
+                ->setStoregroupId(5)
+                ->setStoregroupName('Walmart')
+                ->setDate($delivery_date)
+                ->setTimeRange($delivery_range);
+            $quote_store_groups->save();
 
             $checkout->saveOrder();
             $cart->truncate();

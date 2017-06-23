@@ -300,12 +300,15 @@ class MobileOrder{
                                 ->save();
                     $quote->addItem($quote_item);
                     $quote->save();
+//                    print_r($quote->getItemsCollection()->getFirstItem()->getData());
                 } catch (Exception $ex) {
                     throw new Exception($ex->getMessage());
                 }
             }
             $quote->setOther($tips);
             $quote->save();
+            $quote->getShippingAddress()->collectTotals();
+//            print_r($quote->getItemsCollection()->getFirstItem()->getData());
             $checkout = Mage::getSingleton('checkout/type_onepage');
             $checkout->initCheckout();
             $checkout->setQuote($quote);
@@ -335,6 +338,8 @@ class MobileOrder{
             $cart->save();
             $cart->getItems()->clear()->save();
             Mage::getSingleton('customer/session')->logout();
+
+
             return "success";
         }catch(Exception $e){
             throw new Exception($e->getMessage());

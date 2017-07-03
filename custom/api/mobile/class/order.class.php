@@ -261,7 +261,7 @@ class MobileOrder{
         }
     }
 
-    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips){
+    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips,$brand="",$last4=""){
         try{
             $customer = Mage::getModel("customer/customer")->load($user_id);
             if ($customer->getId() == null){
@@ -418,6 +418,7 @@ class MobileOrder{
                     );}
                 $orders['orders'][] = array(
                     'order_id'            => $order->getId(),
+                    'increment_id' => $order->getIncrementId(),
                     'status'        => $order->getStatus(),
                     'name'          => $order->getCustomerName(),
                     'email'         => $order->getCustomerEmail(),
@@ -444,26 +445,66 @@ class MobileOrder{
 
     public static function getOrderDetail($order_id){
         try {
-            $conn = db_connect();
-            $sql = "select o.increment_id,oi.item_id,oi.product_id,oi.store_id,oi.product_id,oi.weight,oi.sku,oi.name,oi.qty_ordered,
-                oi.price,cped.value as store_price,oi.base_price,oi.base_original_price,oi.row_total,oi.price_incl_tax,
-                oi.base_price_incl_tax,oi.row_total_incl_tax,oi.base_row_total_incl_tax,
-                if(oi.substitute=1,'Y','N') as substitute,oi.customer_message,oi.item_status,oi.sub_price,oi.sub_volume,
-                oi.tax_percent,oi.tax_amount
-                 from sales_flat_order_item oi,sales_flat_order o,catalog_product_entity_varchar cped,eav_attribute ea
-                where oi.order_id = o.entity_id
-                and oi.product_id = cped.entity_id
-                and cped.attribute_id = ea.attribute_id
-				and attribute_code = 'store_price'
-                and ea.entity_type_id = 4
-                and o.entity_id = $order_id;
-                    ";
-            $res = $conn->query($sql);
-            $order_items = array();
-            while($row = $res->fetch_assoc()){
-                array_push($order_items,$row);
-            }
+//            $conn = db_connect();
+//            $sql = "select o.increment_id,oi.item_id,oi.product_id,oi.store_id,oi.product_id,oi.weight,oi.sku,oi.name,oi.qty_ordered,
+//                oi.price,cped.value as store_price,oi.base_price,oi.base_original_price,oi.row_total,oi.price_incl_tax,
+//                oi.base_price_incl_tax,oi.row_total_incl_tax,oi.base_row_total_incl_tax,
+//                if(oi.substitute=1,'Y','N') as substitute,oi.customer_message,oi.item_status,oi.sub_price,oi.sub_volume,
+//                oi.tax_percent,oi.tax_amount
+//                 from sales_flat_order_item oi,sales_flat_order o,catalog_product_entity_varchar cped,eav_attribute ea
+//                where oi.order_id = o.entity_id
+//                and oi.product_id = cped.entity_id
+//                and cped.attribute_id = ea.attribute_id
+//				and attribute_code = 'store_price'
+//                and ea.entity_type_id = 4
+//                and o.entity_id = $order_id;
+//                    ";
+//            $res = $conn->query($sql);
+//            $order_items = array();
+//            while($row = $res->fetch_assoc()){
+//                array_push($order_items,$row);
+//            }
+            $orders = Mage::getModel('sales/order')->getCollection()
+                ->addAttributeToSelect('*')
+                ->addFieldToFilter("entity_id", $order_id)
+                ->getFirstItem();
 
+            $order_items = Array();
+            foreach($orders->getAllItems() as $_item){
+                $product = $_item->getProduct();
+                $price_change = 0;
+                $tax_change = 0;
+                if ($_item->getItemStatus() == 'out_of_stock'){
+                    $status = "Out of stock";
+                    $price_change = -number_format($_item->getPrice(),2);
+                    $tax_change = -number_format($_item->getTaxAmount(),2);
+                }else if ($_item->getItemStatus() == 'substitute'){
+                    $status = "Substitute";
+                    $price_change = number_format(-$_item->getPrice() + $_item->getSubPrice() * $_item->getSubVolume(),2);
+                    $tax_change = number_format(-$_item->getTaxAmount() + round($_item->getSubPrice() * $_item->getSubVolume() * $_item->getTaxPercent()) / 100,2);
+                }else{
+                    $status = "Pick up";
+                }
+                $item = Array(
+                    "name"=>$_item->getName(),
+                    "upc"=>$_item->getSku(),
+                    "qty_ordered"=>$_item->getQtyOrdered(),
+                    "volume"=>$product->getQuantity(),
+                    "sub_option"=>($_item->getSubstitute() == 1)?"Yes":"No",
+                    "note"=>$_item->getCustomerMessage(),
+                    "price"=>number_format($_item->getPrice(),2),
+                    "sales_tax"=>number_format($_item->getTaxAmount(),2),
+                    "tax_percent"=>number_format($_item->getTaxPercent(),2),
+                    "status"=>$status,
+                    "sub_item"=>($status=='Substitute')?"name:".$_item->getSubName()." ,unit price:".$_item->getSubPrice()." ,quantity:".$_item->getSubVolume():"",
+                    "sub_price"=>$_item->getSubPrice(),
+                    "sub_quantity"=>$_item->getSubVolume(),
+                    "price_adj"=>$price_change,
+                    "tax_adj"=>$tax_change,
+                    "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getImage()
+                );
+                array_push($order_items,$item);
+            }
             $out_of_stock = 0;
             $substitute = 0;
             $tax = 0;
@@ -484,22 +525,60 @@ class MobileOrder{
 
             }
 
-            $orders = Mage::getModel('sales/order')->getCollection()
-                ->addAttributeToSelect('*')
-                ->addFieldToFilter("entity_id", $order_id)
-                ->getFirstItem();
+            $storegroups=Mage::getModel('sales/order_storegroup')->getCollection()
+                                       ->addFieldtoFilter('order_id',$order_id)->getData();
+            if (count($storegroups) == 0){
+                throw new Exception("Can't get delivery message");
+            }
+            $storegroup = $storegroups[0];
 
+            $payment = $orders->getPayment();
+
+
+
+            $created_at = strtotime($orders->getCreatedAt());
+            $address = $orders->getShippingAddress();
+            $order['order_id'] = $orders->getId();
+            $order['order_no'] = $orders->getIncrementId();
+            $order['status'] = MobileOrder::getHistoryStatus($orders);
+            $order['order_date'] = date("m/d/Y", $created_at);
+            $order['order_time'] = date("h:i a", $created_at);
+            $order['username'] = $orders->getCustomerEmail();
+            $order['name'] = $orders->getCustomerFirstname()." ".$orders->getCustomerLastname();
+            $order['phone'] = $address->getTelephone();
+            $order['delivery_date'] = $storegroup['date'];
+            $order['delivery_time'] = $storegroup['time_range'];
+            $order['payment'] = $payment->getCcType().' end in '.$payment->getCcLast4();
+            $order['delivery_address'] = $address->getStreet();
+            $order['delivery_city'] = $address->getCity();
+            $order['delivery_state'] = $address->getRegion();
+            $order['delivery_zipcode'] = $address->getPostcode();
+            $order['delivery_note'] = "";
             $order['subtotal'] = number_format($orders->getData('subtotal'),2);
-            $order['shipping_amount'] = number_format($orders->getData('shipping_amount'),2);
+            $order['discount'] = number_format($orders->getData('discount'),2);
             $order['tips'] = number_format($orders->getTipsAmount(),2);
-            $order['original_tax'] = number_format($orders->getData('tax_amount'),2);
-            $order['out_of_stock'] = number_format($out_of_stock,2);
-            $order['substitute'] = number_format($substitute,2);
-            $order['tax'] = number_format($tax,2);
+            $order['tax'] = number_format($orders->getTaxAmount(),2);
+            $order['delivery_fee'] = number_format($orders->getShippingAmount(),2);
+            $order['total'] = number_format($orders->getGrandTotal(),2);
+            $order['subtotal_ofs_adj'] = number_format($out_of_stock,2);
+            $order['subtotal_sub_adj'] = number_format($substitute,2);
+            $order['tax_adj'] = number_format($tax-$order['tax'],2);
+            $order['total_adj'] = number_format($tax - $orders->getData('tax_amount') + $substitute + $out_of_stock ,2);
+            $order['subtotal_rev'] = number_format($orders->getData('grand_total') - $orders->getData('tax_amount') + $out_of_stock + $substitute,2);
+            $order['tax_rev'] = number_format($tax,2);
+            $order['total_rev'] = number_format($order['subtotal_rev']+$order['tax_rev'],2);
+            $order['delivered_by'] = "";
+            $order['user_rating'] = 5;
 
-            $order['total'] = number_format($orders->getData('grand_total') - $orders->getData('tax_amount') + $out_of_stock + $substitute + $tax,2);
-            $order['original_grand_total'] = number_format($orders->getData('grand_total'),2);
-            $order['change'] = number_format($tax - $orders->getData('tax_amount') + $substitute + $out_of_stock ,2);
+
+//            $order['shipping_amount'] = number_format($orders->getData('shipping_amount'),2);
+//            $order['original_tax'] = number_format($orders->getData('tax_amount'),2);
+//            $order['out_of_stock'] = number_format($out_of_stock,2);
+//            $order['substitute'] = number_format($substitute,2);
+//            $order['tax_ofs_adj'] = number_format($tax,2);
+//            $order['total'] = number_format($orders->getData('grand_total') - $orders->getData('tax_amount') + $out_of_stock + $substitute + $tax,2);
+//            $order['original_grand_total'] = number_format($orders->getData('grand_total'),2);
+//            $order['change'] = number_format($tax - $orders->getData('tax_amount') + $substitute + $out_of_stock ,2);
 
             $order['items'] = $order_items;
 
@@ -508,6 +587,27 @@ class MobileOrder{
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
+    }
+
+    public static function getHistoryStatus($order){
+        $res = Array();
+        $status_name = "";
+        $status_list = ['complete','in_progress','in_transit','delivered'];
+        $index = 0;
+        foreach($order->getStatusHistoryCollection() as $s){
+            $index ++;
+            $status = $s->getData();
+            if ($status['status'] != $status_name){
+                $status_name = $status['status'];
+                $created_at = $status['created_at'];
+                $d = strtotime($created_at);
+                $d1 = date("m/d/Y h:i a", $d);
+                array_push($res,Array($d1=>$status_name));
+//                $res[$d1] = $status_name;
+            }
+        }
+
+        return $res;
     }
 
 }

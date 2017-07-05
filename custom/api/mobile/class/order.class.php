@@ -490,7 +490,7 @@ class MobileOrder{
                     "upc"=>$_item->getSku(),
                     "qty_ordered"=>$_item->getQtyOrdered(),
                     "volume"=>$product->getQuantity(),
-                    "sub_option"=>($_item->getSubstitute() == 1)?"Yes":"No",
+                    "sub_option"=>($_item->getSubstitute() == 0)?"No":"Yes",
                     "note"=>$_item->getCustomerMessage(),
                     "price"=>number_format($_item->getPrice(),2),
                     "sales_tax"=>number_format($_item->getTaxAmount(),2),

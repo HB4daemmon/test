@@ -7,6 +7,7 @@ require_once(dirname(__FILE__) . '/address.php');
 require_once(dirname(__FILE__) . '/consts.php');
 require_once(dirname(__FILE__) . '/order.php');
 require_once(dirname(__FILE__) . '/shipping.php');
+require_once(dirname(__FILE__) . '/cart.php');
 
 class MainHandler {
     #get current user
@@ -58,4 +59,6 @@ Toro::serve(array(
     //shipping
     "/shipping/time" => "ShippingTimeHandler",
     "/main" => "MainHandler",
+    //cart
+    "/cart"=>"CartHandler",
 ));

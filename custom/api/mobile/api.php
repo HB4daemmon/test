@@ -48,6 +48,7 @@ Toro::serve(array(
     //address
     "/address" => "AddressHandler",
     "/address/config" => "AddressConfigHandler",
+    "/address/default" => "AddressDefaultHandler",
     //consts
     "/consts/terms" => "ConstsTermsHandler",
     "/consts/policy" => "ConstsPolicyHandler",

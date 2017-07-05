@@ -284,6 +284,9 @@ class MobileOrder{
             foreach ($products as $productId=>$product_setting)
             {
                 $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
+                if ($product->getId() == null){
+                    continue;
+                }
                 if ($product_setting['substitute'] == "Y"){
                     $sub = 1;
                 }else{

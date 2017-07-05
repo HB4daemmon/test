@@ -70,3 +70,18 @@ class AddressConfigHandler{
         echo json_encode($result);
     }
 }
+
+class AddressDefaultHandler{
+    function get(){
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['GET'];
+            params($p,['user_id']);
+            $result['data'] = MobileAddress::getDefaultAddress($p['user_id']);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}

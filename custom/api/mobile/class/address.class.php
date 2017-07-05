@@ -108,6 +108,34 @@ class MobileAddress{
             return MobileUtils::getZipCode();
         }
     }
+
+    public static function getDefaultAddress($user_id){
+        try {
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
+            }
+
+            $addressid = $customer->getDefaultShipping();
+            $address = Mage::getModel('customer/address')->load($addressid);
+            $addr = [];
+            if ($address->getId() != null){
+                $addr['id'] = $address->getId();
+                $addr['first_name'] = $address->getFirstname();
+                $addr['last_name'] = $address->getLastname();
+                $addr['country_id'] = $address->getCountryId();
+                $addr['street'] = $address->getStreet();
+                $addr['postcode'] = $address->getPostcode();
+                $addr['city'] = $address->getCity();
+                $addr['telephone'] = $address->getTelephone();
+            }else{
+                $addr = "";
+            }
+            return $addr;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 }
 
 //$mc = new MobileAddress();

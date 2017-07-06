@@ -394,8 +394,12 @@ class MobileOrder{
 
     }
 
-    public static function get_order_list($user_id,$page=0,$page_size=20){
+    public static function get_order_list($user_id,$email,$password,$page=0,$page_size=20){
         try {
+            $user = MobileUser::login($email,$password);
+            if (!isset($user['id']) or $user['id'] != $user_id){
+                throw new Exception("Authorization fail");
+            }
             $customer = Mage::getModel("customer/customer")->load($user_id);
             if ($customer->getId() == null){
                 throw new Exception("User is not existed");

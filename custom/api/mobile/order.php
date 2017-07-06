@@ -35,9 +35,14 @@ class OrderListHandler{
     function get() {
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            if (!isset($GLOBALS['_SERVER']['HTTP_EMAIL']) or !isset($GLOBALS['_SERVER']['HTTP_PASSWORD'])){
+                throw new Exception("This api need email or password header");
+            }
+            $email = $GLOBALS['_SERVER']['HTTP_EMAIL'];
+            $password = $GLOBALS['_SERVER']['HTTP_PASSWORD'];
             $p = $GLOBALS['GET'];
             params($p,['user_id']);
-            $result['data'] = MobileOrder::get_order_list($p['user_id'],$p['page'],$p['page_size']);
+            $result['data'] = MobileOrder::get_order_list($p['user_id'],$email,$password,$p['page'],$p['page_size']);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;

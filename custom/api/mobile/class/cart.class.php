@@ -23,6 +23,7 @@ class MobileCart{
             foreach($_items as $_item){
                 $product = $_item->getProduct();
                 $item = Array(
+                    "product_id"=>$product->getId(),
                     "name"=>$_item->getName(),
                     "upc"=>$_item->getSku(),
                     "qty"=>$_item->getQty(),
@@ -57,6 +58,12 @@ class MobileCart{
             Mage::getSingleton('customer/session')->loginById($customer->getId());
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $quote->setCustomerId($user_id);
+            $addressid = $customer->getDefaultShipping();
+            $address = Mage::getModel('customer/address')->load($addressid);
+            if ($address){
+                $quote->setBillingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address))
+                    ->setShippingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address));
+            }
             $products = json_decode($products,true);
             foreach ($products as $productId=>$product_setting)
             {
@@ -84,7 +91,8 @@ class MobileCart{
                     throw new Exception($ex->getMessage());
                 }
             }
-            $quote->collectTotals()->save();
+            $quote->setTotalsCollectedFlag(false)->collectTotals()->save();
+//            print_r($quote->getData());
 //            print_r($quote->getId());
             Mage::getSingleton('customer/session')->logout();
             return MobileCart::get_cart($user_id);

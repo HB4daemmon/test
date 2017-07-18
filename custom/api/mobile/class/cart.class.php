@@ -31,8 +31,8 @@ class MobileCart{
                     "sub_option"=>($_item->getSubstitute() == 0)?"No":"Yes",
                     "note"=>$_item->getCustomerMessage(),
                     "price"=>number_format($_item->getPrice(),2),
-//                    "sales_tax"=>number_format($_item->getTaxAmount(),2),
-//                    "tax_percent"=>number_format($product->getTaxPercent(),2),
+                    "sales_tax"=>number_format($_item->getTaxAmount(),2),
+                    "tax_percent"=>number_format($product->getTaxPercent(),2),
                     "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getThumbnail()
                 );
                 array_push($items,$item);

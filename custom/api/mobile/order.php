@@ -50,3 +50,18 @@ class OrderListHandler{
         echo json_encode($result);
     }
 }
+
+class OrderReviewHandler{
+    function get() {
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['GET'];
+            params($p,['user_id',"address_id","tips"]);
+            $result['data'] = MobileOrder::review($p['user_id'],$p['address_id'],$p['tips']);
+        }catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}

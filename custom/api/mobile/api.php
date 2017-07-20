@@ -57,6 +57,7 @@ Toro::serve(array(
     //order
     "/order" => "OrderHandler",
     "/order/list" => "OrderListHandler",
+    "/order/review" => "OrderReviewHandler",
     //shipping
     "/shipping/time" => "ShippingTimeHandler",
     "/main" => "MainHandler",

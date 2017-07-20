@@ -123,13 +123,13 @@
             <?php foreach($order_details['items'] as $i){?>
                 <tr class="border">
                     <td><?php echo $i['name'];?></td>
-                    <td><?php echo $i['sku'];?></td>
-                    <?php if ($i['item_status'] == 'substitute'){?>
+                    <td><?php echo $i['upc'];?></td>
+                    <?php if ($i['status'] == 'substitute'){?>
                         <td><?php echo 'Substitute';?></td>
                         <td>$<?php echo number_format($i['sub_price'],2);?></td>
-                        <td><?php echo number_format($i['sub_volume'],2);?></td>
-                        <td>$<?php echo number_format($i['sub_price']* $i['sub_volume'],2);?></td>
-                    <?php }else if ($i['item_status'] == 'out_of_stock'){?>
+                        <td><?php echo number_format($i['sub_quantity'],2);?></td>
+                        <td>$<?php echo number_format($i['sub_price']* $i['sub_quantity'],2);?></td>
+                    <?php }else if ($i['status'] == 'out_of_stock'){?>
                         <td><?php echo 'Out of Stock';?></td>
                         <td>$<?php echo number_format($i['price'],2);?></td>
                         <td><?php echo number_format(0,2);?></td>
@@ -146,27 +146,27 @@
             <tfoot>
             <tr class="subtotal">
                 <td colspan="3" class="a-right">Original Grand Total</td>
-                <td colspan="3" class="a-right">$<?php echo $order_details['original_grand_total']?></td>
-            </tr>
-            <tr class="subtotal">
-                <td colspan="3" class="a-right">Out of Stock adj.</td>
-                <td colspan="3" class="a-right">$<?php echo $order_details['out_of_stock']?></td>
-            </tr>
-            <tr class="subtotal">
-                <td colspan="3" class="a-right">Substitute adj.</td>
-                <td colspan="3" class="a-right">$<?php echo $order_details['substitute']?></td>
-            </tr>
-            <tr class="subtotal">
-                <td colspan="3" class="a-right">Tax adj.</td>
-                <td colspan="3" class="a-right">$<?php echo number_format($order_details['tax'] - $order_details['original_tax'],2)?></td>
-            </tr>
-            <tr class="subtotal">
-                <td colspan="3" class="a-right"><b>New Grand Total</b></td>
                 <td colspan="3" class="a-right">$<?php echo $order_details['total']?></td>
             </tr>
             <tr class="subtotal">
+                <td colspan="3" class="a-right">Out of Stock adj.</td>
+                <td colspan="3" class="a-right">$<?php echo $order_details['subtotal_ofs_adj']?></td>
+            </tr>
+            <tr class="subtotal">
+                <td colspan="3" class="a-right">Substitute adj.</td>
+                <td colspan="3" class="a-right">$<?php echo $order_details['subtotal_sub_adj']?></td>
+            </tr>
+            <tr class="subtotal">
+                <td colspan="3" class="a-right">Tax adj.</td>
+                <td colspan="3" class="a-right">$<?php echo $order_details['tax_adj']?></td>
+            </tr>
+            <tr class="subtotal">
+                <td colspan="3" class="a-right"><b>New Grand Total</b></td>
+                <td colspan="3" class="a-right">$<?php echo $order_details['total_rev']?></td>
+            </tr>
+            <tr class="subtotal">
                 <td colspan="3" class="a-right"><b>Refund</b></td>
-                <td colspan="3" class="a-right">$<?php echo $order_details['change']?></td>
+                <td colspan="3" class="a-right">$<?php echo $order_details['total_adj']?></td>
             </tr>
             </tfoot>
         </table>

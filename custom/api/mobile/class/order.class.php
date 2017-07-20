@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.class.php');
+require_once(dirname(__FILE__) . '/cart.class.php');
 require_once(dirname(__FILE__) . '/../../../vendor/stripe-php/init.php');
 require_once(dirname(__FILE__) . '/../../../util/connection.php');
 ini_set("display_errors", "On");
@@ -277,10 +278,16 @@ class MobileOrder{
                    ->assignCustomer($customer);
             $quote->setBillingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address_entity))
                 ->setShippingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address_entity));
+            $products = json_decode($products,true);
+            if (count($products) == 0){
+                $products = MobileCart::get_cart($user_id);
+            }
             $cart = Mage::getSingleton('checkout/cart');
             $cart->setQuote($quote);
             $cart->truncate();
-            $products = json_decode($products,true);
+            if($cart->getItems()){
+                $cart->getItems()->clear()->save();
+            }
             foreach ($products as $productId=>$product_setting)
             {
                 $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
@@ -344,6 +351,64 @@ class MobileOrder{
 
 
             return "success";
+        }catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function review($user_id,$address_id,$tips){
+        try{
+            $customer = Mage::getModel("customer/customer")->load($user_id);
+            if ($customer->getId() == null){
+                throw new Exception("User is not existed");
+            }
+            Mage::getSingleton('customer/session')->loginById($customer->getId());
+            $storeId = 3;
+            // Start New Sales Order Quote
+            $address_entity = Mage::getModel('customer/address')->load($address_id);
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            $quote->setStoreId($storeId)
+                ->setCurrency("USD")
+                ->assignCustomer($customer);
+            $quote->setBillingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address_entity))
+                ->setShippingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address_entity));
+            $products = MobileCart::get_cart($user_id);
+
+            $cart = Mage::getSingleton('checkout/cart');
+            $cart->setQuote($quote);
+            $cart->truncate();
+            if($cart->getItems()){
+                $cart->getItems()->clear()->save();
+            }
+            foreach ($products as $p)
+            {
+                $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($p['product_id']);
+                if ($product->getId() == null){
+                    continue;
+                }
+                try {
+                    $quote->addProduct($product, new Varien_Object(array('qty' => $p['qty'],
+                        'substitute'=>$p["substitute"],'customer_message'=>$p['note'])));
+                    $quote->save();
+                    $quote_item = $quote->getItemByProduct($product);
+                    $quote_item->setQty($p['qty'])
+                        ->setSubstitute($p["substitute"])
+                        ->setCustomerMessage($p['note'])
+                        ->save();
+                    $quote->addItem($quote_item);
+                    $quote->save();
+//                    print_r($quote->getItemsCollection()->getFirstItem()->getData());
+                } catch (Exception $ex) {
+                    throw new Exception($ex->getMessage());
+                }
+            }
+            $quote->setOther($tips);
+            $quote->save();
+            $quote->getShippingAddress()->collectTotals();
+
+            Mage::getSingleton('customer/session')->logout();
+
+            return MobileOrder::getQuoteDetail($quote,$tips);
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
@@ -523,7 +588,7 @@ class MobileOrder{
                     $substitute += -$i['row_total'] + $i['sub_price'] * $i['sub_volume'];
                     $tax += round($i['sub_price'] * $i['sub_volume'] * $i['tax_percent']) / 100;
                 }else{
-                    $tax += floatval($i['tax_amount']);
+                    $tax += floatval($i['sales_tax']);
                 }
 
                 if ($i['store_price'] == null || $i['store_price'] == ''){
@@ -562,7 +627,7 @@ class MobileOrder{
             $order['delivery_zipcode'] = $address->getPostcode();
             $order['delivery_note'] = "";
             $order['subtotal'] = number_format($orders->getData('subtotal'),2);
-            $order['discount'] = number_format($orders->getData('discount'),2);
+            $order['discount'] = number_format($orders->getData('discount_amount'),2);
             $order['tips'] = number_format($orders->getTipsAmount(),2);
             $order['tax'] = number_format($orders->getTaxAmount(),2);
             $order['delivery_fee'] = number_format($orders->getShippingAmount(),2);
@@ -586,6 +651,56 @@ class MobileOrder{
 //            $order['total'] = number_format($orders->getData('grand_total') - $orders->getData('tax_amount') + $out_of_stock + $substitute + $tax,2);
 //            $order['original_grand_total'] = number_format($orders->getData('grand_total'),2);
 //            $order['change'] = number_format($tax - $orders->getData('tax_amount') + $substitute + $out_of_stock ,2);
+
+            $order['items'] = $order_items;
+
+            return $order;
+
+        }catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function getQuoteDetail($quote,$tips){
+        try {
+
+            $orders = $quote;
+
+            $order_items = Array();
+            foreach($orders->getAllItems() as $_item){
+                $product = $_item->getProduct();
+
+                $item = Array(
+                    "product_id"=>$product->getId(),
+                    "name"=>$_item->getName(),
+                    "upc"=>$_item->getSku(),
+                    "qty_ordered"=>$_item->getQtyOrdered(),
+                    "volume"=>$product->getQuantity(),
+                    "sub_option"=>($_item->getSubstitute() == 0)?"No":"Yes",
+                    "note"=>$_item->getCustomerMessage(),
+                    "price"=>number_format($_item->getPrice(),2),
+                    "sales_tax"=>number_format($_item->getTaxAmount(),2),
+                    "tax_percent"=>number_format($_item->getTaxPercent(),2),
+                    "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getThumbnail()
+                );
+                array_push($order_items,$item);
+            }
+
+            $address = $orders->getShippingAddress();
+            $order['username'] = $orders->getCustomerEmail();
+            $order['name'] = $orders->getCustomerFirstname()." ".$orders->getCustomerLastname();
+            $order['phone'] = $address->getTelephone();
+            $order['delivery_address'] = $address->getStreet();
+            $order['delivery_city'] = $address->getCity();
+            $order['delivery_state'] = $address->getRegion();
+            $order['delivery_zipcode'] = $address->getPostcode();
+            $order['delivery_note'] = "";
+            $order['subtotal'] = number_format($orders->getData('subtotal'),2);
+            $order['discount'] = number_format($orders->getData('discount_amount'),2);
+            $order['tips'] = number_format($tips,2);
+            $order['tax'] = number_format($address->getTaxAmount(),2);
+            $order['delivery_fee'] = number_format(5,2);
+            $order['total'] = number_format($orders->getGrandTotal()+$order['tax']+$order['tips']+$order['delivery_fee'],2);
 
             $order['items'] = $order_items;
 

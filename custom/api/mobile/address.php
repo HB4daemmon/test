@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/class/address.class.php');
+require_once(dirname(__FILE__) . '/class/oauth.class.php');
 
 class AddressHandler {
     // get products
@@ -7,8 +8,8 @@ class AddressHandler {
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['GET'];
-            params($p,['user_id']);
-            $result['data'] = MobileAddress::get($p['user_id']);
+            $user_id = MobileOauth::oauth_validate("order");
+            $result['data'] = MobileAddress::get($user_id);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
@@ -20,8 +21,9 @@ class AddressHandler {
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['POST'];
-            params($p,['first_name', 'last_name', 'street', 'postcode', 'city', 'telephone','user_id']);
-            $result['data'] = MobileAddress::create($p['user_id'],$p['first_name'],$p['last_name'],$p['street'],$p['postcode'],$p['city'],$p['telephone']);
+            $user_id = MobileOauth::oauth_validate("order");
+            params($p,['first_name', 'last_name', 'street', 'postcode', 'city', 'telephone']);
+            $result['data'] = MobileAddress::create($user_id,$p['first_name'],$p['last_name'],$p['street'],$p['postcode'],$p['city'],$p['telephone']);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
@@ -76,8 +78,8 @@ class AddressDefaultHandler{
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['GET'];
-            params($p,['user_id']);
-            $result['data'] = MobileAddress::getDefaultAddress($p['user_id']);
+            $user_id = MobileOauth::oauth_validate("order");
+            $result['data'] = MobileAddress::getDefaultAddress($user_id);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;

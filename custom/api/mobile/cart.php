@@ -1,14 +1,14 @@
 <?php
 require_once(dirname(__FILE__) . '/class/cart.class.php');
-
+require_once(dirname(__FILE__) . '/class/oauth.class.php');
 
 class CartHandler {
     function get(){
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['GET'];
-            params($p,['user_id']);
-            $result['data'] = MobileCart::get_cart($p['user_id']);
+            $user_id = MobileOauth::oauth_validate("order");
+            $result['data'] = MobileCart::get_cart($user_id);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
@@ -20,8 +20,8 @@ class CartHandler {
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['DELETE'];
-            params($p,['user_id']);
-            $result['data'] = MobileCart::clear_cart($p['user_id']);
+            $user_id = MobileOauth::oauth_validate("order");
+            $result['data'] = MobileCart::clear_cart($user_id);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
@@ -33,8 +33,9 @@ class CartHandler {
         try{
             $result = array("success"=>1,"data"=>'',"return_code"=>"");
             $p = $GLOBALS['PUT'];
-            params($p,['user_id','products']);
-            $result['data'] = MobileCart::update_cart($p['user_id'],$p['products']);
+            params($p,['products']);
+            $user_id = MobileOauth::oauth_validate("order");
+            $result['data'] = MobileCart::update_cart($user_id,$p['products']);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;

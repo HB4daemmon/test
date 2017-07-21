@@ -8,6 +8,7 @@ require_once(dirname(__FILE__) . '/consts.php');
 require_once(dirname(__FILE__) . '/order.php');
 require_once(dirname(__FILE__) . '/shipping.php');
 require_once(dirname(__FILE__) . '/cart.php');
+require_once(dirname(__FILE__) . '/oauth.php');
 
 class MainHandler {
     #get current user
@@ -63,4 +64,6 @@ Toro::serve(array(
     "/main" => "MainHandler",
     //cart
     "/cart"=>"CartHandler",
+    //oauth
+    "/oauth"=>"OauthHandler",
 ));

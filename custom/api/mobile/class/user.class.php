@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
+require_once(dirname(__FILE__) . '/oauth.class.php');
 
 class MobileUser{
     public static function login( $email, $password ){
@@ -20,6 +21,7 @@ class MobileUser{
         $user['lastname'] = $customer->getLastname(); // Last Name
         $user['email'] = $customer->getEmail();
         $user['phone_number'] = $customer->getPhoneNumber();
+        $user['token'] = MobileOauth::generate($email,$password,"app");
 //        print_r($customer->getResourceCollection());
         return $user;
     }

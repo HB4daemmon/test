@@ -147,6 +147,20 @@ class MobileCategory{
         try {
             $product_model = Mage::getModel('catalog/product');
             $_product = $product_model->load($product_id);
+
+            $country = 'US';
+            $region = '23';
+            $TaxRequest  = new Varien_Object();
+            $TaxRequest->setCountryId($country);
+            $TaxRequest->setRegionId($region);
+            $TaxRequest->setStoreId(2);
+            $TaxRequest->setCustomerClassId(3);
+            $TaxRequest->setProductClassId($_product->getTaxClassId());  // 2=taxable id (all our products are taxable)
+
+            $taxCalculationModel = Mage::getSingleton('tax/calculation');
+            $rate = $taxCalculationModel->getRate($TaxRequest);
+//            print_r($TaxRequest->getData());
+
             $product = [];
             $product['product_id'] = $_product->getId();
             $product['sku'] = $_product->getSku();
@@ -169,6 +183,7 @@ class MobileCategory{
             $product['short_description'] = $_product->getShortDescription();
             $product['special_from_date'] = $_product->getSpecialFromDate();
             $product['special_to_date'] = $_product->getSpecialToDate();
+            $product['tax_percent'] = $rate;
             return $product;
 
         } catch (Exception $e) {

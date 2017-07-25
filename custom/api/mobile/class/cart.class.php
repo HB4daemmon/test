@@ -34,6 +34,7 @@ class MobileCart{
                     "sales_tax"=>number_format($_item->getTaxAmount(),2),
                     "tax_percent"=>number_format($_item->getTaxPercent(),2),
                     "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getThumbnail(),
+                    "quantity" => $product->getQuantity(),
                     "substitute"=>$_item->getSubstitute(),
                 );
                 array_push($items,$item);

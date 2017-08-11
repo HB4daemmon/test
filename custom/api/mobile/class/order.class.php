@@ -288,18 +288,20 @@ class MobileOrder{
             if($cart->getItems()){
                 $cart->getItems()->clear()->save();
             }
-            foreach ($products as $productId=>$product_setting)
+            foreach ($products['items'] as $product_setting)
             {
+                $productId=$product_setting['product_id'];
                 $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
                 if ($product->getId() == null){
                     continue;
                 }
-                if ($product_setting['substitute'] == "Y"){
-                    $sub = 1;
-                }else{
-                    $sub = 0;
-                }
+//                if ($product_setting['substitute'] == "Y"){
+//                    $sub = 1;
+//                }else{
+//                    $sub = 0;
+//                }
                 try {
+                    $sub = $product_setting['substitute'];
                     $quote->addProduct($product, new Varien_Object(array('qty' => $product_setting['qty'],
                         'substitute'=>$sub,'customer_message'=>$product_setting['note'])));
                     $quote->save();
@@ -473,6 +475,7 @@ class MobileOrder{
             $orders_collection = Mage::getModel('sales/order')->getCollection()
                 ->addAttributeToSelect('*')
                 ->addFieldToFilter("customer_id", $user_id)
+                ->addFieldToFilter("parent_order_id", array('neq' => null))
                 ->addAttributeToSort('created_at', 'desc')
                 ->setPage($page,$page_size);
 
@@ -488,7 +491,7 @@ class MobileOrder{
                         'Ordered Qty'   => $item->getQtyOrdered(),
                         'customer_message' => $item->getCustomerMessage(),
                     );}
-                $orders['orders'][] = array(
+                $orders[] = array(
                     'order_id'            => $order->getId(),
                     'increment_id' => $order->getIncrementId(),
                     'status'        => $order->getStatus(),
@@ -501,6 +504,7 @@ class MobileOrder{
                     'weight'        => $order->getWeight(),
                     'items'        => $items,
                     'created_at'  => $order->getCreatedAt(),
+                    'grand_total'  => $order->getGrandTotal(),
                 );
             }
             $pager['page'] = $orders_collection->getCurPage();
@@ -569,8 +573,10 @@ class MobileOrder{
                     "tax_percent"=>number_format($_item->getTaxPercent(),2),
                     "status"=>$status,
                     "sub_item"=>($status=='Substitute')?"name:".$_item->getSubName()." ,unit price:".$_item->getSubPrice()." ,quantity:".$_item->getSubVolume():"",
+                    "sub_name"=>$_item->getSubName(),
                     "sub_price"=>$_item->getSubPrice(),
                     "sub_quantity"=>$_item->getSubVolume(),
+                    "sub_volume"=>"EACH",
                     "price_adj"=>$price_change,
                     "tax_adj"=>$tax_change,
                     "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getImage()
@@ -619,7 +625,7 @@ class MobileOrder{
             $order['name'] = $orders->getCustomerFirstname()." ".$orders->getCustomerLastname();
             $order['phone'] = $address->getTelephone();
             $order['delivery_date'] = $storegroup['date'];
-            $order['delivery_time'] = $storegroup['time_range'];
+            $order['delivery_time'] = $storegroup['time_range'].":00 - ".($storegroup['time_range']+1).":00";
             $order['payment'] = $payment->getCcType().' end in '.$payment->getCcLast4();
             $order['delivery_address'] = $address->getStreet();
             $order['delivery_city'] = $address->getCity();

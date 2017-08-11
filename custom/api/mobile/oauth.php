@@ -9,7 +9,11 @@ class OauthHandler {
             $p = $GLOBALS['GET'];
             params($p,['token','scope']);
             $result['data'] = MobileOauth::validate($p['token'],$p['scope']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -22,7 +26,11 @@ class OauthHandler {
             $p = $GLOBALS['POST'];
             params($p,['email','password','scopes']);
             $result['data'] = MobileOauth::generate($p['email'],$p['password'],$p['scopes']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }

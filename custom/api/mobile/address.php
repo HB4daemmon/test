@@ -10,7 +10,11 @@ class AddressHandler {
             $p = $GLOBALS['GET'];
             $user_id = MobileOauth::oauth_validate("order");
             $result['data'] = MobileAddress::get($user_id);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -24,7 +28,11 @@ class AddressHandler {
             $user_id = MobileOauth::oauth_validate("order");
             params($p,['first_name', 'last_name', 'street', 'postcode', 'city', 'telephone']);
             $result['data'] = MobileAddress::create($user_id,$p['first_name'],$p['last_name'],$p['street'],$p['postcode'],$p['city'],$p['telephone']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -37,7 +45,11 @@ class AddressHandler {
             $p = $GLOBALS['DELETE'];
             params($p,['id']);
             $result['data'] = MobileAddress::delete($p['id']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -50,7 +62,11 @@ class AddressHandler {
             $p = $GLOBALS['PUT'];
             params($p,['id', 'first_name', 'last_name', 'street', 'postcode', 'city', 'telephone']);
             $result['data'] = MobileAddress::edit($p['id'],$p['first_name'],$p['last_name'],$p['street'],$p['postcode'],$p['city'],$p['telephone']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -65,7 +81,11 @@ class AddressConfigHandler{
             $p = $GLOBALS['GET'];
             params($p,['method']);
             $result['data'] = MobileAddress::getAddressConfig($p['method']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -80,7 +100,11 @@ class AddressDefaultHandler{
             $p = $GLOBALS['GET'];
             $user_id = MobileOauth::oauth_validate("order");
             $result['data'] = MobileAddress::getDefaultAddress($user_id);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }

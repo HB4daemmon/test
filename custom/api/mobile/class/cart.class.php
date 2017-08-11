@@ -20,9 +20,11 @@ class MobileCart{
             $_items = $quote->getAllItems();
             $cart = Array();
             $items = Array();
+            $number = 0;
             foreach($_items as $_item){
                 $product = $_item->getProduct();
                 $item = Array(
+                    "cart_id"=>$quote->getId(),
                     "product_id"=>$product->getId(),
                     "name"=>$_item->getName(),
                     "upc"=>$_item->getSku(),
@@ -38,10 +40,12 @@ class MobileCart{
                     "substitute"=>$_item->getSubstitute(),
                 );
                 array_push($items,$item);
+                $number += $_item->getQty();
             }
 
             $cart['items'] = $items;
             $cart['subtotal'] = number_format($quote->getSubtotal(),2);
+            $cart['number'] = $number;
             Mage::getSingleton('customer/session')->logout();
             return $cart;
         }catch(Exception $e){
@@ -67,35 +71,33 @@ class MobileCart{
                     ->setShippingAddress(Mage::getSingleton('sales/quote_address')->importCustomerAddress($address));
             }
             $products = json_decode($products,true);
-            foreach ($products as $productId=>$product_setting)
-            {
-                $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
-                if ($product->getId() == null){
-                    continue;
-                }
-                if ($product_setting['substitute'] == "Y"){
-                    $sub = 1;
-                }else{
-                    $sub = 0;
-                }
-                try {
-                    $quote->addProduct($product, new Varien_Object(array('qty' => $product_setting['qty'],
-                        'substitute'=>$sub,'customer_message'=>$product_setting['note'])));
-                    $quote->save();
-                    $quote_item = $quote->getItemByProduct($product);
-                    $quote_item->setQty($product_setting['qty'])
-                        ->setSubstitute($sub)
-                        ->setCustomerMessage($product_setting['note'])
-                        ->save();
-                    $quote->addItem($quote_item);
-                    $quote->save();
-                } catch (Exception $ex) {
-                    throw new Exception($ex->getMessage());
+            if (count($products) == 0){
+                MobileCart::clear_cart($user_id);
+            }else{
+                foreach ($products as $product_setting)
+                {
+                    $productId = $product_setting['product_id'];
+                    $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
+                    if ($product->getId() == null){
+                        continue;
+                    }
+
+                    try {
+                        $quote->addProduct($product, new Varien_Object(array('qty' => $product_setting['qty'])));
+                        $quote->save();
+                        $quote_item = $quote->getItemByProduct($product);
+                        $quote_item->setQty($product_setting['qty'])
+                            ->setSubstitute($product_setting['substitute'])
+                            ->setCustomerMessage($product_setting['note'])
+                            ->save();
+                        $quote->addItem($quote_item);
+                        $quote->save();
+                    } catch (Exception $ex) {
+                        throw new Exception($ex->getMessage());
+                    }
                 }
             }
             $quote->setTotalsCollectedFlag(false)->collectTotals()->save();
-//            print_r($quote->getData());
-//            print_r($quote->getId());
             Mage::getSingleton('customer/session')->logout();
             return MobileCart::get_cart($user_id);
         }catch(Exception $e){
@@ -112,7 +114,19 @@ class MobileCart{
             $storeId = 3;
             Mage::getSingleton('customer/session')->loginById($customer->getId());
             $quote = Mage::getSingleton('checkout/session')->getQuote();
-            $quote->delete();
+//            $quote->delete();
+            $quote->removeAllItems();
+            $quote->setSubtotal(0);
+            $quote->setBaseSubtotal(0);
+
+            $quote->setSubtotalWithDiscount(0);
+            $quote->setBaseSubtotalWithDiscount(0);
+
+            $quote->setGrandTotal(0);
+            $quote->setBaseGrandTotal(0);
+            $quote->save();
+//            $quote->setTotalsCollectedFlag(false)->collectTotals()->save();
+
             Mage::getSingleton('customer/session')->logout();
             return "success";
         }catch(Exception $e){

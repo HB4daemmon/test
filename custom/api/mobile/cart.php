@@ -9,7 +9,11 @@ class CartHandler {
             $p = $GLOBALS['GET'];
             $user_id = MobileOauth::oauth_validate("order");
             $result['data'] = MobileCart::get_cart($user_id);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -22,7 +26,11 @@ class CartHandler {
             $p = $GLOBALS['DELETE'];
             $user_id = MobileOauth::oauth_validate("order");
             $result['data'] = MobileCart::clear_cart($user_id);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -36,7 +44,11 @@ class CartHandler {
             params($p,['products']);
             $user_id = MobileOauth::oauth_validate("order");
             $result['data'] = MobileCart::update_cart($user_id,$p['products']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }

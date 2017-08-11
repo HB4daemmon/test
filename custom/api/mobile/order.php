@@ -40,7 +40,11 @@ class OrderListHandler{
             $user_id = MobileOauth::oauth_validate("order");
             $p = $GLOBALS['GET'];
             $result['data'] = MobileOrder::get_order_list($user_id,$p['page'],$p['page_size']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }
@@ -56,7 +60,11 @@ class OrderReviewHandler{
             $user_id = MobileOauth::oauth_validate("order");
             params($p,["address_id","tips"]);
             $result['data'] = MobileOrder::review($user_id,$p['address_id'],$p['tips']);
-        }catch(Exception $e){
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;
         }

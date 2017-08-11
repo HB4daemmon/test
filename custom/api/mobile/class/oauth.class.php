@@ -92,7 +92,10 @@ class MobileOauth{
             }
 
             return $token_obj['user_id'];
-        }catch(Exception $e){
+        }catch(OAuthException $e){
+            throw new OAuthException($e->getMessage());
+        }
+        catch(Exception $e){
             throw new Exception($e->getMessage());
         }
     }

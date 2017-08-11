@@ -7,6 +7,7 @@ class MobileCategory{
         try {
             $_helper = Mage::helper('catalog/category');
             $_categories = $_helper->getStoreCategories();
+            $image_prefix = "https://cartgogogo.com/media/catalog/category/";
             $_sub_cates = array();
             $cate = array();
             if (count($_categories) > 0){
@@ -17,15 +18,20 @@ class MobileCategory{
                     $sub = array();
                     if (count($_subcategories) > 0){
                         foreach($_subcategories as $_subcategory){
+                            $_subcategory = Mage::getModel('catalog/category')->load($_subcategory->getId());
                             $_sub = array();
                             $_sub['name'] = $_subcategory->getName();
                             $_sub['id'] = $_subcategory->getId();
+                            $_sub['url'] = $_subcategory->getMetaKeywords();
+                            $_sub['image'] = $image_prefix.$_subcategory->getThumbnail();
                             array_push($sub,$_sub);
                             array_push($_sub_cates,$_sub);
                         }
                     }
                     $_cate['name'] = $_category->getName();
                     $_cate['id'] = $_category->getId();
+                    $_cate['url'] = $_category->getMetaKeywords();
+                    $_cate['image'] = $image_prefix.$_category->getThumbnail();
                     $_cate['subcategories'] = $sub;
                     array_push($cate,$_cate);
                 }
@@ -51,13 +57,21 @@ class MobileCategory{
             $res['id'] = $_category->getId();
             $_subcategories = $_category->getChildrenCategories();
             $sub = array();
+            $most_popular = null;
             if (count($_subcategories) > 0){
                 foreach($_subcategories as $_subcategory){
                     $_sub = array();
                     $_sub['name'] = $_subcategory->getName();
                     $_sub['id'] = $_subcategory->getId();
-                    array_push($sub,$_sub);
+                    if ($_sub['name'] == 'Most Popular'){
+                        $most_popular = $_sub;
+                    }else{
+                        array_push($sub,$_sub);
+                    }
                 }
+            }
+            if ($most_popular != null){
+                array_unshift($sub,$most_popular);
             }
             $res['subcategories'] = $sub;
             return $res;

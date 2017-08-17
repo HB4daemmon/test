@@ -64,9 +64,12 @@ class MobileUtils
     public function getShippingtimeDate($store, $type)
     {
         $local_date = strtotime(Mage::app()->getLocale()->date()->toString(Varien_Date::DATETIME_INTERNAL_FORMAT));
-        $current_date = strtotime("+3 hours", $local_date);
+        $during_time = Mage::getStoreConfig("shippingtime_options/shippingtime_during_label")["shippingtime_during"] + 1;
+        $current_date = strtotime("+".$during_time." hours", $local_date);
         $numOfWeek = idate("w", $current_date);
         $hour = idate("H", $current_date);
+
+
 
         $config[1] = $this->getShippingtimeConfig($store, 'monday');
         $config[2] = $this->getShippingtimeConfig($store, 'tuesday');
@@ -78,8 +81,8 @@ class MobileUtils
 
         $test['config'] = $config;
         $test['current_date'] = $current_date;
-        $test['current_date_format'] = Mage::getSingleton('core/date')->date( 'Y-m-d H:i:s', $current_date );
         $test['numOfWeek'] = $numOfWeek;
+        $test['during_time'] = $during_time;
 
         $result = array();
         $rangeResult = array();
@@ -95,16 +98,17 @@ class MobileUtils
         }
 
         $test['this_day_option'] = $this_day_option;
+        $test['hour'] = $hour;
 
         if (count($this_day_option) > 0) {
             //This day
             for ($i = 0; $i < 7; $i++) {
                 if ($i == 0) {
-                    $_date = strtotime("+3 hours", $local_date);
+                    $_date = strtotime("+".$during_time." hours", $local_date);
                 } elseif ($i == 1) {
-                    $_date = strtotime("+3 hours +1 day", $local_date);
+                    $_date = strtotime("+".$during_time." hours +1 day", $local_date);
                 } else {
-                    $_date = strtotime("+3 hours +" . $i . " days", $local_date);
+                    $_date = strtotime("+".$during_time." hours +" . $i . " days", $local_date);
                 }
                 $_numOfWeek = idate("w", $_date);
                 $_dateTemp = date('m-d-Y', $_date);
@@ -125,9 +129,9 @@ class MobileUtils
             //The next day
             for ($i = 1; $i < 8; $i++) {
                 if ($i == 1) {
-                    $_date = strtotime("+3 hours +1 day", $local_date);
+                    $_date = strtotime("+".$during_time." hours +1 day", $local_date);
                 } else {
-                    $_date = strtotime("+3 hours +" . $i . " days", $local_date);
+                    $_date = strtotime("+".$during_time." hours +" . $i . " days", $local_date);
                 }
                 $_numOfWeek = idate("w", $_date);
                 $_dateTemp = date('m-d-Y', $_date);

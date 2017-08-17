@@ -39,6 +39,10 @@
         </acl>
     </adminhtml>
     <default>
-
+        <shippingtime_options>
+            <shippingtime_during_label>
+                <shippingtime_during>2</shippingtime_during>
+            </shippingtime_during_label>
+        </shippingtime_options>
     </default>
 </config>

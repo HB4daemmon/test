@@ -49,6 +49,25 @@
                         </shippingtime_fareast_weekend_options>
                     </fields>
                 </shippingtime_fareast_label>-->
+                <shippingtime_during_label translate="label">
+                    <label>Shipping During Time(hours)</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shippingtime_during translate="label">
+                            <label>Shipping During Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <validate>validate-number</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingtime_during>
+                    </fields>
+                </shippingtime_during_label>
                 <shippingtime_walmart_label translate="label">
                     <label>Define Walmart Shipping Time</label>
                     <frontend_type>text</frontend_type>

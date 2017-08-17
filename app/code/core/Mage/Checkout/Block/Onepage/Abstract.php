@@ -423,87 +423,100 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
 
     }*/
 
-    public function getShippingtimeDate($store,$type){
+    public function getShippingtimeDate($store, $type)
+    {
         $local_date = strtotime(Mage::app()->getLocale()->date()->toString(Varien_Date::DATETIME_INTERNAL_FORMAT));
-        $current_date = strtotime("+2 hours",$local_date);
-        $numOfWeek = idate("w",$current_date);
-        $hour = idate("H",$current_date);
+        $during_time = Mage::getStoreConfig("shippingtime_options/shippingtime_during_label")["shippingtime_during"] + 1;
+        $current_date = strtotime("+".$during_time." hours", $local_date);
+        $numOfWeek = idate("w", $current_date);
+        $hour = idate("H", $current_date);
 
-        $config[2]= $this->getShippingtimeConfig($store,'monday');
-        $config[3]= $this->getShippingtimeConfig($store,'tuesday');
-        $config[4]= $this->getShippingtimeConfig($store,'wednesday');
-        $config[5]= $this->getShippingtimeConfig($store,'thursday');
-        $config[6]= $this->getShippingtimeConfig($store,'friday');
-        $config[0]= $this->getShippingtimeConfig($store,'saturday');
-        $config[1]= $this->getShippingtimeConfig($store,'sunday');
+
+
+        $config[1] = $this->getShippingtimeConfig($store, 'monday');
+        $config[2] = $this->getShippingtimeConfig($store, 'tuesday');
+        $config[3] = $this->getShippingtimeConfig($store, 'wednesday');
+        $config[4] = $this->getShippingtimeConfig($store, 'thursday');
+        $config[5] = $this->getShippingtimeConfig($store, 'friday');
+        $config[6] = $this->getShippingtimeConfig($store, 'saturday');
+        $config[0] = $this->getShippingtimeConfig($store, 'sunday');
+
+        $test['config'] = $config;
+        $test['current_date'] = $current_date;
+        $test['numOfWeek'] = $numOfWeek;
+        $test['during_time'] = $during_time;
 
         $result = array();
-        $rangeResult =  array();
+        $rangeResult = array();
         $dateResult = array();
 
         $config_day = $config[$numOfWeek];
 
         $this_day_option = [];
-        foreach($config_day as $c){
-            if ($c >= $hour){
-                array_push($this_day_option,$c);
+        foreach ($config_day as $c) {
+            if ($c >= $hour) {
+                array_push($this_day_option, $c);
             }
         }
 
-        if(count($this_day_option) > 0){
-            //This day
-            for($i=0;$i<7;$i++){
-                if($i == 0){
-                    $_date = strtotime("+3 hours",$local_date);
-                }elseif($i==1){
-                    $_date = strtotime("+3 hours +1 day",$local_date);
-                }else{
-                    $_date =  strtotime("+3 hours +".$i." days",$local_date);
-                }
-                $_numOfWeek = idate("w",$_date);
-                $_dateTemp = date('m-d-Y',$_date);
-                $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
-                array_push($result,$option);
-                array_push($dateResult,$_dateTemp);
+        $test['this_day_option'] = $this_day_option;
+        $test['hour'] = $hour;
 
-                if($i==0){
-//                    if($index = array_search($hour,$config_day)){
-//                        $_range = array_slice($config_day,$index);
-//                    }else{
-//                        $_range = $config_day;
-//                    }
+        if (count($this_day_option) > 0) {
+            //This day
+            for ($i = 0; $i < 7; $i++) {
+                if ($i == 0) {
+                    $_date = strtotime("+".$during_time." hours", $local_date);
+                } elseif ($i == 1) {
+                    $_date = strtotime("+".$during_time." hours +1 day", $local_date);
+                } else {
+                    $_date = strtotime("+".$during_time." hours +" . $i . " days", $local_date);
+                }
+                $_numOfWeek = idate("w", $_date);
+                $_dateTemp = date('m-d-Y', $_date);
+                $option = array('value' => $_dateTemp, 'label' => Mage::helper('shippingtime')->__($_dateTemp));
+                array_push($result, $option);
+                array_push($dateResult, $_dateTemp);
+
+                if ($i == 0) {
                     $_range = $this_day_option;
-                }else{
+                } else {
                     $_range = $config[$_numOfWeek];
                 }
-                array_push($rangeResult,$_range);
+                array_push($rangeResult, $_range);
 
             }
 
-        }else{
+        } else {
             //The next day
-            for($i=1;$i<8;$i++){
-                if($i==1){
-                    $_date = strtotime("+3 hours +1 day",$local_date);
-                }else{
-                    $_date =  strtotime("+3 hours +".$i." days",$local_date);
+            for ($i = 1; $i < 8; $i++) {
+                if ($i == 1) {
+                    $_date = strtotime("+".$during_time." hours +1 day", $local_date);
+                } else {
+                    $_date = strtotime("+".$during_time." hours +" . $i . " days", $local_date);
                 }
-                $_numOfWeek = idate("w",$_date);
-                $_dateTemp = date('m-d-Y',$_date);
-                $option = array('value'=>$_dateTemp, 'label'=>Mage::helper('shippingtime')->__($_dateTemp));
-                array_push($result,$option);
-                array_push($dateResult,$_dateTemp);
+                $_numOfWeek = idate("w", $_date);
+                $_dateTemp = date('m-d-Y', $_date);
+                $option = array('value' => $_dateTemp, 'label' => Mage::helper('shippingtime')->__($_dateTemp));
+                array_push($result, $option);
+                array_push($dateResult, $_dateTemp);
 
                 $_range = $config[$_numOfWeek];
-                array_push($rangeResult,$_range);
+                array_push($rangeResult, $_range);
             }
         }
 
-        if($type == 'date'){
-            return $this->validateOrderCount($dateResult,$rangeResult,'date');
-        }elseif($type == 'range'){
-            return $this->validateOrderCount($dateResult,$rangeResult,'range');
-        }else{
+        $test['dateResult'] = $dateResult;
+        $test['rangeResult'] = $rangeResult;
+
+        if ($type == 'date') {
+            return $this->validateOrderCount($dateResult, $rangeResult, 'date');
+        } elseif ($type == 'range') {
+            return $this->validateOrderCount($dateResult, $rangeResult, 'range');
+        }elseif($type == 'test'){
+            return $test;
+        }
+        else {
             return $result;
         }
 

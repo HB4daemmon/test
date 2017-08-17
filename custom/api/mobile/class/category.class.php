@@ -16,6 +16,7 @@ class MobileCategory{
                     $_category = Mage::getModel('catalog/category')->load($_category->getId());
                     $_subcategories = $_category->getChildrenCategories();
                     $sub = array();
+                    $sub_name_string = "";
                     if (count($_subcategories) > 0){
                         foreach($_subcategories as $_subcategory){
                             $_subcategory = Mage::getModel('catalog/category')->load($_subcategory->getId());
@@ -26,13 +27,16 @@ class MobileCategory{
                             $_sub['image'] = $image_prefix.$_subcategory->getThumbnail();
                             array_push($sub,$_sub);
                             array_push($_sub_cates,$_sub);
+                            $sub_name_string = $sub_name_string.$_sub['name'].' / ';
                         }
                     }
+                    $sub_name_string = rtrim($sub_name_string,'/ ');
                     $_cate['name'] = $_category->getName();
                     $_cate['id'] = $_category->getId();
                     $_cate['url'] = $_category->getMetaKeywords();
                     $_cate['image'] = $image_prefix.$_category->getThumbnail();
                     $_cate['subcategories'] = $sub;
+                    $_cate['sub_name_string'] = $sub_name_string;
                     array_push($cate,$_cate);
                 }
             }

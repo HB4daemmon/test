@@ -64,7 +64,7 @@ class MobileUtils
     public function getShippingtimeDate($store, $type)
     {
         $local_date = strtotime(Mage::app()->getLocale()->date()->toString(Varien_Date::DATETIME_INTERNAL_FORMAT));
-        $current_date = strtotime("+2 hours", $local_date);
+        $current_date = strtotime("+3 hours", $local_date);
         $numOfWeek = idate("w", $current_date);
         $hour = idate("H", $current_date);
 
@@ -78,6 +78,7 @@ class MobileUtils
 
         $test['config'] = $config;
         $test['current_date'] = $current_date;
+        $test['current_date_format'] = Mage::getSingleton('core/date')->date( 'Y-m-d H:i:s', $current_date );
         $test['numOfWeek'] = $numOfWeek;
 
         $result = array();

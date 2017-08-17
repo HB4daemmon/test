@@ -107,27 +107,27 @@ else {
 								<?php }  ?>
 							</ul>
 						</div>
-						<?php
-							$newFromDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsFromDate();
-							$newToDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsToDate();
-							$now = date("Y-m-d H:m(worry)");
-							// Get the Special Price
-							$specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice();
-							// Get the Special Price FROM date
-							$specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
-							// Get the Special Price TO date
-							$specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
-							// Get Current date
-							//if ($specialprice&&($specialPriceFromDate <= $now && $specialPriceToDate >= $now)&& Mage::getStoreConfig('themeoptions/themeoptions_config/sale_label')){
-							//	echo "<span class='sale'></span>";
-							//	}else{
-							//	if($newFromDate <= $now && $newToDate >= $now && Mage::getStoreConfig('themeoptions/themeoptions_config/new_label') ) {
-							//		echo "<span class='new'></span>";
-									//echo $now.' -- '.$newsFrom.' -- '.$newsTo;
-							//	}
-							//}
-						?>
-					</div>
+<!--						--><?php
+//							$newFromDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsFromDate();
+//							$newToDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsToDate();
+//							$now = date("Y-m-d H:m(worry)");
+//							// Get the Special Price
+//							$specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice();
+//							// Get the Special Price FROM date
+//							$specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+//							// Get the Special Price TO date
+//							$specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+//							// Get Current date
+//							//if ($specialprice&&($specialPriceFromDate <= $now && $specialPriceToDate >= $now)&& Mage::getStoreConfig('themeoptions/themeoptions_config/sale_label')){
+//							//	echo "<span class='sale'></span>";
+//							//	}else{
+//							//	if($newFromDate <= $now && $newToDate >= $now && Mage::getStoreConfig('themeoptions/themeoptions_config/new_label') ) {
+//							//		echo "<span class='new'></span>";
+//									//echo $now.' -- '.$newsFrom.' -- '.$newsTo;
+//							//	}
+//							//}
+//						?>
+<!--					</div>-->
 				</li>
             <?php }else{?>
                 <li class="col-md-3 col-sm-6 col-sms-6 col-smb-12 item">

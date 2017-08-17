@@ -35,7 +35,7 @@ class MobileCart{
                     "price"=>number_format($_item->getPrice(),2),
                     "sales_tax"=>number_format($_item->getTaxAmount(),2),
                     "tax_percent"=>number_format($_item->getTaxPercent(),2),
-                    "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getThumbnail(),
+                    "image"=>'http://www.cartgogogo.com/media/catalog/product'.$product->getSmallImage(),
                     "quantity" => $product->getQuantity(),
                     "substitute"=>$_item->getSubstitute(),
                 );
@@ -82,16 +82,28 @@ class MobileCart{
                         continue;
                     }
 
+                    if (isset($product_setting['sub_option'])){
+                        if ($product_setting['sub_option'] == 'Yes'){
+                            $substitute = 0;
+                        }else{
+                            $substitute = 1;
+                        }
+                    }else{
+                        $substitute = $product_setting['substitute'];
+                    }
+
                     try {
-                        $quote->addProduct($product, new Varien_Object(array('qty' => $product_setting['qty'])));
-                        $quote->save();
-                        $quote_item = $quote->getItemByProduct($product);
-                        $quote_item->setQty($product_setting['qty'])
-                            ->setSubstitute($product_setting['substitute'])
-                            ->setCustomerMessage($product_setting['note'])
-                            ->save();
-                        $quote->addItem($quote_item);
-                        $quote->save();
+                        if ($product_setting['qty'] > 0){
+                            $quote->addProduct($product, new Varien_Object(array('qty' => $product_setting['qty'])));
+                            $quote->save();
+                            $quote_item = $quote->getItemByProduct($product);
+                            $quote_item->setQty($product_setting['qty'])
+                                ->setSubstitute($substitute)
+                                ->setCustomerMessage($product_setting['note'])
+                                ->save();
+                            $quote->addItem($quote_item);
+                            $quote->save();
+                        }
                     } catch (Exception $ex) {
                         throw new Exception($ex->getMessage());
                     }

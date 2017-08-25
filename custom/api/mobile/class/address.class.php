@@ -20,6 +20,8 @@ class MobileAddress{
             $address->setPostcode($postcode);
             $address->setCity($city);
             $address->setTelephone($telephone);
+//            $address->setRegion("Illinois");
+            $address->setRegionId(23);
 
             $address->save();
             return 'success';
@@ -47,6 +49,7 @@ class MobileAddress{
                 $addr['postcode'] = $address->getPostcode();
                 $addr['city'] = $address->getCity();
                 $addr['telephone'] = $address->getTelephone();
+                $addr['region'] = $address->getRegion();
                 $addresses[] = $addr;
             }
 

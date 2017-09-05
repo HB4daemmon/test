@@ -89,3 +89,22 @@ class UserResetHandler {
         echo json_encode($result);
     }
 }
+
+class UserStripeHandler{
+    function get(){
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['GET'];
+            $user_id = MobileOauth::oauth_validate("user");
+            $result['data'] = MobileUser::getStripeCustomerId($user_id);
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}

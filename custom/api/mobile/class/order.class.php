@@ -262,7 +262,7 @@ class MobileOrder{
         }
     }
 
-    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips,$brand="",$last4=""){
+    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips,$saved=1){
         try{
             $customer = Mage::getModel("customer/customer")->load($user_id);
             if ($customer->getId() == null){
@@ -326,7 +326,12 @@ class MobileOrder{
             $checkout->setQuote($quote);
             $checkout->saveCheckoutMethod('register');
             $checkout->saveShippingMethod('5');
-            $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token));
+            if ($saved == 1){
+                $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token,'cc_save'=>1));
+            }else{
+                $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token));
+            }
+
 
             $quote_store_groups = Mage::getModel('sales/quote_storegroup')
                 ->getCollection()
@@ -706,7 +711,7 @@ class MobileOrder{
             $order['tips'] = number_format($tips,2);
             $order['tax'] = number_format($address->getTaxAmount(),2);
             $order['delivery_fee'] = number_format(5,2);
-            $order['total'] = number_format($orders->getGrandTotal()+$order['tax']+$order['tips']+$order['delivery_fee'],2);
+            $order['total'] = number_format($order['subtotal']+$order['tax']+$order['tips']+$order['delivery_fee'],2);
 
             $order['items'] = $order_items;
 

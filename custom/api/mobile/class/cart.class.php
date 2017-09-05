@@ -82,15 +82,17 @@ class MobileCart{
                         continue;
                     }
 
-                    if (isset($product_setting['sub_option'])){
-                        if ($product_setting['sub_option'] == 'Yes'){
-                            $substitute = 0;
-                        }else{
-                            $substitute = 1;
-                        }
-                    }else{
-                        $substitute = $product_setting['substitute'];
-                    }
+//                    if (isset($product_setting['sub_option'])){
+//                        if ($product_setting['sub_option'] == 'Yes'){
+//                            $substitute = 0;
+//                        }else{
+//                            $substitute = 1;
+//                        }
+//                    }else{
+//                        $substitute = $product_setting['substitute'];
+//                    }
+
+                    $substitute = $product_setting['substitute'];
 
                     try {
                         if ($product_setting['qty'] > 0){

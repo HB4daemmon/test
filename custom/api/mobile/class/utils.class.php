@@ -17,19 +17,30 @@ class MobileUtils
                 $d = $date[$i];
                 $ts = $time[$i];
                 $new_time[$i] = array();
-                //$format_date = date('m-d-Y',strtotime($d));
+                $d_array = explode('-',$d);
+                $day_of_week = date('w',mktime(0,0,0,$d_array[0],$d_array[1],$d_array[2]));
                 foreach ($ts as $t) {
                     $sql = "select count(1) as order_num from sales_flat_order_storegroup s, sales_flat_order o
                     where s.order_id = o.entity_id
-                    and o.status = 'processing'
+                    and o.state = 'processing'
                     and s.date = '$d'
-                    and s.time_range = '$t';";
+                    and s.time_range = '$t'
+                    and o.parent_order_id is not null;";
                     $sqlres = $conn->query($sql);
                     if (!$sqlres) {
                         throw new Exception("select order num error");
                     }
                     $row = $sqlres->fetch_assoc();
-                    if ($row['order_num'] <= 3) {
+                    $delivery_number_sql = "select delivery_number from custom_delivery_number where day_of_week = $day_of_week and time_range = $t";
+                    $num_res = $conn->query($delivery_number_sql);
+                    $num = $num_res->fetch_assoc();
+                    if($num){
+                        $delivery_number = $num['delivery_number'];
+                    }else{
+                        $delivery_number = 3;
+                    }
+//                    print_r("Day:".$d."  Time:".$t."  order_num：".$row['order_num'].'  delivery_number'.$delivery_number."\n");
+                    if ($row['order_num'] <= $delivery_number) {
                         array_push($new_time[$i], $t);
                     }
                     array_push($test, $sql);
@@ -153,6 +164,8 @@ class MobileUtils
             return $this->validateOrderCount($dateResult, $rangeResult, 'range');
         }elseif($type == 'test'){
             return $test;
+        }elseif($type == 'config'){
+            return $config;
         }
         else {
             return $result;
@@ -212,8 +225,6 @@ class MobileUtils
         $res['length'] = $length;
         return $res;
    }
-
-
 
 }
 

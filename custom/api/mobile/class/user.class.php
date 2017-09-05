@@ -110,4 +110,16 @@ class MobileUser{
             }
         }
     }
+
+    public static function getStripeCustomerId($customerId){
+        $customer = Mage::getModel("customer/customer")->load($customerId);
+        if ($customer->getId() == null){
+            throw new Exception("User is not existed");
+        }
+        Mage::getSingleton('customer/session')->loginById($customer->getId());
+        $stripe = Mage::getModel('cryozonic_stripe/standard');
+        $customer = $stripe->getStripeCustomer()->id;
+        Mage::getSingleton('customer/session')->logout();
+        return $customer;
+    }
 }

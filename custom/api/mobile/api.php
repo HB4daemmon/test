@@ -9,6 +9,7 @@ require_once(dirname(__FILE__) . '/order.php');
 require_once(dirname(__FILE__) . '/shipping.php');
 require_once(dirname(__FILE__) . '/cart.php');
 require_once(dirname(__FILE__) . '/oauth.php');
+require_once(dirname(__FILE__) . '/delivery.php');
 
 class MainHandler {
     #get current user
@@ -39,6 +40,7 @@ Toro::serve(array(
     "/user/login" => "UserLoginHandler",
     "/user/logout" => "UserLogoutHandler",
     "/user/reset" => "UserResetHandler",
+    "/user/stripe" => "UserStripeHandler",
     //category
     "/category/list" => "CategoryListHandler",
     "/category/query" => "CategoryQueryHandler",
@@ -66,4 +68,6 @@ Toro::serve(array(
     "/cart"=>"CartHandler",
     //oauth
     "/oauth"=>"OauthHandler",
+    //delivery numbers
+    "/delivery/time"=>"DeliveryTimeHandler"
 ));

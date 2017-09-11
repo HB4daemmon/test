@@ -19,6 +19,7 @@
 class Cryozonic_Stripe_Block_Payment_Info extends Mage_Payment_Block_Info
 {
     public $charge;
+    public $cards = array();
 
 	protected function _construct()
     {
@@ -32,24 +33,99 @@ class Cryozonic_Stripe_Block_Payment_Info extends Mage_Payment_Block_Info
         return ($this->getMethod()->getCode() == 'cryozonic_stripe');
     }
 
+    public function getSourceInfo()
+    {
+        $info = $this->getInfo()->getAdditionalInformation('source_info');
+
+        if (empty($info))
+            return null;
+
+        $data = json_decode($info, true);
+
+        return $data;
+    }
+
+    public function getCard()
+    {
+        $charge = $this->getCharge();
+
+        if (empty($charge))
+            return null;
+
+        if (empty($charge->source))
+            return null;
+
+        if (isset($charge->source->object) && $charge->source->object == 'card')
+            return $charge->source;
+
+        if (isset($charge->source->type)
+            && $charge->source->type == 'three_d_secure'
+            // && isset($charge->customer)
+            /* && $charge->source->three_d_secure->card */)
+        {
+            $cardId = $charge->source->three_d_secure->card;
+            if (isset($this->cards[$cardId]))
+                return $this->cards[$cardId];
+
+            // try
+            // {
+            //     $stripe = Mage::getModel('cryozonic_stripe/standard');
+            //     $customer = $stripe->getStripeCustomer($charge->customer);
+            //     $this->cards[$cardId] = $customer->sources->retrieve($cardId);
+            // }
+            // catch (Exception $e)
+            // {
+                $card = new stdClass();
+                $card->address_line1_check = $card->address_zip_check = $card->cvc_check = "Verified with 3D Secure";
+                $this->cards[$cardId] = $card;
+            // }
+
+            return $this->cards[$cardId];
+        }
+
+        if (empty($charge->source->card))
+            return null;
+
+        return $charge->source->card;
+    }
+
     public function getStreetCheck()
     {
-        $check = $this->getInfo()->getAdditionalInformation('address_line1_check');
+        $card = $this->getCard();
 
-        if (empty($check))
+        if (empty($card))
             return 'unchecked';
 
-        return $check;
+        if (empty($card->address_line1_check))
+            return 'unchecked';
+
+        return $card->address_line1_check;
     }
 
     public function getZipCheck()
     {
-        $check = $this->getInfo()->getAdditionalInformation('address_zip_check');
+        $card = $this->getCard();
 
-        if (empty($check))
+        if (empty($card))
             return 'unchecked';
 
-        return $check;
+        if (empty($card->address_zip_check))
+            return 'unchecked';
+
+        return $card->address_zip_check;
+    }
+
+    public function getCVCCheck()
+    {
+        $card = $this->getCard();
+
+        if (empty($card))
+            return 'unchecked';
+
+        if (empty($card->cvc_check))
+            return 'unchecked';
+
+        return $card->cvc_check;
     }
 
     public function getRadarRisk()
@@ -71,19 +147,27 @@ class Cryozonic_Stripe_Block_Payment_Info extends Mage_Payment_Block_Info
 
         try
         {
-            $id = $this->getMethod()->getInfoInstance()->getLastTransId();
-            $stripe->log($id);
-            $token = $this->helper->cleanToken($id);
+            $token = $this->helper->cleanToken($this->getMethod()->getInfoInstance()->getLastTransId());
+
+            // Subscriptions will not have a charge ID
+            if (empty($token))
+                return null;
+
             $this->charge = $stripe->retrieveCharge($token);
         }
-        catch (Stripe_Error $e)
+        catch (\Stripe\Error\Card $e)
         {
-            $stripe->log($e->getMessage());
+            $stripe->plog($e->getMessage());
             return null;
         }
-        catch (Exception $e)
+        catch (\Stripe\Error $e)
         {
-            $stripe->log($e->getMessage());
+            $stripe->plog($e->getMessage());
+            return null;
+        }
+        catch (\Exception $e)
+        {
+            $stripe->plog($e->getMessage());
             return null;
         }
 
@@ -128,5 +212,19 @@ class Cryozonic_Stripe_Block_Payment_Info extends Mage_Payment_Block_Info
             return $charge->id;
 
         return null;
+    }
+
+    public function getCardCountry()
+    {
+        $charge = $this->getCharge();
+
+        if (isset($charge->source->country))
+            $country = $charge->source->country;
+        else if (isset($charge->source->card->country))
+            $country = $charge->source->card->country;
+        else
+            return "Unknown";
+
+        return Mage::app()->getLocale()->getCountryTranslation($country);
     }
 }

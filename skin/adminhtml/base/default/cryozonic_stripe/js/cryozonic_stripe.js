@@ -12,23 +12,42 @@
  *
  * @category   Cryozonic
  * @package    Cryozonic_Stripe
- * @version    2.3.1
+ * @version    2.7.3
+ * @build      RC3014
  * @copyright  Copyright (c) Cryozonic Ltd (http://cryozonic.com)
  */
 
 var stripeTokens = {};
-var three_d_secure_canceled = 'Bank authentication canceled.';
 
-var initStripe = function(apiKey)
+var initStripe = function(apiKey, securityMethod)
 {
+    cryozonic.securityMethod = securityMethod;
+
+    var onLoad = function()
+    {
+        if (securityMethod == 1)
+        {
+            Stripe.setPublishableKey(apiKey);
+            cryozonic.stripe = Stripe;
+        }
+        else
+            cryozonic.stripe = Stripe(apiKey);
+
+        initLoadedStripe();
+
+        cryozonic.dispatchEvent('stripeJsInitialized');
+    };
+
     // Load Stripe.js dynamically
     if (typeof Stripe == "undefined")
     {
         var resource = document.createElement('script');
-        resource.src = "https://js.stripe.com/v2/";
-        resource.onload = function() {
-            Stripe.setPublishableKey(apiKey);
-        };
+        if (securityMethod == 1)
+            resource.src = "https://js.stripe.com/v2/";
+        else
+            resource.src = "https://js.stripe.com/v3/";
+
+        resource.onload = onLoad;
         resource.onerror = function(evt) {
             console.warn("Stripe.js could not be loaded");
             console.error(evt);
@@ -37,7 +56,7 @@ var initStripe = function(apiKey)
         script.parentNode.insertBefore(resource, script);
     }
     else
-        Stripe.setPublishableKey(apiKey);
+        onLoad();
 
     // Disable server side card validation when Stripe.js is enabled
     if (typeof AdminOrder != 'undefined' && AdminOrder.prototype.loadArea && typeof AdminOrder.prototype._loadArea == 'undefined')
@@ -53,27 +72,82 @@ var initStripe = function(apiKey)
         };
     }
 
-    // Re-enable form inputs when the customer returns to previous checkout steps
-    initPaymentForm(); // For the default Magento One Page Checkout that loads the payment form through ajax only
-    cryozonicStripe.onWindowLoaded(initPaymentForm); // For OSC modules that load the whole page at the initial hit
-
     // Integrate Stripe.js with various One Step Checkout modules
     initOSCModules();
-    cryozonicStripe.onWindowLoaded(initOSCModules); // Run it again after the page has loaded in case we missed an ajax based OSC module
+    cryozonic.onWindowLoaded(initOSCModules); // Run it again after the page has loaded in case we missed an ajax based OSC module
 
     // Integrate Stripe.js with the multi-shipping payment form
-    cryozonicStripe.onWindowLoaded(initMultiShippingForm);
+    cryozonic.onWindowLoaded(initMultiShippingForm);
 
     // Integrate Stripe.js with the admin area
-    cryozonicStripe.onWindowLoaded(initAdmin); // Needed when refreshing the browser
+    cryozonic.onWindowLoaded(initAdmin); // Needed when refreshing the browser
     initAdmin(); // Needed when the payment method is loaded through an ajax call after adding the shipping address
 };
 
-// A bit of namespacing
-var cryozonicStripe = {
+// Initializations that depend on Stripe.js being loaded and ready
+var initLoadedStripe = function()
+{
+    // Enable Apple Pay for supported devices
+    initApplePay();
+    cryozonic.onWindowLoaded(initApplePay);
+
+    initStripeElements();
+    cryozonic.onWindowLoaded(initStripeElements);
+};
+
+var initStripeElements = function()
+{
+    if (cryozonic.securityMethod != 2)
+        return;
+
+    if (document.getElementById('card-element') === null)
+        return;
+
+    // Custom styling can be passed to options when creating an Element.
+    var style = {
+        base: {
+            // Add your base input styles here. For example:
+            fontSize: '16px',
+            lineHeight: '24px'
+    //         iconColor: '#666EE8',
+    //         color: '#31325F',
+    //         fontWeight: 300,
+    //         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+
+    //         '::placeholder': {
+    //             color: '#CFD7E0'
+    //         }
+        }
+    };
+
+    var elements = cryozonic.stripe.elements();
+
+    // Create an instance of the card Element
+    var card = cryozonic.card = elements.create('card', {style: style});
+
+    // Add an instance of the card Element into the `card-element` <div>
+    card.mount('#card-element');
+
+    card.addEventListener('change', function(event)
+    {
+        if (event.error)
+            cryozonic.displayCardError(event.error.message);
+        else
+            cryozonic.clearCardErrors();
+    });
+};
+
+var cryozonic = {
     // Properties
+    billingInfo: null,
     multiShippingFormInitialized: false,
     oscInitialized: false,
+    applePayButton: null,
+    applePaySuccess: false,
+    applePayResponse: null,
+    securityMethod: 0,
+    card: null,
+    paymentFormValidator: null,
 
     // Methods
     onWindowLoaded: function(callback)
@@ -82,6 +156,194 @@ var cryozonicStripe = {
             window.attachEvent("onload", callback); // IE
         else
             window.addEventListener("load", callback); // Other browsers
+    },
+    validatePaymentForm: function(callback)
+    {
+        if (!this.paymentFormValidator)
+            this.paymentFormValidator = new Validation('payment_form_cryozonic_stripe');
+
+        if (!this.paymentFormValidator.form)
+            this.paymentFormValidator = new Validation('new-card');
+
+        if (!this.paymentFormValidator.form)
+            return true;
+
+        this.paymentFormValidator.reset();
+
+        return this.paymentFormValidator.validate();
+    },
+    placeAdminOrder: function(e)
+    {
+        var radioButton = document.getElementById('p_method_cryozonic_stripe');
+        if (radioButton && !radioButton.checked)
+            return order.submit();
+
+        createStripeToken(function(err)
+        {
+            if (err)
+                alert(err);
+            else
+                order.submit();
+        });
+    },
+    addAVSFieldsTo: function(cardDetails)
+    {
+        var owner = cryozonic.getSourceOwner();
+        cardDetails.name = owner.name;
+        cardDetails.address_line1 = owner.address.line1;
+        cardDetails.address_line2 = owner.address.line2;
+        cardDetails.address_zip = owner.address.postal_code;
+        cardDetails.address_city = owner.address.city;
+        cardDetails.address_state = owner.address.state;
+        cardDetails.address_zip = owner.address.postal_code;
+        cardDetails.address_country = owner.address.country;
+        return cardDetails;
+    },
+    getSourceOwner: function()
+    {
+        // Format is
+        var owner = {
+            name: null,
+            email: null,
+            phone: null,
+            address: {
+                city: null,
+                country: null,
+                line1: null,
+                line2: null,
+                postal_code: null,
+                state: null
+            }
+        };
+
+        // If there is an address select dropdown, don't read the address from the input fields in case
+        // the customer changes the address from the dropdown. Dropdown value changes do not update the
+        // plain input fields
+        if (!document.getElementById('billing-address-select'))
+        {
+            // Scenario 1: We are in the admin area creating an order for a guest who has no saved address yet
+            var line1 = document.getElementById('order-billing_address_street0');
+            var postcode = document.getElementById('order-billing_address_postcode');
+            var email = document.getElementById('order-billing_address_email');
+
+            // Scenario 2: Checkout page with an OSC module and a guest customer
+            if (!line1)
+                line1 = document.getElementById('billing:street1');
+
+            if (!postcode)
+                postcode = document.getElementById('billing:postcode');
+
+            if (!email)
+                email = document.getElementById('billing:email');
+
+            if (line1)
+                owner.address.line1 = line1.value;
+
+            if (postcode)
+                owner.address.postal_code = postcode.value;
+
+            if (email)
+                owner.email = email.value;
+
+            // New fields
+            if (document.getElementById('billing:firstname'))
+                owner.name = document.getElementById('billing:firstname').value + ' ' + document.getElementById('billing:lastname').value;
+
+            if (document.getElementById('billing:telephone'))
+                owner.phone = document.getElementById('billing:telephone').value;
+
+            if (document.getElementById('billing:city'))
+                owner.address.city = document.getElementById('billing:city').value;
+
+            if (document.getElementById('billing:country_id'))
+                owner.address.country = document.getElementById('billing:country_id').value;
+
+            if (document.getElementById('billing:street2'))
+                owner.address.line2 = document.getElementById('billing:street2').value;
+
+            if (document.getElementById('billing:region'))
+                owner.address.state = document.getElementById('billing:region').value;
+        }
+
+        // Scenario 3: Checkout or admin area and a registered customer already has a pre-loaded billing address
+        if (cryozonic.billingInfo !== null)
+        {
+            if (owner.email === null && cryozonic.billingInfo.email !== null)
+                owner.email = cryozonic.billingInfo.email;
+
+            if (owner.address.line1 === null && cryozonic.billingInfo.line1 !== null)
+            {
+                owner.address.line1 = cryozonic.billingInfo.line1;
+                owner.address.postal_code = cryozonic.billingInfo.postcode;
+            }
+
+            // New fields
+            if (owner.name === null && cryozonic.billingInfo.name !== null)
+                owner.name = cryozonic.billingInfo.name;
+
+            if (owner.phone === null && cryozonic.billingInfo.phone !== null)
+                owner.phone = cryozonic.billingInfo.phone;
+
+            if (owner.address.city === null && cryozonic.billingInfo.city !== null)
+                owner.address.city = cryozonic.billingInfo.city;
+
+            if (owner.address.country === null && cryozonic.billingInfo.country !== null)
+                owner.address.country = cryozonic.billingInfo.country;
+
+            if (owner.address.line2 === null && cryozonic.billingInfo.line2 !== null)
+                owner.address.line2 = cryozonic.billingInfo.line2;
+
+            if (owner.address.state === null && cryozonic.billingInfo.state !== null)
+                owner.address.state = cryozonic.billingInfo.state;
+        }
+
+        return owner;
+    },
+    displayCardError: function(message)
+    {
+        // Some OSC modules have the Place Order button away from the payment form
+        if (cryozonic.oscInitialized)
+        {
+            alert(message);
+            return;
+        }
+
+        // When we use a saved card, display the message as an alert
+        var newCardRadio = document.getElementById('new_card');
+        if (newCardRadio && !newCardRadio.checked)
+        {
+            alert(message);
+            return;
+        }
+
+        var box = $('cryozonic-stripe-card-errors');
+
+        if (box)
+        {
+            box.update(message);
+            box.addClassName('populated');
+        }
+        else
+            alert(message);
+    },
+    clearCardErrors: function()
+    {
+        var box = $('cryozonic-stripe-card-errors');
+
+        if (box)
+        {
+            box.update("");
+            box.removeClassName('populated');
+        }
+    },
+    dispatchEvent: function(eventName)
+    {
+        var event = new Event(eventName);
+        document.dispatchEvent(event);
+    },
+    is3DSecureEnabled: function()
+    {
+        return (typeof params3DSecure != 'undefined' && params3DSecure && !isNaN(params3DSecure.amount));
     }
 };
 
@@ -90,48 +352,34 @@ var initAdmin = function()
     var btn = document.getElementById('order-totals');
     if (btn) btn = btn.getElementsByTagName('button');
     if (btn && btn[0]) btn = btn[0];
-    if (btn) btn.onclick = function()
+    if (btn) btn.onclick = cryozonic.placeAdminOrder;
+
+    var topBtns = document.getElementsByClassName('save');
+    for (var i = 0; i < topBtns.length; i++)
     {
-        var radioButton = document.getElementById('p_method_cryozonic_stripe');
-        if (radioButton && !radioButton.checked)
-            return order.submit();
-
-        createStripeToken(function(err)
-        {
-            if (err && err == three_d_secure_canceled)
-                console.error(three_d_secure_canceled);
-            else if (err)
-                alert(err);
-            else
-                order.submit();
-        });
-    };
-};
-
-var initPaymentForm = function()
-{
-    var form = document.getElementById('payment_form_cryozonic_stripe');
-    if (form) form.onclick = enableInputs;
-};
-
-var is3DSecureEnabled = function()
-{
-    return (typeof params3DSecure != 'undefined' && params3DSecure && !isNaN(params3DSecure.amount));
+        topBtns[i].onclick = cryozonic.placeAdminOrder;
+    }
 };
 
 var shouldUse3DSecure = function(response)
 {
-    return (is3DSecureEnabled() &&
+    return (cryozonic.is3DSecureEnabled() &&
             typeof response.card.three_d_secure != 'undefined' &&
-            typeof response.card.three_d_secure.supported != 'undefined' &&
-            ['optional', 'required'].indexOf(response.card.three_d_secure.supported) >= 0);
+            ['optional', 'required'].indexOf(response.card.three_d_secure) >= 0);
 };
 
 var cryozonicSetLoadWaiting = function(section)
 {
     // Check if defined first in case of an OSC module rewriting the whole thing
     if (typeof checkout != 'undefined' && checkout && checkout.setLoadWaiting)
-        checkout.setLoadWaiting(section);
+    {
+        try
+        {
+            // OSC modules may also cause crashes if they have stripped away the html elements
+            checkout.setLoadWaiting(section);
+        }
+        catch (e) {}
+    }
     else
         cryozonicToggleAdminSave(section);
 };
@@ -147,8 +395,123 @@ var cryozonicToggleAdminSave = function(disable)
     }
 };
 
+var initApplePay = function()
+{
+    // Some OSC modules will refuse to reload the payment method when the billing address is changed for a customer.
+    // We can't use Apple Pay without a billing address
+    if (typeof paramsApplePay == "undefined" || !paramsApplePay)
+        return;
+
+    var payButton = document.getElementById('apple-pay-button');
+    if (!payButton)
+        return;
+    // For OSC modules that do reload the payment form, more than once, we deduplicate event binding here
+    else if (payButton == cryozonic.applePayButton)
+        return;
+    else
+        cryozonic.applePayButton = payButton;
+
+    // Binding the event from javascript instead of markup can capture both clicks and touch events
+    payButton.addEventListener('click', beginApplePay);
+
+    var resetButton = document.getElementById('apple-pay-reset');
+    resetButton.addEventListener('click', resetApplePayToken);
+
+    Stripe.applePay.checkAvailability(function(available)
+    {
+        if (available)
+            $('payment_form_cryozonic_stripe').addClassName('apple-pay-supported');
+    });
+};
+
+var beginApplePay = function()
+{
+    var paymentRequest = paramsApplePay;
+
+    var session = Stripe.applePay.buildSession(paymentRequest, function(result, completion)
+    {
+        setStripeToken(result.token.id);
+
+        completion(ApplePaySession.STATUS_SUCCESS);
+
+        setApplePayToken(result.token);
+    },
+    function(error)
+    {
+        alert(error.message);
+    });
+
+    session.begin();
+};
+
+var setApplePayToken = function(token)
+{
+    var radio = document.querySelector('input[name="payment[cc_saved]"]:checked');
+    if (!radio || (radio && radio.value == 'new_card'))
+        disablePaymentFormValidation();
+
+    if ($('new_card'))
+        $('new_card').removeClassName('validate-one-required-by-name');
+
+    $('apple-pay-result-brand').update(token.card.brand);
+    $('apple-pay-result-last4').update(token.card.last4);
+    $('payment_form_cryozonic_stripe').addClassName('apple-pay-success');
+    $('apple-pay-result-brand').className = "type " + token.card.brand;
+    cryozonic.applePaySuccess = true;
+    cryozonic.applePayToken = token;
+};
+
+var resetApplePayToken = function()
+{
+    var radio = document.querySelector('input[name="payment[cc_saved]"]:checked');
+    if (!radio || (radio && radio.value == 'new_card'))
+        enablePaymentFormValidation();
+
+    if ($('new_card'))
+        $('new_card').addClassName('validate-one-required-by-name');
+
+    $('payment_form_cryozonic_stripe').removeClassName('apple-pay-success');
+    $('apple-pay-result-brand').update();
+    $('apple-pay-result-last4').update();
+    $('apple-pay-result-brand').className = "";
+    deleteStripeToken();
+    cryozonic.applePaySuccess = false;
+    cryozonic.applePayToken = null;
+};
+
+var getCardDetails = function()
+{
+    // Validate the card
+    var cardName = document.getElementById('cryozonic_stripe_cc_owner');
+    var cardNumber = document.getElementById('cryozonic_stripe_cc_number');
+    var cardCvc = document.getElementById('cryozonic_stripe_cc_cid');
+    var cardExpMonth = document.getElementById('cryozonic_stripe_expiration');
+    var cardExpYear = document.getElementById('cryozonic_stripe_expiration_yr');
+
+    var isValid = cardName && cardName.value && cardNumber && cardNumber.value && cardCvc && cardCvc.value && cardExpMonth && cardExpMonth.value && cardExpYear && cardExpYear.value;
+
+    if (!isValid) return null;
+
+    var cardDetails = {
+        name: cardName.value,
+        number: cardNumber.value,
+        cvc: cardCvc.value,
+        exp_month: cardExpMonth.value,
+        exp_year: cardExpYear.value
+    };
+
+    cardDetails = cryozonic.addAVSFieldsTo(cardDetails);
+
+    return cardDetails;
+};
+
 var createStripeToken = function(callback)
 {
+    cryozonic.clearCardErrors();
+
+    if (!cryozonic.validatePaymentForm())
+        return;
+
     cryozonicSetLoadWaiting('payment');
     var done = function(err)
     {
@@ -156,219 +519,59 @@ var createStripeToken = function(callback)
         return callback(err);
     };
 
+    if (cryozonic.applePaySuccess)
+        return done();
+
     // First check if the "Use new card" radio is selected, return if not
     var cardDetails, newCardRadio = document.getElementById('new_card');
     if (newCardRadio && !newCardRadio.checked)
-    {
-        if (!is3DSecureEnabled()) return done();
-
-        var i, savedCards = document.querySelectorAll("#saved-cards input.select");
-        for (i = 0; i < savedCards.length; i++)
-        {
-            if (savedCards[i].checked && savedCards[i].value)
-            {
-                var params = savedCards[i].value.split(':');
-
-                if (stripeTokens[params[0]])
-                {
-                    setStripeToken(stripeTokens[params[0]]);
-                    return done();
-                }
-                else
-                    deleteStripeToken();
-
-                var card = {
-                    id: params[0],
-                    brand: params[1],
-                    last4: params[2]
-                };
-                create3DSecureToken(params[0], card, params[0], done);
-
-                return;
-            }
-        }
-        return done('Please select a card.');
-    }
-    else
-    {
-        // Validate the card
-        var cardName = document.getElementById('cryozonic_stripe_cc_owner');
-        var cardNumber = document.getElementById('cryozonic_stripe_cc_number');
-        var cardCvc = document.getElementById('cryozonic_stripe_cc_cid');
-        var cardExpMonth = document.getElementById('cryozonic_stripe_expiration');
-        var cardExpYear = document.getElementById('cryozonic_stripe_expiration_yr');
-
-        var isValid = cardName && cardName.value && cardNumber && cardNumber.value && cardCvc && cardCvc.value && cardExpMonth && cardExpMonth.value && cardExpYear && cardExpYear.value;
-
-        if (!isValid) return done('Invalid card details');
-
-        cardDetails = {
-            name: cardName.value,
-            number: cardNumber.value,
-            cvc: cardCvc.value,
-            exp_month: cardExpMonth.value,
-            exp_year: cardExpYear.value
-        };
-    }
-
-    // AVS
-    if (typeof avs_address_line1 != 'undefined')
-    {
-        cardDetails.address_line1 = avs_address_line1;
-        cardDetails.address_zip = avs_address_zip;
-    }
-    else if (avs_enabled)
-    {
-        // Scenario 1: When an admin places a MOTO order for a guest who has no saved address yet
-        var elementAddressStreet = document.getElementById('order-billing_address_street0');
-        var elementAddressZip = document.getElementById('order-billing_address_postcode');
-
-        // Scenario 2: We are using a OSC module at checkout which does not refresh the
-        // payment form after the billing address changes.
-        if (!elementAddressStreet || !elementAddressZip)
-        {
-            elementAddressStreet = document.getElementById('billing:street1');
-            elementAddressZip = document.getElementById('billing:postcode');
-        }
-
-        if (!elementAddressStreet || !elementAddressZip)
-        {
-            // Scenario 3: The customer is adding a saved card from their account but they have no billing address
-            return done('You must first enter your billing address.');
-        }
-
-        cardDetails.address_line1 = elementAddressStreet.value;
-        cardDetails.address_zip = elementAddressZip.value;
-    }
-
-    var cardKey = JSON.stringify(cardDetails);
-
-    if (stripeTokens[cardKey])
-    {
-        setStripeToken(stripeTokens[cardKey]);
         return done();
-    }
-    else
-        deleteStripeToken();
 
-    Stripe.card.createToken(cardDetails, function (status, response)
+    // Stripe.js v3 + Stripe Elements
+    if (cryozonic.securityMethod == 2)
     {
-        if (response.error)
-            return done(response.error.message);
-
-        // 3D Secure
-        if (shouldUse3DSecure(response))
+        cryozonic.stripe.createSource(cryozonic.card, { owner: cryozonic.getSourceOwner() }).then(function(result)
         {
-            create3DSecureToken(response.id, response.card, cardKey, done);
+            if (result.error)
+                return done(result.error.message);
+
+            var cardKey = result.source.id;
+            var token = result.source.id + ':' + result.source.card.brand + ':' + result.source.card.last4;
+            stripeTokens[cardKey] = token;
+            setStripeToken(token);
+
+            return done();
+        });
+    }
+    // Stripe.js v2
+    else
+    {
+        cardDetails = getCardDetails();
+
+        if (!cardDetails)
+            return done('Invalid card details');
+
+        var cardKey = JSON.stringify(cardDetails);
+
+        if (stripeTokens[cardKey])
+        {
+            setStripeToken(stripeTokens[cardKey]);
+            return done();
         }
         else
+            deleteStripeToken();
+
+        Stripe.card.createToken(cardDetails, function (status, response)
         {
+            if (response.error)
+                return done(response.error.message);
+
             var token = response.id + ':' + response.card.brand + ':' + response.card.last4;
             stripeTokens[cardKey] = token;
             setStripeToken(token);
             return done();
-        }
-    });
-};
-
-var handle3DSecureResponse = function(three_d_response, cardId, cardBrand, cardLast4, cardKey, done)
-{
-    var success3DSecure = function(token)
-    {
-        if (!token)
-            token = three_d_response.id;
-
-        three_d_secure_success = true;
-        var fullToken = token + ':' + cardBrand + ':' + cardLast4;
-        stripeTokens[cardKey] = fullToken;
-        setStripeToken(fullToken);
-    };
-
-    if (three_d_response.status.indexOf('succe') >= 0)
-    {
-        success3DSecure(three_d_response.id);
-        return done();
+        });
     }
-    else if (three_d_response.status == 'redirect_pending')
-    {
-        three_d_secure_success = false;
-        three_d_secure_error = false;
-        open3DSecureModal(three_d_response.redirect_url,
-            // Success
-            function(token)
-            {
-                success3DSecure(token);
-                modal3DSecure.close(); // This calls the Cancel callback below which calls done()
-            },
-            // Failed
-            function(error_message)
-            {
-                if (error_message)
-                    three_d_secure_error = error_message;
-                else
-                    three_d_secure_error = 'Sorry, authentication with your bank has failed.';
-
-                modal3DSecure.close(); // This calls the Cancel callback below which calls done()
-            },
-            // Cancel
-            function()
-            {
-                // Wait for the modal to close before displaying any errors
-                setTimeout(function()
-                {
-                    if (three_d_secure_error)
-                        done(three_d_secure_error);
-                    else if (three_d_secure_success)
-                        done();
-                    else
-                        done(three_d_secure_canceled);
-                }, 200);
-
-                return true;
-            });
-    }
-    else if (three_d_response.status.indexOf('fail') >= 0)
-    {
-        return done('Sorry, your bank does not allow this card to be used for payments.');
-    }
-    else
-    {
-        return done('Sorry, an unknown bank authentication error has occured. Please try again.');
-    }
-};
-
-var create3DSecureToken = function(stripeJsToken, card, cardKey, done)
-{
-    new Ajax.Request(params3DSecure.initiate_three_d_secure_url,
-    {
-        method: 'POST',
-        parameters: {
-            token: stripeJsToken,
-            fingerprint: card.brand + ':' + card.exp_month + ':' + card.exp_year + ':' + card.last4
-        },
-        onSuccess: function(response)
-        {
-            var data = JSON.parse(response.responseText);
-            if (!data.id || !data.status)
-                return done('Sorry, an unknown error has occured during authentication with your bank');
-
-            handle3DSecureResponse(data, card.id, card.brand, card.last4, cardKey, done);
-        },
-        onFailure: function(response)
-        {
-            try
-            {
-                var data = JSON.parse(response.responseText);
-                if (data.error && data.error.length)
-                    return done(data.error);
-                throw new Exception('Could not parse API response');
-            }
-            catch (e)
-            {
-                return done('Sorry, an unknown error has occured during authentication with your bank');
-            }
-        }
-    });
 };
 
 function setStripeToken(token)
@@ -394,7 +597,6 @@ function setStripeToken(token)
             input.setAttribute("name", "newcard[cc_stripejs_token]");
         }
         form.appendChild(input);
-        disableInputs(true);
     } catch (e) {}
 }
 
@@ -404,26 +606,6 @@ function deleteStripeToken()
     if (inputs && inputs[0]) input = inputs[0];
     if (input && input.parentNode) input.parentNode.removeChild(input);
 }
-
-function disableInputs(disabled)
-{
-    var elements = document.getElementsByClassName('stripe-input');
-    for (var i = 0; i < elements.length; i++)
-    {
-        // Don't disable the save cards checkbox
-        if (elements[i].type == "checkbox") continue;
-
-        // Don't disable the stripejs token
-        if (elements[i].type == "hidden" && disabled) continue;
-
-        elements[i].disabled = disabled;
-    }
-}
-
-var enableInputs = function()
-{
-    disableInputs(false);
-};
 
 // Multi-shipping form support for Stripe.js
 var multiShippingForm = null, multiShippingFormSubmitButton = null;
@@ -445,7 +627,7 @@ function submitMultiShippingForm(e)
         if (err && err == three_d_secure_canceled)
             console.error(three_d_secure_canceled);
         else if (err)
-            alert(err);
+            cryozonic.displayCardError(err);
         else
             multiShippingForm.submit();
     });
@@ -458,7 +640,7 @@ var initMultiShippingForm = function()
 {
     if (typeof payment == 'undefined' ||
         payment.formId != 'multishipping-billing-form' ||
-        cryozonicStripe.multiShippingFormInitialized)
+        cryozonic.multiShippingFormInitialized)
         return;
 
     multiShippingForm = document.getElementById(payment.formId);
@@ -469,44 +651,8 @@ var initMultiShippingForm = function()
     else
         multiShippingForm.addEventListener("submit", submitMultiShippingForm);
 
-    cryozonicStripe.multiShippingFormInitialized = true;
+    cryozonic.multiShippingFormInitialized = true;
 };
-
-// 3D Secure
-function open3DSecureModal(redirectUrl, success, failed, cancel)
-{
-    modal3DSecure = new Window({
-        title: 'Your bank requires additional authentication.',
-        minWidth: 400,
-        minHeight: 400,
-        minimizable: false,
-        maximizable: false,
-        showEffectOptions: { duration: 0.2 },
-        hideEffectOptions: { duration:0.2 }
-    });
-    modal3DSecure.successCallback = success;
-    modal3DSecure.failedCallback = failed;
-    modal3DSecure.setZIndex(100);
-    modal3DSecure.setCloseCallback(cancel);
-
-    var container = document.getElementById('three_d_secure_container');
-    modal3DSecure.setContent('three_d_secure_container', true);
-
-    Stripe.threeDSecure.createIframe(redirectUrl, container, function(result)
-    {
-        cryozonicSetLoadWaiting('payment');
-        // Handle response status wording in different API versions
-        if (result.status.indexOf('succe') >= 0)
-            success(result.id ? result.id : null); // result.id is in the new API
-        else if (result.status.indexOf('fail') >= 0)
-            failed(result.error_message ? result.error_message : null); // result.error_message is in the new API
-        else
-            modal3DSecure.close();
-    });
-
-    cryozonicSetLoadWaiting(false);
-    modal3DSecure.showCenter(true);
-}
 
 var isCheckbox = function(input)
 {
@@ -514,31 +660,43 @@ var isCheckbox = function(input)
         (input.type === "checkbox" || input.attributes[0].value === "checkbox" || input.attributes[0].nodeValue === "checkbox");
 };
 
-// Triggered when the user clicks a saved card radio button
-var useCard = function(evt)
+var disablePaymentFormValidation = function()
 {
     var i, inputs = document.querySelectorAll(".stripe-input");
     var parentId = 'payment_form_cryozonic_stripe';
 
+    $(parentId).removeClassName("stripe-new");
+    for (i = 0; i < inputs.length; i++)
+    {
+        if (isCheckbox(inputs[i])) continue;
+        $(inputs[i]).removeClassName('required-entry');
+    }
+};
+
+var enablePaymentFormValidation = function()
+{
+    var i, inputs = document.querySelectorAll(".stripe-input");
+    var parentId = 'payment_form_cryozonic_stripe';
+
+    $(parentId).addClassName("stripe-new");
+    for (i = 0; i < inputs.length; i++)
+    {
+        if (isCheckbox(inputs[i])) continue;
+        $(inputs[i]).addClassName('required-entry');
+    }
+};
+
+// Triggered when the user clicks a saved card radio button
+var useCard = function(evt)
+{
     // User wants to use a new card
     if (this.value == 'new_card')
-    {
-        $(parentId).addClassName("stripe-new");
-        for (i = 0; i < inputs.length; i++)
-        {
-            if (isCheckbox(inputs[i])) continue;
-            $(inputs[i]).addClassName('required-entry');
-        }
-    }
+        enablePaymentFormValidation();
     // User wants to use a saved card
     else
     {
-        $(parentId).removeClassName("stripe-new");
-        for (i = 0; i < inputs.length; i++)
-        {
-            if (isCheckbox(inputs[i])) continue;
-            $(inputs[i]).removeClassName('required-entry');
-        }
+        deleteStripeToken();
+        disablePaymentFormValidation();
     }
 };
 
@@ -587,10 +745,8 @@ var saveNewCard = function()
             saveButton.style.display = "block";
             wait.style.display = "none";
 
-            if (err && err == three_d_secure_canceled)
-                console.error(three_d_secure_canceled);
-            else if (err)
-                alert(err);
+            if (err)
+                cryozonic.displayCardError(err);
             else
                 document.getElementById("new-card").submit();
 
@@ -603,13 +759,13 @@ var saveNewCard = function()
 
 var initOSCModules = function()
 {
-    if (cryozonicStripe.oscInitialized) return;
+    if (cryozonic.oscInitialized) return;
 
     // Front end bindings
     if (typeof IWD != "undefined" && typeof IWD.OPC != "undefined")
     {
         // IWD OnePage Checkout override, which is a tad of a mess
-        var placeOrder = function()
+        var proceed = function()
         {
             if (typeof $j == 'undefined') // IWD 4.0.4
                 $j = $j_opc; // IWD 4.0.8
@@ -620,51 +776,67 @@ var initOSCModules = function()
 
         IWD.OPC.savePayment = function()
         {
+            if (!IWD.OPC.saveOrderStatus)
+                return;
+
             if (IWD.OPC.Checkout.xhr !== null)
                 IWD.OPC.Checkout.xhr.abort();
 
             IWD.OPC.Checkout.lockPlaceOrder();
-            if (payment.currentMethod == 'cryozonic_stripe')
-            {
-                createStripeToken(function(err)
-                {
-                    IWD.OPC.Checkout.hideLoader();
-                    IWD.OPC.Checkout.xhr = null;
-                    IWD.OPC.Checkout.unlockPlaceOrder();
 
-                    if (err && err == three_d_secure_canceled)
-                        console.error(three_d_secure_canceled);
-                    else if (err)
-                        alert(err);
-                    else
-                        placeOrder();
-                });
-            }
-            else
-                placeOrder();
-        };
-        cryozonicStripe.oscInitialized = true;
-    }
-    else if ($('onestepcheckout-form'))
-    {
-        // Idev OneStepCheckout 4.1.4
-        $('onestepcheckout-form').proceed = $('onestepcheckout-form').submit;
-        $('onestepcheckout-form').submit = function(e)
-        {
             if (payment.currentMethod != 'cryozonic_stripe')
-                return $('onestepcheckout-form').proceed();
+                return proceed();
+
+            IWD.OPC.Checkout.hideLoader();
 
             createStripeToken(function(err)
             {
-                if (err && err == three_d_secure_canceled)
-                    console.error(three_d_secure_canceled);
-                else if (err)
-                    alert(err);
+                IWD.OPC.Checkout.xhr = null;
+                IWD.OPC.Checkout.unlockPlaceOrder();
+
+                if (err)
+                    cryozonic.displayCardError(err);
                 else
-                    $('onestepcheckout-form').proceed();
+                    proceed();
             });
         };
-        cryozonicStripe.oscInitialized = true;
+        cryozonic.oscInitialized = true;
+    }
+    else if ($('onestepcheckout-form'))
+    {
+        // MageBay OneStepCheckout 1.1.5
+        // Idev OneStepCheckout 4.5.4
+        var initIdevOSC = function()
+        {
+            if (typeof $('onestepcheckout-form').proceed != 'undefined')
+                return;
+
+            $('onestepcheckout-form').proceed = $('onestepcheckout-form').submit;
+            $('onestepcheckout-form').submit = function(e)
+            {
+                if (typeof payment != 'undefined' && payment.currentMethod != 'cryozonic_stripe' && payment.currentMethod !== "")
+                    return $('onestepcheckout-form').proceed();
+
+                // MageBay OneStepCheckout 1.1.5 does not have a payment instance defined
+                if ($('p_method_cryozonic_stripe') && !$('p_method_cryozonic_stripe').checked)
+                    return $('onestepcheckout-form').proceed();
+
+                createStripeToken(function(err)
+                {
+                    if (err && err == three_d_secure_canceled)
+                        console.error(three_d_secure_canceled);
+                    else if (err)
+                        cryozonic.displayCardError(err);
+                    else
+                        $('onestepcheckout-form').proceed();
+                });
+            };
+        };
+
+        // This is triggered when the billing address changes and the payment method is refreshed
+        window.addEventListener("load", initIdevOSC);
+
+        cryozonic.oscInitialized = true;
     }
     else if (typeof AWOnestepcheckoutForm != 'undefined')
     {
@@ -678,10 +850,8 @@ var initOSCModules = function()
             var me = this;
             createStripeToken(function(err)
             {
-                if (err && err == three_d_secure_canceled)
-                    console.error(three_d_secure_canceled);
-                else if (err)
-                    alert(err);
+                if (err)
+                    cryozonic.displayCardError(err);
                 else
                     me.__sendPlaceOrderRequest();
             });
@@ -693,35 +863,107 @@ var initOSCModules = function()
             else
                 return this._savePayment();
         };
-        cryozonicStripe.oscInitialized = true;
+        cryozonic.oscInitialized = true;
+    }
+    // NextBits OneStepCheckout 1.0.3
+    else if (typeof checkoutnext != 'undefined' && typeof Review.prototype.proceed == 'undefined')
+    {
+        Review.prototype.proceed = Review.prototype.save;
+        Review.prototype.save = function()
+        {
+            if (payment.currentMethod != 'cryozonic_stripe')
+                return this.proceed();
+
+            var me = this;
+            createStripeToken(function(err)
+            {
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    me.proceed();
+            });
+        };
+
+        if (typeof review != 'undefined')
+            review.save = Review.prototype.save;
+
+        cryozonic.oscInitialized = true;
+    }
+    // Magecheckout OSC 2.2.1
+    else if (typeof MagecheckoutSecuredCheckoutPaymentMethod != 'undefined')
+    {
+        // Disable saving of payment details
+        MagecheckoutSecuredCheckoutPaymentMethod.prototype._savePaymentMethod = MagecheckoutSecuredCheckoutPaymentMethod.prototype.savePaymentMethod;
+        MagecheckoutSecuredCheckoutPaymentMethod.prototype.savePaymentMethod = function()
+        {
+            if (this.currentMethod != 'cryozonic_stripe')
+                return this._savePaymentMethod();
+        };
+
+        if (typeof securedCheckoutPaymentMethod != 'undefined')
+        {
+            securedCheckoutPaymentMethod._savePaymentMethod = MagecheckoutSecuredCheckoutPaymentMethod.prototype._savePaymentMethod;
+            securedCheckoutPaymentMethod.savePaymentMethod = MagecheckoutSecuredCheckoutPaymentMethod.prototype.savePaymentMethod;
+        }
+
+        MagecheckoutSecuredCheckoutForm.prototype._placeOrderProcess = MagecheckoutSecuredCheckoutForm.prototype.placeOrderProcess;
+        MagecheckoutSecuredCheckoutForm.prototype.placeOrderProcess = function ()
+        {
+            var self = this;
+
+            if (payment.currentMethod && payment.currentMethod != 'cryozonic_stripe')
+                return this._placeOrderProcess();
+
+            createStripeToken(function(err)
+            {
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    self._placeOrderProcess();
+            });
+        };
+
+        if (typeof securedCheckoutForm != 'undefined')
+        {
+            securedCheckoutForm._placeOrderProcess = MagecheckoutSecuredCheckoutForm.prototype._placeOrderProcess;
+            securedCheckoutForm.placeOrderProcess = MagecheckoutSecuredCheckoutForm.prototype.placeOrderProcess;
+        }
+
+        cryozonic.oscInitialized = true;
     }
     // FireCheckout 3.2.0
     else if ($('firecheckout-form'))
     {
+        var fireCheckoutPlaceOrder = function()
+        {
+            var self = this;
+
+            if (payment.currentMethod != 'cryozonic_stripe' && payment.currentMethod !== "")
+                return self.proceed();
+
+            createStripeToken(function(err)
+            {
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    self.proceed();
+            });
+        };
+
         window.addEventListener("load", function()
         {
-            var btnCheckout = document.getElementsByClassName('btn-checkout')[0];
-            if (btnCheckout)
+            var btnCheckout = document.getElementsByClassName('btn-checkout');
+            if (btnCheckout && btnCheckout.length)
             {
-                $('firecheckout-form').proceed = btnCheckout.onclick;
-                btnCheckout.onclick = function()
+                for (var i = 0; i < btnCheckout.length; i++)
                 {
-                    if (payment.currentMethod != 'cryozonic_stripe')
-                        return $('firecheckout-form').proceed();
-
-                    createStripeToken(function(err)
-                    {
-                        if (err && err == three_d_secure_canceled)
-                            console.error(three_d_secure_canceled);
-                        else if (err)
-                            alert(err);
-                        else
-                            $('firecheckout-form').proceed();
-                    });
-                };
+                    var button = btnCheckout[i];
+                    button.proceed = button.onclick;
+                    button.onclick = fireCheckoutPlaceOrder;
+                }
             }
         });
-        cryozonicStripe.oscInitialized = true;
+        cryozonic.oscInitialized = true;
     }
     else if (typeof MagegiantOneStepCheckoutForm != 'undefined')
     {
@@ -735,10 +977,8 @@ var initOSCModules = function()
             var me = this;
             createStripeToken(function(err)
             {
-                if (err && err == three_d_secure_canceled)
-                    console.error(three_d_secure_canceled);
-                else if (err)
-                    alert(err);
+                if (err)
+                    cryozonic.displayCardError(err);
                 else
                     me.__placeOrderRequest();
             });
@@ -749,9 +989,99 @@ var initOSCModules = function()
         MagegiantOnestepcheckoutPaymentMethod.prototype.savePaymentMethod = function()
         {
             if (payment.currentMethod != 'cryozonic_stripe')
-                return this.savePaymentMethod();
+                return this._savePaymentMethod();
         };
-        cryozonicStripe.oscInitialized = true;
+        cryozonic.oscInitialized = true;
+    }
+    else if (typeof oscPlaceOrder != 'undefined')
+    {
+        // Magestore OneStepCheckout 3.5.0
+        var proceed = oscPlaceOrder;
+        oscPlaceOrder = function(element)
+        {
+            var payment_method = $RF(form, 'payment[method]');
+            if (payment_method != 'cryozonic_stripe')
+                return proceed(element);
+
+            createStripeToken(function(err)
+            {
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    proceed(element);
+            });
+        };
+        cryozonic.oscInitialized = true;
+    }
+    // Amasty OneStepCheckout 3.0.5
+    else if ($('amscheckout-submit') && typeof completeCheckout != 'undefined')
+    {
+        $('amscheckout-submit').onclick = function(el)
+        {
+            if (payment.currentMethod != 'cryozonic_stripe')
+                return completeCheckout();
+
+            showLoading();
+            createStripeToken(function(err)
+            {
+                hideLoading();
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    completeCheckout();
+            });
+        };
+        cryozonic.oscInitialized = true;
+    }
+    // Magesolution Athlete Ultimate Magento Theme v1.1.2
+    else if ($('oscheckout-form') && typeof Review.prototype.proceed == 'undefined')
+    {
+        Review.prototype.proceed = Review.prototype.save;
+
+        Review.prototype.save = function()
+        {
+            if (payment.currentMethod != 'cryozonic_stripe')
+                return review.proceed();
+
+            createStripeToken(function(err)
+            {
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    review.proceed();
+            });
+        };
+
+        if (typeof review != 'undefined')
+            review.save = Review.prototype.save;
+    }
+    else if (typeof OSCheckout != 'undefined' && typeof OSCheckout.prototype.proceed == 'undefined')
+    {
+        // AdvancedCheckout OSC 2.5.0
+        OSCheckout.prototype.proceed = OSCheckout.prototype.placeOrder;
+        OSCheckout.prototype.placeOrder = function()
+        {
+            // Payment is not defined
+            // if (payment.currentMethod != 'cryozonic_stripe')
+            //     return this.proceed();
+
+            var me = this;
+            createStripeToken(function(err)
+            {
+                if (err)
+                    cryozonic.displayCardError(err);
+                else
+                    me.proceed();
+            });
+        };
+
+        if (typeof oscheckout != 'undefined')
+        {
+            oscheckout.proceed = OSCheckout.prototype.proceed;
+            oscheckout.placeOrder = OSCheckout.prototype.placeOrder;
+        }
+
+        cryozonic.oscInitialized = true;
     }
     else if (typeof Payment != 'undefined' && typeof Payment.prototype.proceed == 'undefined')
     {
@@ -777,13 +1107,14 @@ var initOSCModules = function()
 
             createStripeToken(function(err)
             {
-                if (err && err == three_d_secure_canceled)
-                    console.error(three_d_secure_canceled);
-                else if (err)
-                    alert(err);
+                if (err)
+                    cryozonic.displayCardError(err);
                 else
                     payment.proceed();
             });
         };
+
+        if (typeof payment != 'undefined')
+            payment.save = Payment.prototype.save;
     }
 };

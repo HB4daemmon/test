@@ -14,6 +14,8 @@
  */
 /** @var $this Mage_Checkout_Block_Onepage_Login */
 ?>
+<?php if (!Mage::getStoreConfig('onestepcheckout/general/enabled')) { ?>
+
 <?php
 $venedor = $this->helper('venedor');
 $rowClass = $venedor->getRowClass();
@@ -22,22 +24,22 @@ $spanClass = $venedor->getSpanClass();
 <?php echo $this->getChildHtml('login_before')?>
 <div class="<?php echo $rowClass ?>">
     <div class="<?php echo $spanClass ?>6">
-        <h3><?php if( $this->getQuote()->isAllowedGuestCheckout() ): ?><?php echo $this->__('New Customer') ?><?php else: ?><?php echo $this->__('New Customer') ?><?php endif; ?></h3>
-        <?php if( $this->getQuote()->isAllowedGuestCheckout() ): ?>
+        <h3><?php if ( $this->getQuote()->isAllowedGuestCheckout() ): ?><?php echo $this->__('New Customer') ?><?php else: ?><?php echo $this->__('New Customer') ?><?php endif; ?></h3>
+        <?php if ( $this->getQuote()->isAllowedGuestCheckout() ): ?>
             <p><?php echo $this->__('Register with us for future convenience:') ?></p>
         <?php else: ?>
             <p><?php echo $this->__('Register with us for future convenience:') ?></p>
             <p><?php echo $this->__('By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.') ?></p>
         <?php endif; ?>
-        <?php if( $this->getQuote()->isAllowedGuestCheckout() ): ?>
+        <?php if ( $this->getQuote()->isAllowedGuestCheckout() ): ?>
             <ul class="form-list">
-                <?php if( $this->getQuote()->isAllowedGuestCheckout() ): ?>
+                <?php if ( $this->getQuote()->isAllowedGuestCheckout() ): ?>
                 <li class="control">
-                    <input type="radio" name="checkout_method" id="login:guest" value="guest"<?php if($this->getQuote()->getCheckoutMethod()==Mage_Checkout_Model_Type_Onepage::METHOD_GUEST): ?> checked="checked"<?php endif; ?> class="radio" /><label for="login:guest"><?php echo $this->__('Checkout as Guest') ?></label>
+                    <input type="radio" name="checkout_method" id="login:guest" value="guest"<?php if ($this->getQuote()->getCheckoutMethod()==Mage_Checkout_Model_Type_Onepage::METHOD_GUEST): ?> checked="checked"<?php endif; ?> class="radio" /><label for="login:guest"><?php echo $this->__('Checkout as Guest') ?></label>
                 </li>
                 <?php endif; ?>
                 <li class="control">
-                    <input type="radio" name="checkout_method" id="login:register" value="register"<?php if($this->getQuote()->getCheckoutMethod()==Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER || !$this->getQuote()->isAllowedGuestCheckout()): ?> checked="checked"<?php endif ?> class="radio" /><label for="login:register"><?php echo $this->__('Register') ?></label>
+                    <input type="radio" name="checkout_method" id="login:register" value="register"<?php if ($this->getQuote()->getCheckoutMethod()==Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER || !$this->getQuote()->isAllowedGuestCheckout()): ?> checked="checked"<?php endif ?> class="radio" /><label for="login:register"><?php echo $this->__('Register') ?></label>
                 </li>
             </ul>
             <p><?php echo $this->__('By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.') ?></p>
@@ -90,7 +92,7 @@ $spanClass = $venedor->getSpanClass();
             <button type="submit" class="button" onclick="onepageLogin(this)"><span><span><?php echo $this->__('Login') ?></span></span></button>
         </div>
 
-        <?php if(Mage::helper('pslogin')->modulePositionEnabled('login') && Mage::helper('pslogin')->hasButtons()) : ?>
+        <?php if (Mage::helper('pslogin')->modulePositionEnabled('login') && Mage::helper('pslogin')->hasButtons()) : ?>
             <div class="pslogin-spacer pslogin-clearfix"> 
                 <table>
                     <tr>
@@ -117,7 +119,7 @@ $spanClass = $venedor->getSpanClass();
     }
     function onepageLogin(button)
     {
-        if(loginForm.validator && loginForm.validator.validate()){
+        if (loginForm.validator && loginForm.validator.validate()){
             button.disabled = true;
             loginForm.submit();
         }
@@ -131,7 +133,7 @@ $spanClass = $venedor->getSpanClass();
     <script type="text/javascript">
     //<![CDATA[
         document.observe("dom:loaded", function() {
-            if($('login:register')) {
+            if ($('login:register')) {
                 $('login:register').checked = true;
                 checkout.setMethod();
             }
@@ -139,3 +141,7 @@ $spanClass = $venedor->getSpanClass();
     //]]>
     </script>
 <?php endif; ?>
+
+<?php } else {
+    echo $this->setTemplate('onestepcheckout/onepage/login.phtml')->toHtml();
+}

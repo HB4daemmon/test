@@ -48,7 +48,7 @@ class Plumrocket_SocialLogin_Model_System_Config_Source_ShareUrl
 
     protected function _getOptions()
     {
-        if(is_null($this->_options)) {
+        if (is_null($this->_options)) {
             $invitationsEnabled = Mage::helper('pslogin')->moduleInvitationsEnabled();
 
             $options = array(
@@ -59,7 +59,7 @@ class Plumrocket_SocialLogin_Model_System_Config_Source_ShareUrl
 
             $items = Mage::getSingleton('cms/page')->getCollection()->getItems();
             foreach ($items as $item) {
-                if($item->getId() == 1) continue;
+                if ($item->getId() == 1) continue;
                 $options[] = array('value' => $item->getId(), 'label' => $item->getTitle());
             }
 

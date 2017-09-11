@@ -1,3 +1,5 @@
+<?php if (!Mage::getStoreConfig('onestepcheckout/general/enabled')) { ?>
+
 <?php if (!Mage::getSingleton('customer/session')->isLoggedIn()){?>
 <div id="onepagecheckout_loginbox" style="display: none;" class='op_login_area'>
 	<div class='close_la' onclick='close_login();'><i class="fa fa-times"></i></div>
@@ -7,7 +9,7 @@
 <?php
 $login_url	= $this->getUrl('*/*/login', array('_secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on')));
 $http_mode	= (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on');
-if($http_mode)
+if ($http_mode)
 	$login_url	= str_replace('http:', 'https:', $login_url);  
 ?>
     <form method="post" id="login-form" action="<?php echo $login_url ?>" autocomplete="on">
@@ -39,7 +41,7 @@ if($http_mode)
             </span>
         </div>
 
-        <?php if(Mage::helper('pslogin')->modulePositionEnabled('login') && Mage::helper('pslogin')->hasButtons()) : ?>
+        <?php if (Mage::helper('pslogin')->modulePositionEnabled('login') && Mage::helper('pslogin')->hasButtons()) : ?>
             <div class="pslogin-spacer pslogin-clearfix"> 
                 <table>
                     <tr>
@@ -60,3 +62,7 @@ if($http_mode)
     </script>
 </div>
 <?php }?>
+
+<?php } else {
+    echo $this->setTemplate('onestepcheckout/onepage/login.phtml')->toHtml();
+}

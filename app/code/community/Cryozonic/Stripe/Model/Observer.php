@@ -36,7 +36,31 @@ class Cryozonic_Stripe_Model_Observer
                 $guestSelect = $connection->quoteInto('customer_email=?', $customerEmail) . ' and ' . $connection->quoteInto('session_id=?', Mage::getSingleton("core/session")->getEncryptedSessionId());
                 $result = $connection->update('cryozonic_stripesubscriptions_customers', $fields, $guestSelect);
             }
-            catch (Exception $e) {}
+            catch (\Exception $e) {}
+        }
+    }
+
+    public function sales_order_invoice_pay($observer)
+    {
+        $store = Mage::app()->getStore();
+
+        // In the admin area, there is a checkbox dictating whether to send an invoice or not
+        if ($store->isAdmin())
+            return;
+
+        $shouldSendInvoice = $store->getConfig('payment/cryozonic_stripe/email_invoice');
+        if (!$shouldSendInvoice)
+            return;
+
+        try
+        {
+            $invoice = $observer->getEvent()->getInvoice();
+            $invoice->save();
+            $invoice->sendEmail(true, '');
+        }
+        catch (Exception $e)
+        {
+            Mage::logException($e);
         }
     }
 }

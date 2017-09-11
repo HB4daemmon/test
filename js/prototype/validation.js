@@ -326,6 +326,9 @@ Object.extend(Validation, {
         while(elm.tagName != 'BODY') {
             if(!$(elm).visible()) return false;
             elm = elm.parentNode;
+            if (elm == null){
+                return true
+            }
         }
         return true;
     },

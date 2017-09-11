@@ -23,8 +23,16 @@ class OrderHandler {
             $p = $GLOBALS['POST'];
             $user_id = MobileOauth::oauth_validate("order");
             params($p,['token','products','address_id','delivery_date','delivery_range','tips']);
+            $save_customer = 0;
+            if (array_key_exists("save_card",$p)){
+                $save_customer = $p['save_card'];
+            }
+            $cc_saved = "new_card";
+            if (array_key_exists("cc_saved",$p)){
+                $cc_saved = $p["cc_saved"];
+            }
             $result['data'] = MobileOrder::place2($user_id,$p['token'],$p['products'],$p['address_id'],
-            $p['delivery_date'],$p['delivery_range'],$p['tips']);
+            $p['delivery_date'],$p['delivery_range'],$p['tips'],$cc_saved,$save_customer);
         }catch(Exception $e){
             $result['return_code'] = $e->getMessage();
             $result['success'] = 0;

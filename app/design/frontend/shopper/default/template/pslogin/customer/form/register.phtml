@@ -42,7 +42,7 @@
         <div class="block-content">
             <?php echo $this->getChildHtml('form_fields_before')?>
             <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-            <?php if(Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
+            <?php if (Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
                 <?php echo $this->getChildHtml('pslogin_buttons'); ?>
                 <div class="pslogin-spacer pslogin-clearfix"> 
                     <table>
@@ -59,7 +59,8 @@
 
                     <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>"/>
                     <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>"/>
-
+                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+                    
                     <h2 class="legend first"><?php echo $this->__('Personal Information') ?></h2>
                     <ul class="form-list">
                         <li class="fields">

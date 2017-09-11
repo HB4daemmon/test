@@ -41,6 +41,8 @@ Toro::serve(array(
     "/user/logout" => "UserLogoutHandler",
     "/user/reset" => "UserResetHandler",
     "/user/stripe" => "UserStripeHandler",
+    "/user/stripe/cards" => "UserStripeCardsHandler",
+    "/user/facebook/login" => "UserFacebookLoginHandler",
     //category
     "/category/list" => "CategoryListHandler",
     "/category/query" => "CategoryQueryHandler",

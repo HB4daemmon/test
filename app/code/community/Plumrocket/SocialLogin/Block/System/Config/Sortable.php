@@ -19,7 +19,8 @@
 class Plumrocket_SocialLogin_Block_System_Config_Sortable extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     
-    public function _construct() {
+    public function _construct() 
+    {
         parent::_construct();
         $this->setTemplate('pslogin/system/config/sortable.phtml');
         return $this;
@@ -27,7 +28,6 @@ class Plumrocket_SocialLogin_Block_System_Config_Sortable extends Mage_Adminhtml
 
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        // $this->assign('element', $element);
         $this->element = $element;
         return $this->toHtml();
     }

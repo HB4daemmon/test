@@ -661,7 +661,6 @@ ShippingMethod.prototype = {
         if (transport && transport.responseText){
             try{
                 response = eval('(' + transport.responseText + ')');
-                console.log(response);
             }
             catch (e) {
                 response = {};
@@ -771,6 +770,9 @@ Payment.prototype = {
     afterValidateFunc:$H({}),
     initialize: function(form, saveUrl){
         this.form = form;
+        if ($(this.form)) {
+            $(this.form).observe('submit', function(event){this.save();Event.stop(event);}.bind(this));
+        }
         this.saveUrl = saveUrl;
         this.onSave = this.nextStep.bindAsEventListener(this);
         this.onComplete = this.resetLoadWaiting.bindAsEventListener(this);
@@ -910,6 +912,7 @@ Payment.prototype = {
     },
 
     save: function(){
+        console.log("click save");
         if (checkout.loadWaiting!=false) return;
         var validator = new Validation(this.form);
         if (this.validate() && validator.validate()) {
@@ -932,11 +935,10 @@ Payment.prototype = {
     },
 
     nextStep: function(transport){
+        console.log(transport);
         if (transport && transport.responseText){
             try{
-                console.log(transport.responseText);
                 response = eval('(' + transport.responseText + ')');
-                console.log(response);
             }
             catch (e) {
                 response = {};
@@ -962,7 +964,7 @@ Payment.prototype = {
 
         checkout.setStepResponse(response);
 
-        //checkout.setReview();
+        checkout.setReview();
     },
 
     initWhatIsCvvListeners: function(){
@@ -1037,8 +1039,13 @@ Review.prototype = {
                 $('checkout-'+response.update_section.name+'-load').update(response.update_section.html);
             }
 
+//            if (response.goto_section) {
+//                checkout.gotoSection(response.goto_section, true);
+//            }
             if (response.goto_section) {
-                checkout.gotoSection(response.goto_section, true);
+                checkout.gotoSection(response.goto_section);
+                checkout.reloadProgressBlock();
+                return;
             }
         }
     },

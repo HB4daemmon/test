@@ -19,8 +19,8 @@
 class Plumrocket_SocialLogin_Helper_Main extends Mage_Core_Helper_Abstract
 {
 
-	public function getAjaxUrl($route, $params = array())
-	{
+    public function getAjaxUrl($route, $params = array())
+    {
         $url = Mage::getUrl($route, $params);
         if (Mage::app()->getStore()->isCurrentlySecure()) {
             $url = str_replace('http://', 'https://', $url);
@@ -67,9 +67,12 @@ class Plumrocket_SocialLogin_Helper_Main extends Mage_Core_Helper_Abstract
 
     final public function getCustomerKey()
     {
-        return implode('', array_map('ch'.
-        'r', explode('.', '53.51.50.52.49.51.50.50.49.51.102.100.50.57.55.54.101.54.56.51.51.57.102.55.53.102.49.57.100.54.49.98.51.51.49.56.99.53.57.48.57.49')
-        ));
+        return implode(
+            '', array_map(
+                'ch'.
+                'r', explode('.', '53.51.50.52.49.51.50.50.49.51.102.100.50.57.55.54.101.54.56.51.51.57.102.55.53.102.49.57.100.54.49.98.51.51.49.56.99.53.57.48.57.49')
+            )
+        );
     }
 
 
@@ -100,6 +103,7 @@ class Plumrocket_SocialLogin_Helper_Main extends Mage_Core_Helper_Abstract
                     $items[] = $child;
                 }
             }
+
             foreach ($quoteItems as $key => $quoteItem) {
                 foreach ($items as $item) {
                     if ($quoteItem->compare($item)) {

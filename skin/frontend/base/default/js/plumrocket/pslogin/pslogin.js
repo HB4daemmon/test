@@ -33,57 +33,6 @@ pjQuery_1_10_2(document).ready(function() {
 		}
 	});
 
-	// Open login window.
-	var win = null;
-	pjQuery_1_10_2('.pslogin-buttons').on('click', 'a', function() {
-		var $link = pjQuery_1_10_2(this);
-
-        var width = $link.data('width');
-        var height = $link.data('height');
-        var left = parseInt((pjQuery_1_10_2(window).width() - width) / 2);
-        var top = parseInt((pjQuery_1_10_2(window).height() - height) / 2);
-
-        var params = [
-        	'resizable=yes',
-			'scrollbars=no',
-			'toolbar=no',
-			'menubar=no',
-			'location=no',
-			'directories=no',
-			'status=yes',
-			'width='+ width,
-			'height='+ height,
-			'left='+ left,
-			'top='+ top
-		];
-
-		if(win) {
-			win.close();
-		}
-		// win = window.open('#', 'pslogin_popup', params.join(','));
-		if($link.attr('href')) {
-			win = window.open($link.attr('href'), 'pslogin_popup', params.join(','));
-			win.focus();
-			
-			if($link.data('loader')) {
-				pjQuery_1_10_2(win.document).ready(function() {
-
-					var loaderText = 'Loading...';
-					var html = '<!DOCTYPE html><html style="height: 100%;"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+ loaderText +'</title></head>';
-					html += '<body style="height: 100%; margin: 0; padding: 0;">';
-					//html += '<div style="text-align: center; height: 100%;"><img src="'+ $link.data('loader') +'" alt="Please Wait" class="loader" style="top: 50%; position: relative; margin-top: -64px; display: none;" /></div>';
-					html += '<div style="text-align: center; height: 100%;"><div id="loader" style="top: 50%; position: relative; margin-top: -50px; color: #646464; height:25px; font-size: 25px; text-align: center; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;">'+ loaderText +'</div></div>';
-					html += '</body></html>';
-
-					pjQuery_1_10_2(win.document).contents().html(html);
-				});
-			}
-		}else{
-			alert('This Login Application was not configured correctly. Please contact our customer support.');
-		}
-		return false;
-	});
-
 	// Share.
 	pjQuery_1_10_2('.prpop-close-btn').on('click', function() {
 		pjQuery_1_10_2('.pslogin-addedoverlay, .pslogin-pop-up-form').hide();
@@ -101,6 +50,61 @@ pjQuery_1_10_2(document).ready(function() {
 	});
 
 });
+
+
+function psLogin(href,width,height)
+{
+	var win = null;
+	if (!width) {
+		width = 650;
+	}
+
+	if(!height) {
+		height = 350;
+	}
+
+    var left = parseInt((pjQuery_1_10_2(window).width() - width) / 2);
+    var top = parseInt((pjQuery_1_10_2(window).height() - height) / 2);
+
+    var params = [
+    	'resizable=yes',
+		'scrollbars=no',
+		'toolbar=no',
+		'menubar=no',
+		'location=no',
+		'directories=no',
+		'status=yes',
+		'width='+ width,
+		'height='+ height,
+		'left='+ left,
+		'top='+ top
+	];
+
+	if(win) {
+		win.close();
+	}
+	// win = window.open('#', 'pslogin_popup', params.join(','));
+	if(href) {
+		win = window.open(href, 'pslogin_popup', params.join(','));
+		win.focus();
+
+		pjQuery_1_10_2(win.document).ready(function() {
+
+			var loaderText = 'Loading...';
+			var html = '<!DOCTYPE html><html style="height: 100%;"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+ loaderText +'</title></head>';
+			html += '<body style="height: 100%; margin: 0; padding: 0;">';
+			//html += '<div style="text-align: center; height: 100%;"><img src="'+ $link.data('loader') +'" alt="Please Wait" class="loader" style="top: 50%; position: relative; margin-top: -64px; display: none;" /></div>';
+			html += '<div style="text-align: center; height: 100%;"><div id="loader" style="top: 50%; position: relative; margin-top: -50px; color: #646464; height:25px; font-size: 25px; text-align: center; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;">'+ loaderText +'</div></div>';
+			html += '</body></html>';
+
+			pjQuery_1_10_2(win.document).contents().html(html);
+		});
+
+	}else{
+		alert('This Login Application was not configured correctly. Please contact our customer support.');
+	}
+	return false;
+}
 
 function customerEditFakeEmail() {
 	pjQuery_1_10_2("#email").removeClass("validation-passed").addClass("validation-failed").after('<div class="validation-advice pslogin-fake-email" id="advice-required-entry-email">Please enter valid email address.</div>');

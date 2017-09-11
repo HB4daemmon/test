@@ -9,7 +9,7 @@
             <sort_order>101</sort_order>
         </plumrocket>
 	</tabs>
-    
+
     <sections>
         <pslogin>
             <label>Twitter &amp; Facebook Login</label>
@@ -19,7 +19,7 @@
     		<show_in_default>1</show_in_default>
     		<show_in_website>1</show_in_website>
     		<show_in_store>1</show_in_store>
-            
+
             <groups>
                 <general>
                     <label>General</label>
@@ -29,7 +29,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
 		                    <frontend_type>text</frontend_type>
@@ -52,7 +52,7 @@
                             <label>Replace Templates</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>3</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -62,7 +62,7 @@
                             <label>Display on Login Form</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>4</sort_order>
+                            <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -72,7 +72,7 @@
                             <label>Display on Registration Form</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>5</sort_order>
+                            <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -82,17 +82,27 @@
                             <label>Ignore Missing Data from Social Networks</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>6</sort_order>
+                            <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>Many (but not all) social networks share only limited user profile/personal information. If this option is enabled, all required fields in magento that are missing will be pre-filled with temporary data to speed-up the registration process. If this option is set to "No" - the user will be sent to the registration form to enter missing info.</comment>
                         </validate_ignore>
+                        <enable_subscription translate="label">
+                            <label>Subscribe Customer To Email Newsletter</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Automatically sign up customer to the Newsletter Subscribers list during the registration</comment>
+                        </enable_subscription>
                         <enable_photo translate="label">
                             <label>Display Customer Photo</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>7</sort_order>
+                            <sort_order>9</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -102,7 +112,7 @@
                             <label>Login Success Page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>pslogin/system_config_source_redirectto</source_model>
-                            <sort_order>8</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -111,7 +121,7 @@
                         <redirect_for_login_link translate="label">
                             <label>Login Custom Success Page URL</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>9</sort_order>
+                            <sort_order>11</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -121,7 +131,7 @@
                             <label>Registration Success Page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>pslogin/system_config_source_redirectto</source_model>
-                            <sort_order>10</sort_order>
+                            <sort_order>12</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -130,7 +140,7 @@
                         <redirect_for_register_link translate="label">
                             <label>Registration Custom Success Page URL</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>11</sort_order>
+                            <sort_order>13</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -140,14 +150,14 @@
                             <label>Social Buttons Sorting</label>
                             <frontend_type>text</frontend_type>
                             <frontend_model>pslogin/system_config_sortable</frontend_model>
-                            <sort_order>12</sort_order>
+                            <sort_order>14</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sortable_drag_and_drop>
                         <sortable translate="label">
                             <frontend_type>hidden</frontend_type>
-                            <sort_order>13</sort_order>
+                            <sort_order>15</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -164,7 +174,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <enable translate="label">
                             <label>Enable</label>
@@ -227,7 +237,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <enable translate="label">
                             <label>Enable</label>
@@ -256,6 +266,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </secret>
+                        <enable_birthday translate="label">
+                            <label>Ask for Birthday</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Request customer's birthday date from Facebook</comment>
+                        </enable_birthday>
                         <icon_btn translate="label">
                             <label>Small Icon Button</label>
                             <frontend_type>image</frontend_type>
@@ -317,7 +337,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <enable translate="label">
                             <label>Enable</label>
@@ -415,7 +435,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -435,7 +455,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -455,7 +475,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -475,7 +495,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -495,7 +515,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -515,7 +535,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -535,7 +555,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -555,7 +575,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -575,7 +595,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -595,7 +615,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -607,7 +627,7 @@
                         </version>
                     </fields>
                 </dropbox>
-                
+
                 <disqus>
                     <label>Disqus</label>
                     <sort_order>170</sort_order>
@@ -615,7 +635,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -635,7 +655,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -655,7 +675,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -675,7 +695,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -695,7 +715,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -715,7 +735,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -735,7 +755,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -755,7 +775,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -775,7 +795,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -795,7 +815,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -815,7 +835,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -835,7 +855,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -855,7 +875,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -875,7 +895,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -895,7 +915,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -909,13 +929,13 @@
                 </mydigipass>
 
                 <qq>
-                    <label>QQ</label>
+                    <label>QQ / QZone</label>
                     <sort_order>320</sort_order>
                     <frontend_type>text</frontend_type>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -935,7 +955,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -955,7 +975,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -975,7 +995,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -995,7 +1015,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1015,7 +1035,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1035,7 +1055,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1055,7 +1075,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1075,7 +1095,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1095,7 +1115,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1115,7 +1135,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1135,7 +1155,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1155,7 +1175,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1175,7 +1195,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1189,13 +1209,13 @@
                 </reddit>
 
                 <odesk>
-                    <label>oDesk</label>
+                    <label>Upwork (Elance / oDesk)</label>
                     <sort_order>470</sort_order>
                     <frontend_type>text</frontend_type>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1215,7 +1235,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1235,7 +1255,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1255,7 +1275,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1275,7 +1295,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1295,7 +1315,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1315,7 +1335,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1335,7 +1355,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1355,7 +1375,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    
+
                     <fields>
                         <version translate="label">
                             <frontend_type>text</frontend_type>
@@ -1367,6 +1387,66 @@
                         </version>
                     </fields>
                 </lastfm>
+
+                <alipay>
+                    <label>Alipay</label>
+                    <sort_order>600</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <version translate="label">
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>pslogin/system_config_notinstalled</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                    </fields>
+                </alipay>
+
+                <wechat>
+                    <label>WeChat</label>
+                    <sort_order>650</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <version translate="label">
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>pslogin/system_config_notinstalled</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                    </fields>
+                </wechat>
+
+                <naver>
+                    <label>NAVER</label>
+                    <sort_order>700</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <version translate="label">
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>pslogin/system_config_notinstalled</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                    </fields>
+                </naver>
 
             </groups>
         </pslogin>

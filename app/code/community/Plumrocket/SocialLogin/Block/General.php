@@ -18,25 +18,25 @@
 
 class Plumrocket_SocialLogin_Block_General extends Mage_Core_Block_Template
 {
-	protected function _toHtml()
+    protected function _toHtml()
     {
         $helper = Mage::helper('pslogin');
-        if(!$helper->moduleEnabled()) {
+        if (!$helper->moduleEnabled()) {
             return;
         }
         
         $moduleName = $this->getRequest()->getModuleName();
 
         // Set current store.
-        if($moduleName != 'pslogin') {
+        if ($moduleName != 'pslogin') {
             $currentStoreId = Mage::app()->getStore()->getId();
             $helper->refererStore($currentStoreId);
         }
 
         // Set referer.
-        if(!$customerId = Mage::getSingleton('customer/session')->getCustomerId()) {
+        if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $skipModules = $helper->getRefererLinkSkipModules();
-            if($this->getRequest()->getActionName() != 'noRoute' && !in_array($moduleName, $skipModules)) {
+            if ($this->getRequest()->getActionName() != 'noRoute' && !in_array($moduleName, $skipModules)) {
                 $referer = $this->helper('core/url')->getCurrentBase64Url();
                 $helper->refererLink($referer);
             }

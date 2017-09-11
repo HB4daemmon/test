@@ -28,7 +28,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
     protected $_passwordLength = 6;
 
     protected $_photoDir = null;
-    protected $_photoSize = 40;
+    protected $_photoSize = 150;
 
     protected $_applicationId = null;
     protected $_secret = null;
@@ -70,7 +70,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
     public function getCustomerIdByUserId()
     {
         $customerId = $this->_getCustomerIdByUserId();
-        if(!$customerId && Mage::helper('pslogin')->isGlobalScope()) {
+        if (!$customerId && Mage::helper('pslogin')->isGlobalScope()) {
             $customerId = $this->_getCustomerIdByUserId(true);
         }
 
@@ -81,29 +81,30 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
     {
         $customerId = 0;
 
-        if($this->getUserData('user_id')) {
+        if ($this->getUserData('user_id')) {
             $collection = $this->getCollection()
                 ->join(array('ce' => 'customer/entity'), 'ce.entity_id = main_table.customer_id', null)
                 ->addFieldToFilter('main_table.type', $this->_type)
                 ->addFieldToFilter('main_table.user_id', $this->getUserData('user_id'))
                 ->setPageSize(1);
 
-            if($useGlobalScope == false) {
+            if ($useGlobalScope == false) {
                 $collection->addFieldToFilter('ce.website_id', $this->_websiteId);
             }
 
             $customerId = $collection->getFirstItem()->getData('customer_id');
         }
-        
+
         return $customerId;
     }
 
     public function getCustomerIdByEmail()
     {
         $customerId = $this->_getCustomerIdByEmail();
-        if(!$customerId && Mage::helper('pslogin')->isGlobalScope()) {
+        if (!$customerId && Mage::helper('pslogin')->isGlobalScope()) {
             $customerId = $this->_getCustomerIdByEmail(true);
         }
+
         return $customerId;
     }
 
@@ -111,12 +112,12 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
     {
         $customerId = 0;
 
-        if(is_string($this->getUserData('email'))) {
+        if (is_string($this->getUserData('email'))) {
             $collection = Mage::getSingleton('customer/customer')->getCollection()
                 ->addFieldToFilter('email', $this->getUserData('email'))
                 ->setPageSize(1);
 
-            if($useGlobalScope == false) {
+            if ($useGlobalScope == false) {
                 $collection->addFieldToFilter('website_id', $this->_websiteId);
             }
 
@@ -131,7 +132,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
         $customerId = 0;
         $errors = array();
         $customer = Mage::getSingleton('customer/customer')->setId(null);
-        
+
         try{
             $customer->setData($this->getUserData())
                 ->setConfirmation($this->getUserData('password'))
@@ -139,7 +140,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
                 ->setData('is_active', 1)
                 ->getGroupId();
 
-            if(!Mage::helper('pslogin')->isFakeMail( $this->getUserData('email') )) {
+            if (!Mage::helper('pslogin')->isFakeMail($this->getUserData('email')) && Mage::getStoreConfig('pslogin/general/enable_subscription')) {
                 $customer->setIsSubscribed(1);
             }
 
@@ -148,13 +149,12 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
             // If email is not valid, always error.
             $correctEmail = Zend_Validate::is($this->getUserData('email'), 'EmailAddress');
 
-            if( (empty($errors) || Mage::helper('pslogin')->validateIgnore()) && $correctEmail) {
+            if ((empty($errors) || Mage::helper('pslogin')->validateIgnore()) && $correctEmail) {
                 $customerId = $customer->save()->getId();
                 // Set email confirmation;
                 // $customer->setConfirmation(null)->save();
                 $customer->setConfirmation(null)
                     ->getResource()->saveAttribute($customer, 'confirmation');
-
             }
         } catch (Exception $e) {
             $errors[] = $e->getMessage();
@@ -168,16 +168,28 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
 
     protected function _validateErrors($customer)
     {
-        $errors = array();
-        
-        // Date of birth.
+        $errors     = array();
         $entityType = Mage::getSingleton('eav/config')->getEntityType('customer');
+
+        // validate Prefix and Suffix
+        if (!Mage::helper('pslogin')->validateIgnore()) {
+            $additional = array('prefix', 'suffix');
+            foreach ($additional as $value) {
+                $attribute = Mage::getModel('customer/attribute')->loadByCode($entityType, $value);
+                if ($attribute->getIsRequired() && $this->getUserData($value) == '') {
+                    $label    = Mage::helper('eav')->__($attribute->getStoreLabel());
+                    $errors[] = Mage::helper('eav')->__('"%s" is a required value.', $label);
+                }
+            }
+        }
+
+        // Date of birth.
         $attribute = Mage::getModel('customer/attribute')->loadByCode($entityType, 'dob');
-        if($attribute->getIsRequired() && $this->getUserData('dob') && !Zend_Validate::is($this->getUserData('dob'), 'Date')) {
+        if ($attribute->getIsRequired() && $this->getUserData('dob') && !Zend_Validate::is($this->getUserData('dob'), 'Date')) {
             $errors[] = Mage::helper('pslogin')->__('The Date of Birth is not correct.');
         }
 
-        if(true !== ($customerErrors = $customer->validate())) {
+        if (true !== ($customerErrors = $customer->validate())) {
             $errors = array_merge($customerErrors, $errors);
         }
 
@@ -191,19 +203,21 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
 
     public function setUserData($key, $value = null)
     {
-        if(is_array($key)) {
+        if (is_array($key)) {
             $this->_userData = array_merge($this->_userData, $key);
         }else{
             $this->_userData[$key] = $value;
         }
+
         return $this;
     }
 
     public function getUserData($key = null)
     {
-        if($key !== null) {
+        if ($key !== null) {
             return isset($this->_userData[$key]) ? $this->_userData[$key] : null;
         }
+
         return $this->_userData;
     }
 
@@ -215,27 +229,30 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
         }
 
         // Generate email.
-        if(empty($_data['email']) && Mage::helper('pslogin')->validateIgnore()) {
+        if (empty($_data['email']) && Mage::helper('pslogin')->validateIgnore()) {
             $_data['email'] = $this->_getRandomEmail();
         }
 
         // Prepare date of birth.
-        if(!empty($_data['dob'])) {
-            $_data['dob'] = call_user_func_array(array($this, '_prepareDob'), array_merge(array($_data['dob']), $this->_dob) );
+        if (!empty($_data['dob'])) {
+            $_data['dob'] = call_user_func_array(array($this, '_prepareDob'), array_merge(array($_data['dob']), $this->_dob));
         }
 
         // Convert gender.
-        if(!empty($_data['gender'])) {
+        if (!empty($_data['gender'])) {
             $options = Mage::getResourceSingleton('customer/customer')->getAttribute('gender')->getSource()->getAllOptions(false);
             switch($_data['gender']) {
-                case $this->_gender[0]: $_data['gender'] = $options[0]['value']; break;
-                case $this->_gender[1]: $_data['gender'] = $options[1]['value']; break;
+                case $this->_gender[0]: $_data['gender'] = $options[0]['value']; 
+                    break;
+                case $this->_gender[1]: $_data['gender'] = $options[1]['value']; 
+                    break;
                 default: $_data['gender'] = 0;
             }
         }
 
         // Tax/Vat number.
-        $_data['taxvat'] = 0;
+        // 0 is valid value
+        $_data['taxvat'] = Mage::helper('pslogin')->validateIgnore() ? 0 : '';
 
         // Set password.
         $_data['password'] = $this->_getRandomPassword();
@@ -254,8 +271,8 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
         );
 
         $result[$p1] = $date[0];
-        if(isset($date[1])) $result[$p2] = $date[1];
-        if(isset($date[2])) $result[$p3] = $date[2];
+        if (isset($date[1])) $result[$p2] = $date[1];
+        if (isset($date[2])) $result[$p3] = $date[2];
 
         return implode('-', array_values($result));
     }
@@ -281,7 +298,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
         $upload = false;
 
         $fileUrl = $this->getUserData('photo');
-        if(empty($fileUrl) || !is_numeric($customerId) || $customerId < 1) {
+        if (empty($fileUrl) || !is_numeric($customerId) || $customerId < 1) {
             return;
         }
 
@@ -290,28 +307,39 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
 
         try{
             $io->mkdir($this->_photoDir);
-            if($file = $this->_loadFile($fileUrl)) {
-                if(file_put_contents($tmpPath, $file) > 0) {
-                    
+            if ($file = $this->_loadFile($fileUrl)) {
+                if (file_put_contents($tmpPath, $file) > 0) {
                     $image = new Varien_Image($tmpPath);
                     $image->resize($this->_photoSize);
 
                     $fileName = $customerId .'.'. self::PHOTO_FILE_EXT;
                     $image->save(null, $fileName);
 
+                    /*
+                     Make dir if not exists with name of network
+                     And copy file
+                     */
+                    $io->mkdir($this->_photoDir . DS . $this->_type);
+                    $io->cp(
+                        $this->_photoDir . DS . $fileName,
+                        $this->_photoDir . DS . $this->_type . DS . $fileName
+                    );
+
                     $upload = true;
                 }
             }
-        }catch(Exception $e) {}
+        }catch(Exception $e) {
+        }
 
-        if(file_exists($tmpPath)) {
+        if (file_exists($tmpPath)) {
             $io->rm($tmpPath);
         }
 
         return $upload;
     }
 
-    protected function _loadFile($url, $count = 1) {
+    protected function _loadFile($url, $count = 1) 
+    {
 
         if ($count > 5) {
             return false;
@@ -349,11 +377,11 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
             return $body;
         }
     }
-    
+
     public function postToMail()
     {
-        if(!Mage::helper('pslogin')->isFakeMail( $this->getUserData('email') )) {
-            Mage::getSingleton('customer/customer')->sendNewAccountEmail();
+        if (!Mage::helper('pslogin')->isFakeMail($this->getUserData('email'))) {
+            Mage::getSingleton('customer/customer')->sendNewAccountEmail('registered', '', Mage::app()->getStore()->getId());
         }
 
         return true;
@@ -364,7 +392,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
         // Href.
         $uri = null;
         if (Mage::getSingleton('plumbase/observer')->customer() == Mage::getSingleton('plumbase/product')->currentCustomer()) {
-            if($this->getProtocol() == 'OAuth' && (empty($this->_applicationId) || empty($this->_secret))) {
+            if ($this->getProtocol() == 'OAuth' && (empty($this->_applicationId) || empty($this->_secret))) {
                 $uri = null;
             }else{
                 $uri = Mage::getUrl('pslogin/account/use', array('type' => $this->_type));
@@ -393,6 +421,7 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
             'image' => $image,
             'login_text' => Mage::getStoreConfig('pslogin/'. $this->_type .'/login_btn_text'),
             'register_text' => Mage::getStoreConfig('pslogin/'. $this->_type .'/register_btn_text'),
+            'link_text' => Mage::getStoreConfig('pslogin/'. $this->_type .'/link_btn_text'),
             'popup_width' => $this->_popupSize[0],
             'popup_height' => $this->_popupSize[1],
         );
@@ -400,9 +429,9 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
 
     public function getProviderLink()
     {
-        if(empty($this->_applicationId) || empty($this->_secret)) {
+        if (empty($this->_applicationId) || empty($this->_secret)) {
             $uri = null;
-        }elseif(is_array($this->_buttonLinkParams)) {
+        }elseif (is_array($this->_buttonLinkParams)) {
             $uri = $this->_url .'?'. urldecode(http_build_query($this->_buttonLinkParams));
         }else{
             $uri = $this->_buttonLinkParams;
@@ -423,20 +452,32 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
 
     public function _setLog($data, $append = false)
     {
-        return;
+        if (Mage::helper('pslogin')->getDebugMode()) {
+            @mkdir('var/log/pslogin');
+            if (is_array($data) || is_object($data)) {
+                $data = print_r($data, true);
+            }
+
+            if ($append) {
+                $data = "\n\r---------\n\r". $data;
+            }
+            return file_put_contents('var/log/pslogin/' . $this->_type . '.txt', $data, ($append ? FILE_APPEND : null) );
+        }
     }
 
     protected function _call($url, $params = array(), $method = 'GET', $curlResource = null)
     {
         $result = null;
         $paramsStr = is_array($params)? urlencode(http_build_query($params)) : urlencode($params);
-        if($paramsStr) {
+        if ($paramsStr) {
             $url .= '?'. urldecode($paramsStr);
         }
-        
+
+        $this->_setLog($url, true);
+
         $curl = is_resource($curlResource)? $curlResource : curl_init();
 
-        if($method == 'POST') {
+        if ($method == 'POST') {
             // POST.
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_POST, 1);
@@ -451,9 +492,40 @@ class Plumrocket_SocialLogin_Model_Account extends Mage_Core_Model_Abstract
         if (Mage::getSingleton('plumbase/observer')->customer() == Mage::getSingleton('plumbase/product')->currentCustomer()) {
             $result = curl_exec($curl);
         }
+
         curl_close($curl);
 
         return $result;
     }
 
+    /**
+     * Retrieve account url
+     * @return string
+     */
+    public function getAccountUrl($type = null)
+    {
+        $accountModel = $this->_getSocialModel();
+        return $accountModel->getSocialUrl();
+    }
+
+    public function getAccountImage()
+    {
+        $socialModel = $this->_getSocialModel();
+        $photo = $socialModel->getSocialPhoto();
+
+        if (!$photo) {
+            $photo = Mage::helper('pslogin')->getPhotoPath(false, $this->getCustomerId());
+        }
+        return $photo;
+    }
+
+    protected function _getSocialModel()
+    {
+        if (!$this->getType()) {
+            throw new Exception('"Type" is required parameter');
+        }
+        $socialModel = Mage::getSingleton('pslogin/' . $this->getType());
+        $socialModel->setData($this->getData());
+        return $socialModel;
+    }
 }

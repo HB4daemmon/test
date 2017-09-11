@@ -4,7 +4,7 @@
     <Plumrocket_Base>
       <active>true</active>
       <codePool>community</codePool>
-      <version>1.0.6</version>
+      <version>1.0.9</version>
     </Plumrocket_Base>
   </modules>
 </config>

@@ -25,7 +25,8 @@ class Plumrocket_SocialLogin_Block_Page_Html_Welcome extends Mage_Page_Block_Htm
         return Mage_Core_Block_Template::_toHtml();
     }
 
-    public function getMessage() {
+    public function getMessage() 
+    {
         return parent::_toHtml();
     }
 

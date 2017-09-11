@@ -55,9 +55,10 @@ class Plumrocket_SocialLogin_Block_Buttons extends Mage_Core_Block_Template
 
     public function setFullButtonsCount($count)
     {
-        if(is_numeric($count) && $count >= 0) {
+        if (is_numeric($count) && $count >= 0) {
             $this->_countFullButtons = $count;
         }
+
         return $this;
     }
 

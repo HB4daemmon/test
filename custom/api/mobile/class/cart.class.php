@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.class.php');
-require_once(dirname(__FILE__) . '/../../../vendor/stripe-php/init.php');
+//require_once(dirname(__FILE__) . '/../../../vendor/stripe-php/init.php');
 require_once(dirname(__FILE__) . '/../../../util/connection.php');
 ini_set("display_errors", "On");
 

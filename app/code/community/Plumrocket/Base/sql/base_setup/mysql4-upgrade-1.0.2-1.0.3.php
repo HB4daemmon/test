@@ -10,18 +10,15 @@
  * If you are unable to obtain it through the world-wide-web, please 
  * send an email to support@plumrocket.com so we can send you a copy immediately.
  *
- * @package     Plumrocket_Reward_Points
- * @copyright   Copyright (c) 2012 Plumrocket Inc. (http://www.plumrocket.com)
+ * @package     Plumrocket_Base
+ * @copyright   Copyright (c) 2016 Plumrocket Inc. (http://www.plumrocket.com)
  * @license     http://wiki.plumrocket.net/wiki/EULA  End-user License Agreement
  */
-?>
-<?php  
 
-
-$installer = $this;
-$installer->startSetup();
+$installer = Mage::getModel('eav/entity_setup', 'core_setup');
+//$installer->startSetup();
 $installer->run("
-	CREATE TABLE IF NOT EXISTS `{$this->getTable('plumbase_product')}` (
+	CREATE TABLE IF NOT EXISTS `{$installer->getTable('plumbase_product')}` (
 	  `id` int(11) NOT NULL AUTO_INCREMENT,
 	  `signature` char(32) NOT NULL,
 	  `status` int(11) NOT NULL,
@@ -30,4 +27,4 @@ $installer->run("
 	  KEY `id` (`id`)
 	) ENGINE=MyISAM;
 ");
-$installer->endSetup();
+//$installer->endSetup();

@@ -20,12 +20,8 @@ class Plumrocket_SocialLogin_Block_System_Config_Comingsoon extends Mage_Adminht
 {
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-    	// $moduleNode     = Mage::getConfig()->getNode('modules/Plumrocket_SocialLogin');
-     	//    $name           = $moduleNode->name;
-     	//    $url 			= 'https://store.plumrocket.com/magento-extensions/social-login-pro-magento-extension.html';
-
         return '<div style="padding:10px;background-color:#fff;color:#d83820;border:1px solid #ddd;margin-bottom:7px;">'.
-			$this->__('This network is coming soon. It will be available via free update.')
-		.'</div>';
-    }		            
+            $this->__('This network is coming soon. It will be available via free update.')
+        .'</div>';
+    }                    
 }

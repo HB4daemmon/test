@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Plumrocket_SocialLogin>
-            <version>1.2.4</version>
+            <version>1.4.3</version>
         </Plumrocket_SocialLogin>
     </modules>
     <frontend>
@@ -14,6 +14,13 @@
                     <frontName>pslogin</frontName>
                 </args>
             </pslogin>
+            <psloginhttp>
+                <use>standard</use>
+                <args>
+                    <module>Plumrocket_SocialLogin</module>
+                    <frontName>psloginhttp</frontName>
+                </args>
+            </psloginhttp>
         </routers>
         <layout>
             <updates>
@@ -140,17 +147,19 @@
                 <enable_for_login>1</enable_for_login>
                 <enable_for_register>1</enable_for_register>
                 <validate_ignore>1</validate_ignore>
+                <enable_subscription>1</enable_subscription>
                 <enable_photo>1</enable_photo>
                 <redirect_for_login>__referer__</redirect_for_login>
                 <redirect_for_register>__referer__</redirect_for_register>
             </general>
             <share>
-                <enable>1</enable>
+                <enable>0</enable><!-- disabled by default -->
                 <title>Please share us with your friends!</title>
                 <description>Spread the word about this great Magento Store! Let everyone know about our great offers and everyday deals!</description>
                 <page>2</page>
             </share>
             <facebook>
+                <enable_birthday>1</enable_birthday>
                 <login_btn_text>Login with Facebook</login_btn_text>
                 <register_btn_text>Register with Facebook</register_btn_text>
             </facebook>

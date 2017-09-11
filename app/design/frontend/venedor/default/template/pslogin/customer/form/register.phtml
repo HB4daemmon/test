@@ -44,7 +44,7 @@ $spanClass = $venedor->getSpanClass();
     <?php echo $this->getChildHtml('form_fields_before')?>
     <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
-    <?php if(Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
+    <?php if (Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
         <?php echo $this->getChildHtml('pslogin_buttons'); ?>
         <div class="pslogin-spacer pslogin-clearfix"> 
             <table>
@@ -60,8 +60,9 @@ $spanClass = $venedor->getSpanClass();
     <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="form-validate">
         <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
         <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
+        <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
         <div class="<?php echo $rowClass ?>">
-            <div class="<?php if($this->getShowAddressFields()) echo $spanClass.'6'; else echo $spanClass.'12'; ?>">
+            <div class="<?php if ($this->getShowAddressFields()) echo $spanClass.'6'; else echo $spanClass.'12'; ?>">
                 <h2><?php echo $this->__('Your Personal Details') ?></h2>
                 <ul class="form-list">
                     <li class="fields">
@@ -107,14 +108,14 @@ $spanClass = $venedor->getSpanClass();
                     <?php if ($this->isNewsletterEnabled()): ?>
                     <h2><?php echo $this->__('Newsletter') ?></h2>
                     <li class="control">
-                        <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+                        <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if ($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
                         <label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>
                     </li>
                     <?php endif ?>
                 </ul>
                 <?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
             </div>
-            <?php if($this->getShowAddressFields()): ?>
+            <?php if ($this->getShowAddressFields()): ?>
             <div class="<?php echo $spanClass ?>6">
                 <input type="hidden" name="create_address" value="1" />
                 <h2><?php echo $this->__('Your Address') ?></h2>
@@ -205,7 +206,7 @@ $spanClass = $venedor->getSpanClass();
     <script type="text/javascript">
     //<![CDATA[
         var dataForm = new VarienForm('form-validate', true);
-        <?php if($this->getShowAddressFields()): ?>
+        <?php if ($this->getShowAddressFields()): ?>
         new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
         <?php endif; ?>
     //]]>

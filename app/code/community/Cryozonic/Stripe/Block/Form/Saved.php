@@ -29,4 +29,16 @@ class Cryozonic_Stripe_Block_Form_Saved extends Mage_Core_Block_Template
     {
         return $this->stripe->getCustomerCards();
     }
+
+    public function isReusableSource($source)
+    {
+        // SEPA Direct Debit cannot be used for arbitrary amounts in the admin, it must be the exact
+        // amount agreed with the bank.
+        return false;//$source->object == 'source' && $source->usage == 'reusable' && $source->type == 'sepa_debit';
+    }
+
+    public function formatSourceName($source)
+    {
+        return "SEPA Direct Debit Ref. " . $source->sepa_debit->mandate_reference;
+    }
 }

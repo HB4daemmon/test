@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery Time</title>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/semantic/semantic.min.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/delivery_time.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/semantic/semantic.min.css">
+</head>
+<body style="padding: 10px;">
+    <div class="ui stackable centered  grid">
+        <div class="row">
+            <h1 class="centered">Delivery Time Config Page</h1>
+        </div>
+        <div class="row">
+            <h3>
+                <button class="ui blue button" id="reset">Reset to default</button>
+                <button class="ui green button" id="save">Save</button>
+            </h3>
+        </div>
+        <div class="ui row">
+            <div class="ui segment">
+                <div class="ui dimmer">
+                    <div class="ui text loader">
+                        Loading
+                    </div>
+                </div>
+                <div class="ui form">
+                    <table class="ui celled table">
+                        <thead>
+                        <tr>
+                            <th>Time\Date(Order Numbers)</th>
+                            <th id="th_0">Sunday</th>
+                            <th id="th_1">Monday</th>
+                            <th id="th_2">Tuesday</th>
+                            <th id="th_3">Wednesday</th>
+                            <th id="th_4">Thursday</th>
+                            <th id="th_5">Friday</th>
+                            <th id="th_6">Saturday</th>
+                        </tr>
+                        </thead>
+                        <tbody id="main_delivery_time">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+</html>

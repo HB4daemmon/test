@@ -22,4 +22,14 @@ class Plumrocket_SocialLogin_Model_Mysql4_Account_Collection extends Mage_Core_M
     {
         $this->_init('pslogin/account');
     }
+
+    /**
+     * Retreive option hash
+     *
+     * @return array
+     */
+    public function toOptionHash()
+    {
+        return parent::_toOptionHash('type', 'type');
+    }
 }

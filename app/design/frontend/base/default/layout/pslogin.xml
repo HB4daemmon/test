@@ -5,7 +5,7 @@
         <reference name="head">
             <action ifconfig="pslogin/general/enable" method="addCss"><stylesheet>css/plumrocket/pslogin/pslogin.css</stylesheet></action>
             <action ifconfig="pslogin/general/enable" method="addCss"><stylesheet>css/plumrocket/pslogin/pslogin-custom.css</stylesheet></action>
-            <action ifconfig="pslogin/general/enable" method="addItem"><type>skin_js</type><name>js/plumrocket/pslogin/jquery-1.10.2.min.js</name></action>
+            <action method="addJs" ifconfig="pslogin/general/enable"><script>plumrocket/jquery-1.10.2.min.js</script></action>
             <action ifconfig="pslogin/general/enable" method="addItem"><type>skin_js</type><name>js/plumrocket/pslogin/pslogin.js</name></action>
         </reference>
         <reference name="after_body_start">
@@ -76,12 +76,6 @@
             <block type="pslogin/buttons" name="pslogin.customer.form.register.buttons" as="pslogin_buttons" template="pslogin/customer/form/register/buttons.phtml" />
         </reference>
     </privatesales_splashpage_login>
-
-    <!-- <pslogin_account_sharedata>
-        <reference name="root">
-            <action ifconfig="pslogin/general/enable" method="setTemplate"><template>pslogin/customer/form/register/sharedata.phtml</template></action>
-        </reference>
-    </pslogin_account_sharedata> -->
 
     <!-- Theme Black&White -->
     <onepagecheckout_index_index>

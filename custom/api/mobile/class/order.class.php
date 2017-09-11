@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/user.class.php');
 require_once(dirname(__FILE__) . '/cart.class.php');
-require_once(dirname(__FILE__) . '/../../../vendor/stripe-php/init.php');
+//require_once(dirname(__FILE__) . '/../../../vendor/stripe-php/init.php');
 require_once(dirname(__FILE__) . '/../../../util/connection.php');
 ini_set("display_errors", "On");
 
@@ -262,7 +262,7 @@ class MobileOrder{
         }
     }
 
-    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips,$saved=1){
+    public static function place2($user_id,$token,$products,$address_id,$delivery_date,$delivery_range,$tips,$cc_saved,$save_customer){
         try{
             $customer = Mage::getModel("customer/customer")->load($user_id);
             if ($customer->getId() == null){
@@ -326,12 +326,19 @@ class MobileOrder{
             $checkout->setQuote($quote);
             $checkout->saveCheckoutMethod('register');
             $checkout->saveShippingMethod('5');
-            if ($saved == 1){
-                $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token,'cc_save'=>1));
-            }else{
-                $checkout->savePayment(array('method' => 'cryozonic_stripe','cc_stripejs_token'=>$token));
+            $payment_array = array('method' => 'cryozonic_stripe');
+            if($token != ""){
+                $payment_array['cc_stripejs_token']=$token;
             }
+            if ($save_customer == 1){
+                $payment_array['cc_save']=1;
+            }
+            if ($cc_saved != ""){
+                $payment_array['cc_saved']=$cc_saved;
+            }
+            $checkout->savePayment($payment_array);
 
+            Mage::log($payment_array,null,'stripe.log',true);
 
             $quote_store_groups = Mage::getModel('sales/quote_storegroup')
                 ->getCollection()
@@ -421,50 +428,50 @@ class MobileOrder{
         }
     }
 
-    public static function stripe_pay($token,$amount){
-        \Stripe\Stripe::setApiKey("sk_test_v0EvK0JYd9buXKSIxqZXMpgm");
-
-        try {
-            $charge = \Stripe\Charge::create(array(
-                "amount" => $amount,
-                "currency" => "usd",
-                "description" => "Example charge",
-                "source" => $token,
-            ));
-            return $charge;
-        }catch(\Stripe\Error\Card $e) {
-            // Since it's a decline, \Stripe\Error\Card will be caught
-            $body = $e->getJsonBody();
-            $err  = $body['error'];
-            throw new Exception($e->getMessage($e->getMessage()));
-//            print('Status is:' . $e->getHttpStatus() . "\n");
-//            print('Type is:' . $err['type'] . "\n");
-//            print('Code is:' . $err['code'] . "\n");
-//            print('Param is:' . $err['param'] . "\n");
-//            print('Message is:' . $err['message'] . "\n");
-        } catch (\Stripe\Error\RateLimit $e) {
-            // Too many requests made to the API too quickly
-            throw new Exception("Too many requests made to the API too quickly");
-        } catch (\Stripe\Error\InvalidRequest $e) {
-            // Invalid parameters were supplied to Stripe's API
-            throw new Exception("Invalid parameters were supplied to Stripe's API");
-        } catch (\Stripe\Error\Authentication $e) {
-            // Authentication with Stripe's API failed
-            // (maybe you changed API keys recently)
-            throw new Exception("Authentication with Stripe's API failed");
-        } catch (\Stripe\Error\ApiConnection $e) {
-            // Network communication with Stripe failed
-            throw new Exception("Network communication with Stripe failed");
-        } catch (\Stripe\Error\Base $e) {
-            // Display a very generic error to the user, and maybe send
-            // yourself an email
-            throw new Exception("Display a very generic error to the user, and maybe send yourself an email");
-        } catch (Exception $e) {
-            // Something else happened, completely unrelated to Stripe
-            throw new Exception("other error");
-        }
-
-    }
+//    public static function stripe_pay($token,$amount){
+//        \Stripe\Stripe::setApiKey("sk_test_v0EvK0JYd9buXKSIxqZXMpgm");
+//
+//        try {
+//            $charge = \Stripe\Charge::create(array(
+//                "amount" => $amount,
+//                "currency" => "usd",
+//                "description" => "Example charge",
+//                "source" => $token,
+//            ));
+//            return $charge;
+//        }catch(\Stripe\Error\Card $e) {
+//            // Since it's a decline, \Stripe\Error\Card will be caught
+//            $body = $e->getJsonBody();
+//            $err  = $body['error'];
+//            throw new Exception($e->getMessage($e->getMessage()));
+////            print('Status is:' . $e->getHttpStatus() . "\n");
+////            print('Type is:' . $err['type'] . "\n");
+////            print('Code is:' . $err['code'] . "\n");
+////            print('Param is:' . $err['param'] . "\n");
+////            print('Message is:' . $err['message'] . "\n");
+//        } catch (\Stripe\Error\RateLimit $e) {
+//            // Too many requests made to the API too quickly
+//            throw new Exception("Too many requests made to the API too quickly");
+//        } catch (\Stripe\Error\InvalidRequest $e) {
+//            // Invalid parameters were supplied to Stripe's API
+//            throw new Exception("Invalid parameters were supplied to Stripe's API");
+//        } catch (\Stripe\Error\Authentication $e) {
+//            // Authentication with Stripe's API failed
+//            // (maybe you changed API keys recently)
+//            throw new Exception("Authentication with Stripe's API failed");
+//        } catch (\Stripe\Error\ApiConnection $e) {
+//            // Network communication with Stripe failed
+//            throw new Exception("Network communication with Stripe failed");
+//        } catch (\Stripe\Error\Base $e) {
+//            // Display a very generic error to the user, and maybe send
+//            // yourself an email
+//            throw new Exception("Display a very generic error to the user, and maybe send yourself an email");
+//        } catch (Exception $e) {
+//            // Something else happened, completely unrelated to Stripe
+//            throw new Exception("other error");
+//        }
+//
+//    }
 
     public static function get_order_list($user_id,$page=0,$page_size=20){
         try {

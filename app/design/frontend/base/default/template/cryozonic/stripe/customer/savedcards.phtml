@@ -17,6 +17,7 @@
  */
 
 $savedCards = $this->stripe->getCustomerCards();
+$_addName = !$this->stripe->getSecurityMethod();
 
 ?>
 <div class="page-title">
@@ -57,21 +58,49 @@ $savedCards = $this->stripe->getCustomerCards();
 
 <?php endif; ?>
 
+
+<?php if (empty($this->billingInfo)): ?>
+
+<form action="" method="post" id="new-card" onsubmit="return saveNewCard()">
+    <div class="fieldset">
+        <h2 class="legend"><?php echo $this->__('Add new card'); ?></h2>
+        <div class="message info empty">
+            <span>You must first <a href="<?php echo Mage::getUrl('customer/address'); ?>">add a billing address</a> before you can add saved cards.</span>
+        </div>
+    </div>
+</form>
+
+<?php else: ?>
+
 <form action="" method="post" id="new-card" onsubmit="return saveNewCard()">
     <div class="fieldset">
         <h2 class="legend"><?php echo $this->__('Add new card'); ?></h2>
         <ul class="form-list">
+
+            <?php if ($this->stripe->isStripeElementsEnabled()): ?>
+
+            <li class="fields">
+                <label for="card-element">
+                  <?php echo Mage::helper('payment')->__('Enter your card details:') ?>
+                </label>
+                <div id="card-element">
+                  <!-- a Stripe Element will be inserted here. -->
+                </div>
+            </li>
+
+            <?php else: ?>
+
             <li class="fields">
                 <div class="field">
                     <label class="required" for="cryozonic_stripe_cc_owner"><em>*</em><?php echo $this->__('Name on Card') ?></label>
                     <div class="input-box">
-                        <input type="text" title="<?php echo Mage::helper('payment')->__('Name on Card') ?>" class="required-entry stripe-input input-text" id="cryozonic_stripe_cc_owner" name="newcard[cc_owner]" value="<?php echo $this->getParam('cc_owner') ?>"/>
+                        <input type="text" title="<?php echo Mage::helper('payment')->__('Name on Card') ?>" class="required-entry stripe-input input-text" id="cryozonic_stripe_cc_owner" <?php if ($_addName): ?>name="newcard[cc_owner]"<?php endif; ?> value="<?php echo $this->getParam('cc_owner') ?>"/>
                     </div>
                 </div>
                 <div class="field">
                     <label for="cryozonic_stripe_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
                     <div>
-                        <select id="cryozonic_stripe_expiration" name="newcard[cc_exp_month]" class="month validate-cc-exp required-entry stripe-input">
+                        <select id="cryozonic_stripe_expiration" <?php if ($_addName): ?>name="newcard[cc_exp_month]"<?php endif; ?> class="month validate-cc-exp required-entry stripe-input">
                         <?php $_ccExpMonth = $this->getParam('cc_exp_month') ?>
                         <?php foreach ($this->getCcMonths() as $k=>$v): ?>
                             <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
@@ -79,7 +108,7 @@ $savedCards = $this->stripe->getCustomerCards();
                         </select>
 
                         <?php $_ccExpYear = $this->getParam('cc_exp_year') ?>
-                        <select id="cryozonic_stripe_expiration_yr" name="newcard[cc_exp_year]" class="year required-entry stripe-input">
+                        <select id="cryozonic_stripe_expiration_yr" <?php if ($_addName): ?>name="newcard[cc_exp_year]"<?php endif; ?> class="year required-entry stripe-input">
                         <?php foreach ($this->getCcYears() as $k=>$v): ?>
                             <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpYear): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
                         <?php endforeach ?>
@@ -92,17 +121,21 @@ $savedCards = $this->stripe->getCustomerCards();
                     <?php $_ccNumber = $this->getParam('cc_number') ?>
                     <label for="cryozonic_stripe_cc_number" class="required"><em>*</em><?php echo $this->__('Card Number') ?></label>
                     <div class="input-box">
-                        <input type="text" id="cryozonic_stripe_cc_number" name="newcard[cc_number]" title="<?php echo $this->__('Card Number') ?>" class="input-text validate-cc-number validate-cc-type required-entry stripe-input" value="<?php echo $_ccNumber; ?>" />
+                        <input type="text" id="cryozonic_stripe_cc_number" <?php if ($_addName): ?>name="newcard[cc_number]"<?php endif; ?> title="<?php echo $this->__('Card Number') ?>" class="input-text validate-cc-number validate-cc-type required-entry stripe-input" value="<?php echo $_ccNumber; ?>" />
                     </div>
                 </div>
                 <div class="field">
                     <?php $_ccCid = $this->getParam('cc_cid') ?>
                     <label for="cryozonic_stripe_cc_cid" class="required"><em>*</em><?php echo $this->__('CVN') ?></label>
                     <div class="input-box">
-                        <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry stripe-input validate-cc-cvn" id="cryozonic_stripe_cc_cid" name="newcard[cc_cid]" value="<?php echo $_ccCid; ?>" autocomplete="off" />
+                        <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry stripe-input validate-cc-cvn" id="cryozonic_stripe_cc_cid" <?php if ($_addName): ?>name="newcard[cc_cid]"<?php endif; ?> value="<?php echo $_ccCid; ?>" autocomplete="off" />
                     </div>
                 </div>
             </li>
+
+            <?php endif; // isStripeElementsEnabled() ?>
+
+            <li class="stripe-new" id="cryozonic-stripe-card-errors"></li>
         </ul>
     </div>
     <div class="buttons-set">
@@ -115,43 +148,21 @@ $savedCards = $this->stripe->getCustomerCards();
     </div>
 </form>
 
+<?php endif; ?>
+
 <?php
 $store = Mage::app()->getStore();
-if ($store->getConfig('payment/cryozonic_stripe/stripe_js'))
+if ($this->stripe->getSecurityMethod())
 {
-    $mode = $store->getConfig('payment/cryozonic_stripe/stripe_mode');
-    $path = "payment/cryozonic_stripe/stripe_{$mode}_pk";
-    $publishableKey = $store->getConfig($path);
-
-    // Also get the customer address when AVS is enabled
-    if (Mage::getStoreConfig('payment/cryozonic_stripe/avs'))
-    {
-        $billingAddress = Mage::helper('cryozonic_stripe')->getBillingAddress();
-
-        if (!empty($billingAddress))
-        {
-            $address_line1 = $billingAddress['address_line1'];
-            $address_zip = $billingAddress['address_zip'];
-        }
-    }
-
-    // Sanitization
-    if (!empty($address_line1))
-    {
-        $address_line1 = preg_replace("/\r|\n/", " ", $address_line1);
-        $address_line1 = addslashes($address_line1);
-    }
+    $publishableKey = $this->getPublishableKey();
 ?>
 
 <script type="text/javascript">
-    initStripe('<?php echo $publishableKey; ?>');
-
-    avs_enabled = <?php echo (Mage::getStoreConfig('payment/cryozonic_stripe/avs') ? 'true' : 'false') ?>;
-    <?php if (!empty($address_line1)): ?>
-    // These are intendedly global variables
-    avs_address_line1 = '<?php echo $address_line1; ?>';
-    avs_address_zip = '<?php echo $address_zip; ?>';
+    <?php if (!empty($this->billingInfo)): ?>
+    cryozonic.billingInfo = <?php echo json_encode($this->billingInfo); ?>;
     <?php endif; ?>
+
+    initStripe('<?php echo $publishableKey; ?>', <?php echo $this->stripe->getSecurityMethod(); ?>);
 </script>
 
 <?php } ?>

@@ -22,12 +22,16 @@ class Cryozonic_Stripe_Model_Source_StripeJs
     {
         return array(
             array(
-                'value' => false,
-                'label' => Mage::helper('cryozonic_stripe')->__('Disabled')
+                'value' => 0,
+                'label' => Mage::helper('cryozonic_stripe')->__('None')
             ),
             array(
-                'value' => true,
-                'label' => Mage::helper('cryozonic_stripe')->__('Enabled')
+                'value' => 1,
+                'label' => Mage::helper('cryozonic_stripe')->__('Stripe.js v2')
+            ),
+            array(
+                'value' => 2,
+                'label' => Mage::helper('cryozonic_stripe')->__('Stripe.js v3 + Stripe Elements')
             ),
         );
     }

@@ -25,7 +25,7 @@
     <?php echo $this->getChildHtml('form_fields_before')?>
     <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
-    <?php if(Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
+    <?php if (Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
         <?php echo $this->getChildHtml('pslogin_buttons'); ?>
         <div class="pslogin-spacer pslogin-clearfix"> 
             <table>
@@ -44,6 +44,7 @@
         <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="register-form" class="scaffold-form">
             <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
             <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
+            <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
             
             <div class="fieldset">
                 <h2 class="legend"><?php echo $this->__('Personal Information') ?></h2>
@@ -68,7 +69,7 @@
                 </ul>
             </div>
             
-            <?php if($this->getShowAddressFields()): ?>
+            <?php if ($this->getShowAddressFields()): ?>
                 <div class="fieldset">
                     <input type="hidden" name="create_address" value="1" />
                     
@@ -187,7 +188,7 @@
                     
                     <?php if ($this->isNewsletterEnabled()): ?>
                         <li class="control">
-                            <input type="checkbox" id="is_subscribed" name="is_subscribed" value="1" <?php if($this->getFormData()->getIsSubscribed()): ?>checked="checked"<?php endif; ?> class="checkbox" />
+                            <input type="checkbox" id="is_subscribed" name="is_subscribed" value="1" <?php if ($this->getFormData()->getIsSubscribed()): ?>checked="checked"<?php endif; ?> class="checkbox" />
                             <label for="is_subscribed"><?php echo $this->__('Subscribe to the newsletter to receive store news and offers via email.') ?></label>
                         </li>
                     <?php endif ?>
@@ -211,7 +212,7 @@
         <script type="text/javascript">
         //<![CDATA[
             var dataForm = new VarienForm('register-form', true);
-            <?php if($this->getShowAddressFields()): ?>
+            <?php if ($this->getShowAddressFields()): ?>
             new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
             <?php endif; ?>
         //]]>

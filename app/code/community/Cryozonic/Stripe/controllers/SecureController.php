@@ -24,26 +24,58 @@ class Cryozonic_Stripe_SecureController extends Mage_Core_Controller_Front_Actio
         $this->getResponse()->setBody(json_encode(array('error' => $msg)));
     }
 
-    public function indexAction()
+    public function create3DSecureSource($cardToken)
     {
         $stripe = Mage::getModel('cryozonic_stripe/standard');
+        $params3DS = $stripe->get3DSecureParams(false);
+
+        return \Stripe\Source::create(array(
+            "amount" => $params3DS['amount'],
+            "currency" => $params3DS['currency'],
+            "type" => "three_d_secure",
+            "three_d_secure" => array(
+                "card" => $cardToken,
+            ),
+            "redirect" => array(
+                "return_url" => Mage::getUrl('cryozonic_stripe/return')
+            ),
+        ));
+    }
+
+    public function indexAction()
+    {
         $token = $this->getRequest()->getParam('token', null);
         $fingerprint = $this->getRequest()->getParam('fingerprint', null);
 
         try
         {
-            $response = $stripe->initiate3DSecureAuthentication($token, $fingerprint);
-            if (empty($response) || !isset($response->id))
+            $source = $this->create3DSecureSource($token);
+
+            if (empty($source) || !isset($source->id))
                 throw new Exception("Sorry, we could not initiate a card authentication with your bank.");
 
+            $session = Mage::getSingleton('core/session');
+            if (!empty($source->redirect->url))
+                $session->setRedirectUrl($source->redirect->url);
+            else
+                $session->setRedirectUrl(null);
+            $session->setClientSecret($source->client_secret);
+
             $data = array(
-                'id' => $response->id,
-                'status' => $response->status,
-                'redirect_url' => $response->redirect_url
+                'id' => $source->id,
+                'status' => $source->status
             );
             $this->getResponse()->setBody(json_encode($data));
         }
-        catch (Exception $e)
+        catch (\Stripe\Error\Card $e)
+        {
+            $this->crashWithError($e->getMessage());
+        }
+        catch (\Stripe\Error $e)
+        {
+            $this->crashWithError($e->getMessage());
+        }
+        catch (\Exception $e)
         {
             $this->crashWithError($e->getMessage());
         }

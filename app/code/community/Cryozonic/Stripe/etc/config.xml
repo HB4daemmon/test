@@ -18,7 +18,8 @@
 <config>
   <modules>
     <Cryozonic_Stripe>
-      <version>2.1.0</version>
+      <!-- This is not the module's version number. See the changelog instead. -->
+      <version>2.2.0</version>
     </Cryozonic_Stripe>
   </modules>
   <global>
@@ -77,6 +78,15 @@
           </cryozonic_stripe_update_customer_id>
         </observers>
       </sales_order_payment_place_end>
+      <sales_order_invoice_pay>
+        <observers>
+          <cryozonic_stripe_invoice_pay>
+            <type>singleton</type>
+            <class>cryozonic_stripe/observer</class>
+            <method>sales_order_invoice_pay</method>
+          </cryozonic_stripe_invoice_pay>
+        </observers>
+      </sales_order_invoice_pay>
     </events>
     <payment>
       <cryozonic_stripe>
@@ -120,7 +130,6 @@
       <cryozonic_stripe>
         <model>cryozonic_stripe/standard</model>
         <active>1</active>
-        <order_status>pending</order_status>
         <title>Pay by Card (Stripe)</title>
         <payment_action>authorize_capture</payment_action>
         <radar_risk_level>10</radar_risk_level>
@@ -129,6 +138,9 @@
         <use_store_currency>1</use_store_currency>
         <card_autodetect>2</card_autodetect>
         <cctypes>visa,mastercard,amex,jcb,discover,diners</cctypes>
+        <stripe_js>1</stripe_js>
+        <apple_pay_checkout>1</apple_pay_checkout>
+        <minimum_order_amount>0.30</minimum_order_amount>
       </cryozonic_stripe>
     </payment>
   </default>
@@ -177,5 +189,14 @@
         </cryozonic_stripe>
       </updates>
     </layout>
+    <translate>
+      <modules>
+        <Cryozonic_Stripe>
+          <files>
+            <default>Cryozonic_Stripe.csv</default>
+          </files>
+        </Cryozonic_Stripe>
+      </modules>
+    </translate>
   </adminhtml>
 </config>

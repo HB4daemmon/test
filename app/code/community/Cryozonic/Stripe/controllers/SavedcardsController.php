@@ -45,50 +45,51 @@ class Cryozonic_Stripe_SavedcardsController extends Mage_Core_Controller_Front_A
         $newcard = $this->getRequest()->getParam('newcard', null);
         if (!empty($newcard))
         {
-            if ($newcard)
+            if (!$stripe->getStore()->getConfig('payment/cryozonic_stripe/ccsave'))
             {
-                if (!$stripe->getStore()->getConfig('payment/cryozonic_stripe/ccsave'))
-                {
-                    Mage::getSingleton('core/session')->addError("Sorry, saved cards are currently disabled!");
-                    $this->loadLayout();
-                    $this->renderLayout();
-                    return;
-                }
+                Mage::getSingleton('core/session')->addError("Sorry, saved cards are currently disabled!");
+                $this->loadLayout();
+                $this->renderLayout();
+                return;
+            }
 
-                if (isset($newcard['cc_stripejs_token']))
+            if (isset($newcard['cc_stripejs_token']))
+            {
+                // This case is when AVS is enabled
+                if (strpos($newcard['cc_stripejs_token'], ':') !== false)
                 {
-                    // This case is when AVS is enabled
-                    if (strpos($newcard['cc_stripejs_token'], ':'))
-                    {
-                        $card = explode(':', $newcard['cc_stripejs_token']);
-                        $params = $card[0];
-                    }
-                    else
-                        $params = $newcard['cc_stripejs_token'];
+                    $card = explode(':', $newcard['cc_stripejs_token']);
+                    $params = $card[0];
                 }
                 else
-                    $params = array(
-                        "name" => $newcard['cc_owner'],
-                        "number" => $newcard['cc_number'],
-                        "cvc" => $newcard['cc_cid'],
-                        "exp_month" => $newcard['cc_exp_month'],
-                        "exp_year" => $newcard['cc_exp_year']
-                    );
+                    $params = $newcard['cc_stripejs_token'];
+            }
+            else
+                $params = array(
+                    "name" => $newcard['cc_owner'],
+                    "number" => $newcard['cc_number'],
+                    "cvc" => $newcard['cc_cid'],
+                    "exp_month" => $newcard['cc_exp_month'],
+                    "exp_year" => $newcard['cc_exp_year']
+                );
 
-                try
-                {
-                    $stripe->addCardToCustomer($params);
-                    $this->_redirect('customer/savedcards');
-                }
-                catch (Stripe_Error $e)
-                {
-                    Mage::getSingleton('core/session')->addError($e->getMessage());
-                }
-                catch (Exception $e)
-                {
-                    Mage::log($e->getMessage());
-                    Mage::getSingleton('core/session')->addError("Sorry, the card could not be added!");
-                }
+            try
+            {
+                $stripe->addCardToCustomer($params);
+                $this->_redirect('customer/savedcards');
+            }
+            catch (\Stripe\Error\Card $e)
+            {
+                Mage::getSingleton('core/session')->addError($e->getMessage());
+            }
+            catch (\Stripe\Error $e)
+            {
+                Mage::getSingleton('core/session')->addError($e->getMessage());
+            }
+            catch (\Exception $e)
+            {
+                Mage::logException($e);
+                Mage::getSingleton('core/session')->addError("Sorry, the card could not be added!");
             }
         }
 

@@ -48,7 +48,7 @@ class Plumrocket_SocialLogin_Model_System_Config_Source_RedirectTo
 
     protected function _getOptions()
     {
-        if(is_null($this->_options)) {
+        if (is_null($this->_options)) {
             $options = array(
                 array('value' => '__referer__', 'label' => Mage::helper('pslogin')->__('Stay on the current page') ),
                 array('value' => '__custom__', 'label' => Mage::helper('pslogin')->__('Redirect to Custom URL') ),
@@ -58,7 +58,7 @@ class Plumrocket_SocialLogin_Model_System_Config_Source_RedirectTo
 
             $items = Mage::getSingleton('cms/page')->getCollection()->getItems();
             foreach ($items as $item) {
-                if($item->getId() == 1) continue;
+                if ($item->getId() == 1) continue;
                 $options[] = array('value' => $item->getId(), 'label' => $item->getTitle());
             }
 

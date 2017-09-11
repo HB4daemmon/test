@@ -21,7 +21,7 @@
         <h1><?php echo $this->__('Create an Account') ?></h1>
     </div>
     <?php echo $this->getChildHtml('form_fields_before')?>
-    <?php if(Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
+    <?php if (Mage::helper('pslogin')->modulePositionEnabled('register') && Mage::helper('pslogin')->hasButtons()) : ?>
         <?php echo $this->getChildHtml('pslogin_buttons'); ?>
         <div class="pslogin-spacer pslogin-clearfix"> 
             <table>
@@ -38,26 +38,18 @@
         <div class="fieldset">
             <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
             <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
+            <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
             <p class="form-instructions"><?php echo $this->__('Please enter the following information to create your account.') ?></p>
             <p class="required"><?php echo $this->__('* Required Fields') ?></p>
             <ul class="form-list">
                 <li class="fields">
                     <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
                 </li>
-                <li class="fields">
-                    <div class="field">
-                        <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
-                        <div class="input-box">
-                            <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="email" id="email_address" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
-                        </div>
+                <li>
+                    <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                    <div class="input-box">
+                        <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="email" id="email_address" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
                     </div>
-                    <div class="field">
-                        <label for="phone_number" class="required"><em>*</em><?php echo $this->__('Phone Number') ?></label>
-                        <div class="input-box">
-                            <input type="text" name="phone_number" id="phone_number" value="<?php echo $this->escapeHtml($this->getFormData()->getPhone_number()) ?>" title="<?php echo $this->__('Phone Number') ?>" class="input-text" />
-                        </div>
-                    </div>
-
                 </li>
             <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
             <?php if ($_dob->isEnabled()): ?>
@@ -72,7 +64,7 @@
                 <li><?php echo $_gender->setGender($this->getFormData()->getGender())->toHtml() ?></li>
             <?php endif ?>
 
-            <?php if($this->getShowAddressFields()): ?>
+            <?php if ($this->getShowAddressFields()): ?>
                 <li class="hidden">
                     <input type="hidden" name="create_address" value="1" />
                 </li>
@@ -165,7 +157,7 @@
                 <?php if ($this->isNewsletterEnabled()): ?>
                     <li class="control">
                         <div class="input-box">
-                            <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+                            <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if ($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
                         </div>
                         <label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>
                     </li>
@@ -185,7 +177,7 @@
     <script type="text/javascript">
     //<![CDATA[
         var dataForm = new VarienForm('form-validate', true);
-        <?php if($this->getShowAddressFields()): ?>
+        <?php if ($this->getShowAddressFields()): ?>
         new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
         <?php endif; ?>
     //]]>

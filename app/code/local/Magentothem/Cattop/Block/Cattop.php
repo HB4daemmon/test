@@ -36,6 +36,31 @@ class Magentothem_Cattop_Block_Cattop extends Mage_Checkout_Block_Onepage_Abstra
         return $collection;
     }
 
+    public function getSubCatList($parent_id){
+        $_category = Mage::getModel('catalog/category')->load($parent_id);
+        $_subcategories = $_category->getChildrenCategories();
+        $sub = array();
+        $most_popular = null;
+        if (count($_subcategories) > 0){
+            foreach($_subcategories as $_subcategory){
+                $_sub = array();
+                $_sub_category = Mage::getModel('catalog/category')->load($_subcategory->getId());
+                $_sub['name'] = $_sub_category->getName();
+                $_sub['id'] = $_sub_category->getId();
+                $_sub['url'] = $_sub_category->getUrlPath();
+                if ($_sub['name'] == 'Most Popular'){
+                    $most_popular = $_sub;
+                }else{
+                    array_push($sub,$_sub);
+                }
+            }
+        }
+        if ($most_popular != null){
+            array_unshift($sub,$most_popular);
+        }
+        return $sub;
+    }
+
     public function to12HourRange($r){
         return $this->to12Hour($r).' - '.$this->to12Hour($r+1);
     }

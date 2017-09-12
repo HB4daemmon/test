@@ -1,23 +1,49 @@
 <div class="cattop">
-	<h2 class="cattop-title"><?php echo $this->getTopCfg('title')?></h2>
- 
-	<?php
-	$catListTop = $this->getCatListTop();
-	$i = 0;
-	$numcolumn = $this->getTopCfg('number_columns');
-	foreach ($catListTop as $catTop) {
-		if($i++%$numcolumn == 0) echo '<ul class="catgrid">';
-	    	echo '<li class="cat_level_top"><div class="cattop-item">
-				<a href="' . Mage::getUrl($catTop->getUrlPath()). '">' 
-					.'<img class ="image" src="'.$this->getImage($catTop).'" alt="'.$catTop->getName().'" />'
-					.'<img class ="imagehover" src="'.$this->getImageHover($catTop).'" alt="'.$catTop->getName().'" />
-					<span>'.$catTop->getName().'</span>
-		                </a>
-				
-				</div>
-				 </li>';
+    <h2 class="cattop-title"><?php echo $this->getTopCfg('title') ?></h2>
 
-		if($i%$numcolumn == 0 || $i==$numcolumn) echo '</ul>';
-	}
-	?>
+    <?php
+    $catListTop = $this->getCatListTop();
+    $i = 0;
+    $numcolumn = $this->getTopCfg('number_columns');
+    echo '<div class="ui vertical menu" style="margin-left: -20px;margin-top: -20px;width: 20rem"> ';
+    foreach ($catListTop as $catTop) {
+//        print_r($this->getSubCatList($catTop->getEntityId()));
+        echo '<div class="ui dropdown item" >
+	    	    <span id="cat_'.$catTop->getEntityId().'" class="cat_item" data-url="'.$catTop->getUrlPath().'">' . $catTop->getName() . '</span>
+	    	    <i class="dropdown icon"></i>
+	    	    <div class="menu">';
+         foreach($this->getSubCatList($catTop->getEntityId()) as $sub_cat){
+             echo '<a class="item cat_item" id="cat_'.$sub_cat['id'].'" data-url="'.$sub_cat['url'].'">'.$sub_cat['name'].'</a>';
+         }
+
+         echo '</div></div>';
+
+    }
+    echo '</div>';
+    ?>
+    <!--    <div class="ui vertical menu">-->
+    <!--        <div class="ui dropdown item">-->
+    <!--            More-->
+    <!--            <i class="dropdown icon"></i>-->
+    <!--            <div class="menu">-->
+    <!--                <a class="item"> Edit Profile</a>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <script>
+        $jq('.ui.dropdown')
+            .dropdown({
+                on: 'hover'
+            })
+        ;
+
+        $jq(".cat_item").click(function(target){
+            window.location.href =target.currentTarget.dataset.url;
+            console.log(target.currentTarget.dataset.url);
+        });
+
+        $jq("#popup_pt_item_menu_walmart").css("background","none");
+        $jq("#popup_pt_item_menu_walmart").css("border-bottom","none");
+
+    </script>
 </div>

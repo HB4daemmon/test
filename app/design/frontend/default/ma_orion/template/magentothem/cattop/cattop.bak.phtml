@@ -1,0 +1,25 @@
+<div class="cattop">
+	<h2 class="cattop-title"><?php echo $this->getTopCfg('title')?></h2>
+ 
+	<?php
+	$catListTop = $this->getCatListTop();
+	$i = 0;
+	$numcolumn = $this->getTopCfg('number_columns');
+	foreach ($catListTop as $catTop) {
+//        print_r($catTop->getEntityId());
+
+		if($i++%$numcolumn == 0) echo '<ul class="catgrid">';
+	    	echo '<li class="cat_level_top"><div class="cattop-item">
+				<a href="' . Mage::getUrl($catTop->getUrlPath()). '">' 
+					.'<img class ="image" src="'.$this->getImage($catTop).'" alt="'.$catTop->getName().'" />'
+					.'<img class ="imagehover" src="'.$this->getImageHover($catTop).'" alt="'.$catTop->getName().'" />
+					<span>'.$catTop->getName().'</span>
+		                </a>
+				
+				</div>
+				 </li>';
+
+		if($i%$numcolumn == 0 || $i==$numcolumn) echo '</ul>';
+	}
+	?>
+</div>

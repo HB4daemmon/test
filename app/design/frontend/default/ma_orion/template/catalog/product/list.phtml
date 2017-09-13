@@ -52,15 +52,16 @@
                     <div class="images-container">
                         <a  title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300,426); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
                         <?php
-                            $newFromDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsFromDate();
-                            $newToDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsToDate();                 
+                            $product = Mage::getModel('catalog/product')->load($_product->getID());
+                            $newFromDate = $product->getNewsFromDate();
+                            $newToDate = $product->getNewsToDate();
                             $now = date("Y-m-d H:m(worry)");
                             // Get the Special Price
-                            $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                            $specialprice =$product->getSpecialPrice();
                             // Get the Special Price FROM date
-                            $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                            $specialPriceFromDate = $product->getSpecialFromDate();
                             // Get the Special Price TO date
-                            $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                            $specialPriceToDate = $product->getSpecialToDate();
                             // Get Current date
                             if ($specialprice&&($specialPriceFromDate <= $now && $specialPriceToDate >= $now)&& Mage::getStoreConfig('themeoptions/themeoptions_config/sale_label')){
                                     echo "<span class='sale'></span>";
@@ -168,15 +169,16 @@
                         </ul>
                     </div>
                     <?php
-                            $newFromDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsFromDate();
-                            $newToDate = Mage::getModel('catalog/product')->load($_product->getID())->getNewsToDate();                 
+                            $product = Mage::getModel('catalog/product')->load($_product->getID());
+                            $newFromDate = $product->getNewsFromDate();
+                            $newToDate = $product->getNewsToDate();
                             $now = date("Y-m-d H:m(worry)");
                             // Get the Special Price
-                            $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                            $specialprice = $product->getSpecialPrice();
                             // Get the Special Price FROM date
-                            $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                            $specialPriceFromDate = $product->getSpecialFromDate();
                             // Get the Special Price TO date
-                            $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                            $specialPriceToDate = $product->getSpecialToDate();
                             // Get Current date
                             //if ($specialprice&&($specialPriceFromDate <= $now && $specialPriceToDate >= $now)&& Mage::getStoreConfig('themeoptions/themeoptions_config/sale_label')){
                             //        echo "<span class='sale'></span>";

@@ -1,0 +1,36 @@
+<?php
+
+/** @var Algolia_Algoliasearch_Helper_Config $config */
+$config = Mage::helper('algoliasearch/config');
+
+/** @var Mage_CatalogSearch_Helper_Data $catalogSearchHelper */
+$catalogSearchHelper = $this->helper('catalogsearch');
+
+$placeholder = $this->__('Search for products, categories, ...');
+
+/** Render form with autocomplete input **/
+if ($config->isDefaultSelector()): ?>
+    <form id="search_mini_form" action="<?php echo $catalogSearchHelper->getResultUrl() ?>" method="get">
+        <div id="algolia-searchbox">
+<!--            <label for="search">--><?php //echo $this->__('Search:') ?><!--</label>-->
+            <input id="search" type="text" name="<?php echo $catalogSearchHelper->getQueryParamName() ?>" class="input-text algolia-search-input" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="<?php echo $placeholder; ?>" />
+            <span class="clear-cross clear-query-autocomplete"></span>
+            <span id="algolia-glass" class="magnifying-glass" width="24" height="24"></span>
+            <button class="ui button search-button" style="">Search</button>
+        </div>
+    </form>
+<?php endif; ?>
+
+<style>
+    .search-button{
+        float:right;
+        margin-left: 5px !important;
+        background-color: #8cc684 !important;
+        color: white  !important;
+    }
+
+    .search-button:hover{
+        background-color: #ffa200 !important;
+        color: white  !important;
+    }
+</style>

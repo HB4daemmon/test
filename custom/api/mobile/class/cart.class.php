@@ -119,6 +119,28 @@ class MobileCart{
         }
     }
 
+    public static function add_cart($user_id,$products){
+        $current_carts = MobileCart::get_cart($user_id)['items'];
+        $products = json_decode($products,true);
+        if(isset($products['product_id'])){
+            $id = $products['product_id'];
+            $flag = true;
+            $new_product = Array();
+            foreach($current_carts as $c){
+                if($c['product_id'] == $id){
+                    $c['qty'] += $products['qty'];
+                    $flag = false;
+                }
+                array_push($new_product,$c);
+            }
+            if ($flag){
+                array_push($new_product,$products);
+            }
+            MobileCart::update_cart($user_id,json_encode($new_product));
+        }
+        return MobileCart::get_cart($user_id);
+    }
+
     public static function clear_cart($user_id){
         try {
             $customer = Mage::getModel("customer/customer")->load($user_id);

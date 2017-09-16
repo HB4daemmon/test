@@ -55,3 +55,23 @@ class CartHandler {
         echo json_encode($result);
     }
 }
+
+class CartAddHandler {
+    function put(){
+        try{
+            $result = array("success"=>1,"data"=>'',"return_code"=>"");
+            $p = $GLOBALS['PUT'];
+            params($p,['products']);
+            $user_id = MobileOauth::oauth_validate("order");
+            $result['data'] = MobileCart::add_cart($user_id,$p['products']);
+        }catch(OauthException $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = -1;
+        }
+        catch(Exception $e){
+            $result['return_code'] = $e->getMessage();
+            $result['success'] = 0;
+        }
+        echo json_encode($result);
+    }
+}

@@ -2,49 +2,51 @@
 require_once(dirname(__FILE__) . '/../../../util/mobile_global.php');
 require_once(dirname(__FILE__) . '/utils.class.php');
 
-class MobileCategory{
-    public static function getCategoryList($type="default"){
+class MobileCategory
+{
+    public static function getCategoryList($type = "default")
+    {
         try {
             $_helper = Mage::helper('catalog/category');
             $_categories = $_helper->getStoreCategories();
             $image_prefix = "https://cartgogogo.com/media/catalog/category/";
             $_sub_cates = array();
             $cate = array();
-            if (count($_categories) > 0){
-                foreach($_categories as $_category){
+            if (count($_categories) > 0) {
+                foreach ($_categories as $_category) {
                     $_cate = array();
                     $_category = Mage::getModel('catalog/category')->load($_category->getId());
                     $_subcategories = $_category->getChildrenCategories();
                     $sub = array();
                     $sub_name_string = "";
-                    if (count($_subcategories) > 0){
-                        foreach($_subcategories as $_subcategory){
+                    if (count($_subcategories) > 0) {
+                        foreach ($_subcategories as $_subcategory) {
                             $_subcategory = Mage::getModel('catalog/category')->load($_subcategory->getId());
                             $_sub = array();
                             $_sub['name'] = $_subcategory->getName();
                             $_sub['id'] = $_subcategory->getId();
                             $_sub['url'] = $_subcategory->getMetaKeywords();
-                            $_sub['image'] = $image_prefix.$_subcategory->getThumbnail();
-                            array_push($sub,$_sub);
-                            array_push($_sub_cates,$_sub);
-                            $sub_name_string = $sub_name_string.$_sub['name'].' / ';
+                            $_sub['image'] = $image_prefix . $_subcategory->getThumbnail();
+                            array_push($sub, $_sub);
+                            array_push($_sub_cates, $_sub);
+                            $sub_name_string = $sub_name_string . $_sub['name'] . ' / ';
                         }
                     }
-                    $sub_name_string = rtrim($sub_name_string,'/ ');
+                    $sub_name_string = rtrim($sub_name_string, '/ ');
                     $_cate['name'] = $_category->getName();
                     $_cate['id'] = $_category->getId();
                     $_cate['url'] = $_category->getMetaKeywords();
-                    $_cate['image'] = $image_prefix.$_category->getThumbnail();
+                    $_cate['image'] = $image_prefix . $_category->getThumbnail();
                     $_cate['subcategories'] = $sub;
                     $_cate['sub_name_string'] = $sub_name_string;
-                    array_push($cate,$_cate);
+                    array_push($cate, $_cate);
                 }
             }
-            if($type == 'default'){
+            if ($type == 'default') {
                 return $cate;
-            }else if ($type == 'sub'){
+            } else if ($type == 'sub') {
                 return $_sub_cates;
-            }else{
+            } else {
                 return null;
             }
 
@@ -53,7 +55,8 @@ class MobileCategory{
         }
     }
 
-    public static function queryCategory($cate_id){
+    public static function queryCategory($cate_id)
+    {
         try {
             $res = array();
             $_category = Mage::getModel('catalog/category')->load($cate_id);
@@ -62,20 +65,20 @@ class MobileCategory{
             $_subcategories = $_category->getChildrenCategories();
             $sub = array();
             $most_popular = null;
-            if (count($_subcategories) > 0){
-                foreach($_subcategories as $_subcategory){
+            if (count($_subcategories) > 0) {
+                foreach ($_subcategories as $_subcategory) {
                     $_sub = array();
                     $_sub['name'] = $_subcategory->getName();
                     $_sub['id'] = $_subcategory->getId();
-                    if ($_sub['name'] == 'Most Popular'){
+                    if ($_sub['name'] == 'Most Popular') {
                         $most_popular = $_sub;
-                    }else{
-                        array_push($sub,$_sub);
+                    } else {
+                        array_push($sub, $_sub);
                     }
                 }
             }
-            if ($most_popular != null){
-                array_unshift($sub,$most_popular);
+            if ($most_popular != null) {
+                array_unshift($sub, $most_popular);
             }
             $res['subcategories'] = $sub;
             return $res;
@@ -84,30 +87,31 @@ class MobileCategory{
         }
     }
 
-    public static function getPage(){
+    public static function getPage()
+    {
         try {
             $cms_page = Mage::getModel('cms/page')
                 ->getCollection()
-                ->addFieldToFilter("identifier",'walmart')
+                ->addFieldToFilter("identifier", 'walmart')
                 ->getFirstItem()
                 ->getData();
             $content = $cms_page['content'];
-            $categories = explode("{{widget type=\"categorytabs/advanced\"",$content);
+            $categories = explode("{{widget type=\"categorytabs/advanced\"", $content);
             $result = [];
-            for ($i=1;$i<count($categories);$i++){
+            for ($i = 1; $i < count($categories); $i++) {
                 $category = $categories[$i];
                 $res = [];
-                $res['title'] = explode("\"",explode("title=\"",$category)[1])[0];
-                $res['identify'] = explode("\"",explode("identify=\"",$category)[1])[0];
-                $res['products_count'] = explode("\"",explode("products_count=\"",$category)[1])[0];
-                $res['products_limit'] = explode("\"",explode("products_limit=\"",$category)[1])[0];
-                $cat_ids = explode(',',explode("\"",explode("cat_ids=\"",$category)[1])[0]);
+                $res['title'] = explode("\"", explode("title=\"", $category)[1])[0];
+                $res['identify'] = explode("\"", explode("identify=\"", $category)[1])[0];
+                $res['products_count'] = explode("\"", explode("products_count=\"", $category)[1])[0];
+                $res['products_limit'] = explode("\"", explode("products_limit=\"", $category)[1])[0];
+                $cat_ids = explode(',', explode("\"", explode("cat_ids=\"", $category)[1])[0]);
                 $res['most_popular'] = [];
                 $category_id = 0;
-                foreach($cat_ids as $c){
-                    $r = MobileCategory::getProducts($c,0,$res['products_limit']);
+                foreach ($cat_ids as $c) {
+                    $r = MobileCategory::getProducts($c, 0, $res['products_limit']);
                     $category_id = $r['parent_id'];
-                    if (strtolower($r['name']) == "most popular"){
+                    if (strtolower($r['name']) == "most popular") {
                         $res['most_popular'] = $r;
                         break;
                     }
@@ -122,10 +126,11 @@ class MobileCategory{
         }
     }
 
-    public static function getProducts($category_id,$page=0,$page_size=20){
+    public static function getProducts($category_id, $page = 0, $page_size = 20)
+    {
         try {
             $_category = Mage::getModel('catalog/category')->load($category_id);
-            if($_category->getId() == null){
+            if ($_category->getId() == null) {
                 throw new Exception("Category doesn't exist");
             }
             $category = [];
@@ -145,11 +150,11 @@ class MobileCategory{
 
 //            $category['all_products'] = $_category->getProductCollection()->getData();
 
-            $products_collection = $_category->getProductCollection()->setPage($page,$page_size);
+            $products_collection = $_category->getProductCollection()->setPage($page, $page_size);
             $category['page'] = $products_collection->getCurPage();
             $category['page_size'] = $products_collection->getPageSize();
             $category['last_page_number'] = $products_collection->getLastPageNumber();
-            foreach ($products_collection as $p){
+            foreach ($products_collection as $p) {
                 $product = MobileCategory::getProduct($p->getId());
                 $category['products'][] = $product;
             }
@@ -161,19 +166,46 @@ class MobileCategory{
         }
     }
 
-    public static function getProduct($product_id){
+    public static function getProduct($product_id)
+    {
         try {
             $product_model = Mage::getModel('catalog/product');
             $_product = $product_model->load($product_id);
 
+            $_catCollection = $_product->getCategoryCollection();
+            $parent_name = "";
+            foreach ($_catCollection as $_category) {
+                $_childCats = Mage::getModel('catalog/category')->load($_category->getId());
+                if ($_childCats->getLevel() == 2) {
+                    $parent_name = $_childCats->getName();
+                }
+            }
+
+            $_product_images = $_product->getMediaGalleryImages();
+            $index = 1;
+            $thumb_string = "";
+            foreach ($_product_images->getItems() as $_product_image) {
+                if ($index % 4 == 1) {
+                    $thumb_string.= '<li class="ui images">';
+                }
+                $thumb_string.= '<img class="ui bordered image thumb-image" src="' . (Mage::helper('catalog/image')->init($_product, 'image', $_product_image->getFile())->resize(100, 100)) . '" data-image="' . (Mage::helper('catalog/image')->init($_product, 'image', $_product_image->getFile())) . '">';
+                if ($index % 4 == 0) {
+                    $thumb_string.= '</li>';
+                }
+                $index += 1;
+            }
+
+            $price_string = Mage::helper('core')->currency($_product->getPrice(), true, false);
+            $image_default = "".Mage::helper('catalog/image')->init($_product, 'image');
+
             $country = 'US';
             $region = '23';
-            $TaxRequest  = new Varien_Object();
+            $TaxRequest = new Varien_Object();
             $TaxRequest->setCountryId($country);
             $TaxRequest->setRegionId($region);
             $TaxRequest->setStoreId(2);
             $TaxRequest->setCustomerClassId(3);
-            $TaxRequest->setProductClassId($_product->getTaxClassId());  // 2=taxable id (all our products are taxable)
+            $TaxRequest->setProductClassId($_product->getTaxClassId()); // 2=taxable id (all our products are taxable)
 
             $taxCalculationModel = Mage::getSingleton('tax/calculation');
             $rate = $taxCalculationModel->getRate($TaxRequest);
@@ -202,6 +234,10 @@ class MobileCategory{
             $product['special_from_date'] = $_product->getSpecialFromDate();
             $product['special_to_date'] = $_product->getSpecialToDate();
             $product['tax_percent'] = $rate;
+            $product['category_name'] = $parent_name;
+            $product['thumb_string'] = $thumb_string;
+            $product['price_string'] = $price_string;
+            $product['image_default'] = $image_default;
             return $product;
 
         } catch (Exception $e) {
@@ -209,7 +245,8 @@ class MobileCategory{
         }
     }
 
-    public static function queryProduct($query_text,$page,$page_size){
+    public static function queryProduct($query_text, $page, $page_size)
+    {
         try {
             $page = intval($page);
             $page_size = intval($page_size);
@@ -232,28 +269,28 @@ class MobileCategory{
             );
             $productIds = $collection->getAllIds();
             $length = count($productIds);
-            $pager = MobileUtils::count_page($length,$page,$page_size);
-            if($pager['skip'] <= $length){
+            $pager = MobileUtils::count_page($length, $page, $page_size);
+            if ($pager['skip'] <= $length) {
                 $skip = $pager['skip'];
-            }else{
+            } else {
                 $skip = $length;
             }
 
-            if($pager['skip'] + $page_size <= $length){
-                $end = $pager['skip']+ $page_size;
-            }else{
+            if ($pager['skip'] + $page_size <= $length) {
+                $end = $pager['skip'] + $page_size;
+            } else {
                 $end = $length;
             }
 
             $data = array();
-            if($skip != $end){
-                for($i=$skip;$i<$end;$i++){
+            if ($skip != $end) {
+                for ($i = $skip; $i < $end; $i++) {
                     $id = $productIds[$i];
                     $product = MobileCategory::getProduct($id);
-                    array_push($data,$product);
+                    array_push($data, $product);
                 }
             }
-            $products = array("pager"=>$pager,"data"=>$data);
+            $products = array("pager" => $pager, "data" => $data);
             return $products;
         } catch (Exception $e) {
             throw new Exception($e->getMessage());

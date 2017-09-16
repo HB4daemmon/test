@@ -67,7 +67,7 @@ Customer account home dashboard layout
         <label>Catalog Product View</label>
          <!-- Mage_Tag -->
          <reference name="product.info.tabs">
-            <action method="addTab" translate="title" module="tag"><alias>product.tags</alias><title>Product Tags</title><block>tag/product_list</block><template>tag/list.phtml</template></action>
+            <!--<action method="addTab" translate="title" module="tag"><alias>product.tags</alias><title>Product Tags</title><block>tag/product_list</block><template>tag/list.phtml</template></action>-->
         </reference>
         <reference name="product.tags">
             <block type="page/html_wrapper" name="product.tag.list.list.before" as="list_before" translate="label">

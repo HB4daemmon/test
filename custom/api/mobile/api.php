@@ -68,6 +68,7 @@ Toro::serve(array(
     "/main" => "MainHandler",
     //cart
     "/cart"=>"CartHandler",
+    "/cart/add"=>"CartAddHandler",
     //oauth
     "/oauth"=>"OauthHandler",
     //delivery numbers

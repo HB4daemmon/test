@@ -3,6 +3,10 @@
     <default>
         <reference name ='head'>
             <action method="addCss"><stylesheet>magentothem/css/categorytabs.css</stylesheet></action>
+            <action method="addCss"><stylesheet>magentothem/cartgogogo/unslider.css</stylesheet></action>
+            <action method="addCss"><stylesheet>magentothem/cartgogogo/unslider-dots.css</stylesheet></action>
+            <action method="addJs"><script>magentothem/cartgogogo/jquery.zoom.min.js</script></action>
+            <action method="addJs"><script>magentothem/cartgogogo/unslider-min.js</script></action>
         </reference>
     </default>
 </layout> 

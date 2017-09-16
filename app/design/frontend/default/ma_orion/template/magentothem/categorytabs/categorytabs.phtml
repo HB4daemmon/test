@@ -59,11 +59,26 @@ else {
                     </div>
                     <div class="ui two column grid">
                         <div class="column">
-                            <div>
-                                <img class="ui bordered image" src="<?php echo Mage::helper('catalog/image')->init($product, 'image')?>" >
+                            <div id="image_block_<?php echo $_product->getID() ?>">
+                                <img  style="width: 100%" id="main_image_<?php echo $_product->getID() ?>" class="ui bordered image" src="" data-image="<?php echo Mage::helper('catalog/image')->init($product, 'image')?>" >
                             </div>
-                            <div style="margin-top: 20px">
-                                <img class="ui bordered image" src="<?php echo Mage::helper('catalog/image')->init($product, 'thumbnail')?>" style="width: 20%">
+                            <div style="margin-top: 20px" id="image_lightbox_<?php echo $_product->getID() ?>">
+                                <?php $_product_images = $product->getMediaGalleryImages(); $index = 1 ;?>
+
+                                <ul>
+                                    <?php foreach($_product_images->getItems() as $_product_image)  {
+                                        if($index % 4 == 1){
+                                            echo '<li class="ui images">';
+                                        }
+                                        echo '<img class="ui bordered image thumb-image" src="'.(Mage::helper('catalog/image')->init($product, 'image',$_product_image->getFile())->resize(100,100)).'" data-image="'.(Mage::helper('catalog/image')->init($product, 'image',$_product_image->getFile())).'">';
+//                                        echo '<img class="ui bordered image thumb-image" src="'.$_product_image->getUrl().'">';
+                                        if($index%4==0){
+                                            echo '</li>';
+                                        }
+                                        $index += 1;
+                                    }
+                                    ?>
+                                </ul>
                             </div>
                         </div>
                         <div class="column">
@@ -195,6 +210,11 @@ else {
         background: none;
         margin-top: 25px;
     }
+
+    .thumb-image{
+        width: 23%;
+        cursor: pointer;
+    }
 </style>
 <script type="text/javascript">
 
@@ -213,13 +233,39 @@ $jq(document).ready(function() {
 
     $jq(".item_img").unbind("click").click(function(target){
         var product_id = target.currentTarget.id.split('img_')[1];
-//        console.log($jq("#modal_"+product_id));
+        var main_image = $jq("#main_image_"+product_id);
+        main_image.attr("src",main_image[0].dataset.image);
         $jq("#modal_"+product_id).modal("show");
+        $jq("#image_block_"+product_id).trigger('zoom.destroy');
+        $jq("#image_block_"+product_id).zoom();
+        $jq('#image_lightbox_'+product_id).unslider({
+            arrows:{
+                prev: '<a class="unslider-arrow prev">Previous</a>',
+                next: '<a class="unslider-arrow next">Next</a>'
+            }
+        });
+        $jq(".thumb-image").unbind("click").click(function(tar){
+            main_image.attr("src",tar.currentTarget.dataset.image);
+            $jq(".zoomImg").attr("src",tar.currentTarget.dataset.image);
+        })
+        if($jq('#image_lightbox_'+product_id+" li img").length >5){
+
+            $jq(".unslider-arrow").show({
+                duration:100
+            });
+        }else{
+            $jq(".unslider-arrow").hide({
+                duration:100
+            });
+        }
     });
 
     $jq(".close.icon").unbind("click").click(function(){
         $jq(".ui.modal").modal("hide");
     })
+
+
+
 });
 
 </script> 

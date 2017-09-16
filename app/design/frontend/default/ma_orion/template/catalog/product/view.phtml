@@ -76,13 +76,13 @@
                     <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
                 <?php endif;?>
                 
-                <div class="add-to-box">
+                <div class="add-to-box" style="border-bottom:none">
                     <?php echo $this->getChildHtml('addto') ?>
                     <?php if ($this->canEmailToFriend()): ?>
                         <p class="email-friend"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><?php echo $this->__('Email to a Friend') ?></a></p>
                     <?php endif; ?>
                 </div>
-    
+
                 <?php if (!$this->hasOptions()):?>
                     <div class="add-to-box-view">
                         <?php if($_product->isSaleable()): ?>
@@ -96,17 +96,15 @@
                 <?php endif; ?>
     
                 
-                <div class="product-social">
-                <!-- AddThis Button BEGIN -->
-                <div class="addthis_toolbox addthis_default_style ">
-                <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-                <a class="addthis_button_tweet"></a>
-                <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-                <a class="addthis_counter addthis_pill_style"></a>
-                </div>
-                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4fce36935105cb6e"></script>
-                <!-- AddThis Button END -->
-            </div>
+<!--                <div class="product-social">-->
+<!--                <div class="addthis_toolbox addthis_default_style ">-->
+<!--                <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>-->
+<!--                <a class="addthis_button_tweet"></a>-->
+<!--                <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>-->
+<!--                <a class="addthis_counter addthis_pill_style"></a>-->
+<!--                </div>-->
+<!--                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4fce36935105cb6e"></script>-->
+<!--                </div>-->
     
             </div>
         </div>

